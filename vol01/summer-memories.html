@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ÉTOILE — Lumière Girls Vol.01</title>
+<title>ÉTOILE — Vol.01 · Summer Memories · Akane & Mina</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;1,6..96,300&family=Noto+Serif+JP:wght@200;300&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -226,7 +226,7 @@ body.hov #cRing{width:42px;height:42px;}
   cursor:pointer;
   opacity:0;transition:opacity .4s .25s;pointer-events:none;
 }
-#lb.open #lb-close-bar{opacity:1;pointer-events:auto;}
+#lb.open~#lb-close-bar{opacity:1;pointer-events:auto;}
 #lb-close-bar:hover{background:rgba(9,6,8,0.95);}
 .cb-x{
   width:28px;height:28px;border:1px solid rgba(250,247,242,.3);
@@ -297,43 +297,34 @@ body.hov #cRing{width:42px;height:42px;}
 .en-v2:hover{border-color:var(--pink);color:var(--pink);}
 .en-cr{font-size:7px;letter-spacing:.35em;text-transform:uppercase;color:var(--muted2);line-height:2.6;}
 
-/* MUTE BUTTON */
-#mute-btn{
-  position:fixed;bottom:28px;right:24px;z-index:500;
-  width:36px;height:36px;border-radius:50%;
-  border:1px solid rgba(250,247,242,.18);
-  background:rgba(9,6,8,.6);backdrop-filter:blur(8px);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;
-  opacity:0;transition:opacity .6s ease, border-color .3s;
-}
-#mute-btn.show{opacity:1;}
-#mute-btn:hover{border-color:var(--pink);}
-#mute-btn svg{width:14px;height:14px;stroke:rgba(250,247,242,.55);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s;}
-#mute-btn:hover svg{stroke:var(--pink);}
-#mute-btn .ic-muted{display:none;}
-#mute-btn.muted .ic-sound{display:none;}
-#mute-btn.muted .ic-muted{display:block;}
+/* REVEAL */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .85s ease,transform .85s ease;}
+.rv.on{opacity:1;transform:none;}
+.d1{transition-delay:.08s;}.d2{transition-delay:.17s;}.d3{transition-delay:.28s;}
+/* STORY MODES */
+.mode-blended .her-only{display:none;}
+.mode-her .blended-only{display:none;}
 
-/* VOL SELECTOR */
+/* ── LOADING SCREEN ── */
+/* MUTE BUTTON */
+.ld-logo{font-family:var(--display);font-size:clamp(48px,10vw,96px);font-weight:300;letter-spacing:.28em;color:var(--cream);opacity:0;animation:fu 1.2s ease .2s forwards;}
+.ld-sub{font-size:8px;letter-spacing:.55em;color:var(--muted);text-transform:uppercase;margin-top:10px;opacity:0;animation:fu 1s ease .8s forwards;}
+.ld-prog{width:clamp(140px,30vw,240px);height:1px;background:rgba(250,247,242,.08);margin-top:32px;overflow:hidden;opacity:0;animation:fu .8s ease 1s forwards;}
+.ld-prog-bar{height:100%;background:linear-gradient(90deg,var(--pink),var(--gold));width:0%;transition:width .1s linear;}
+
+/* ── VOL SELECTOR ── */
 #vol-menu{position:relative;}
-.vol-btn{
-  font-size:7px;letter-spacing:.4em;text-transform:uppercase;
-  padding:4px 12px;border:1px solid rgba(250,247,242,.15);
-  cursor:pointer;color:rgba(250,247,242,.4);
-  transition:all .3s;background:transparent;
-}
+.vol-btn{font-size:7px;letter-spacing:.4em;text-transform:uppercase;padding:4px 12px;border:1px solid rgba(250,247,242,.15);cursor:pointer;color:rgba(250,247,242,.4);transition:all .3s;background:transparent;}
 #mh.light .vol-btn{border-color:var(--rule);color:var(--muted);}
 .vol-btn:hover{color:var(--cream);border-color:rgba(250,247,242,.3);}
 #mh.light .vol-btn:hover{color:var(--ink);}
 .vol-dropdown{
   position:absolute;top:calc(100% + 8px);right:0;
-  background:rgba(10,7,11,.96);backdrop-filter:blur(16px);
+  background:rgba(12,9,16,.96);backdrop-filter:blur(16px);
   border:1px solid rgba(250,247,242,.1);
-  min-width:176px;
+  min-width:180px;
   opacity:0;visibility:hidden;transform:translateY(-6px);
   transition:opacity .25s,transform .25s,visibility .25s;
-  z-index:700;
 }
 .vol-dropdown.open{opacity:1;visibility:visible;transform:none;}
 .vol-item{
@@ -344,100 +335,125 @@ body.hov #cRing{width:42px;height:42px;}
 }
 .vol-item:last-child{border-bottom:none;}
 .vol-item:hover{background:rgba(250,247,242,.04);}
-.vol-item.active{background:rgba(226,173,192,.05);}
-.vol-item-left{}
+.vol-item.active{background:rgba(226,173,192,.06);}
 .vol-item-name{font-size:8px;letter-spacing:.4em;text-transform:uppercase;color:var(--cream);}
-.vol-item-sub{font-size:7px;color:var(--muted);margin-top:2px;letter-spacing:.15em;}
-.vol-badge{font-size:7px;letter-spacing:.3em;padding:2px 8px;border:1px solid;}
-.vol-badge.now{color:var(--pink);border-color:rgba(226,173,192,.35);}
-.vol-badge.soon{color:var(--muted2);border-color:rgba(78,64,80,.3);}
+.vol-item-sub{font-size:7px;color:var(--muted);margin-top:2px;}
+.vol-item-badge{font-size:7px;letter-spacing:.3em;padding:2px 8px;border:1px solid;}
+.vol-item-badge.current{color:var(--pink);border-color:rgba(226,173,192,.35);}
+.vol-item-badge.soon{color:var(--muted2);border-color:rgba(78,64,80,.35);}
+
+/* ── MUTE BUTTON ── */
+#mute-btn{
+  position:fixed;bottom:clamp(60px,10vh,80px);right:clamp(16px,3vw,28px);z-index:500;
+  width:38px;height:38px;border-radius:50%;
+  border:1px solid rgba(250,247,242,.18);
+  background:rgba(9,6,8,.55);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:border-color .3s,opacity .5s;
+  opacity:0;
+}
+#mute-btn.visible{opacity:1;}
+#mute-btn:hover{border-color:var(--pink);}
+#mute-btn svg{width:15px;height:15px;fill:none;stroke:rgba(250,247,242,.6);stroke-width:1.5;transition:stroke .3s;}
+#mute-btn:hover svg{stroke:var(--pink);}
+#mute-btn.muted svg.icon-sound{display:none;}
+#mute-btn svg.icon-muted{display:none;}
+#mute-btn.muted svg.icon-muted{display:block;}
+
+/* ── POLAROID ── */
 
 
-.rv.on{opacity:1;transform:none;}
-.d1{transition-delay:.08s;}.d2{transition-delay:.17s;}.d3{transition-delay:.28s;}
-
-/* STORY MODES */
-.mode-blended .her-only{display:none;}
-.mode-her .blended-only{display:none;}
-
-/* ── MOBILE ── */
+/* ── MOBILE RESPONSIVE FULL ── */
 @media(max-width:768px){
-  /* hide custom cursor on touch */
+  /* cursor off on touch */
   #cDot,#cRing{display:none;}
   body{cursor:auto;}
 
   /* intro */
-  .in-logo{font-size:clamp(44px,15vw,80px);letter-spacing:.15em;}
-  .in-sub{font-size:8px;letter-spacing:.3em;}
-  .mode-cards{flex-direction:column;align-items:center;width:100%;max-width:300px;}
-  .mc{width:100%;}
+  .in-logo{font-size:clamp(44px,14vw,80px);letter-spacing:.15em;}
+  .mode-cards{flex-direction:column;align-items:center;gap:10px;width:100%;max-width:320px;}
+  .mc{width:100%;padding:18px 16px 14px;}
   .mc-flow{display:none;}
 
   /* masthead */
   .mh-meta{display:none;}
-  .mh-row{padding:11px 16px;}
-  .mh-logo{font-size:15px;}
-  .vol-dropdown{right:0;}
+  .mh-row{padding:12px 16px;}
+  .vol-dropdown{right:-8px;}
 
   /* cover */
   #cover{padding-top:44px;}
-  .cover-text{grid-template-columns:1fr;padding:14px 18px 28px;}
+  .cover-text{grid-template-columns:1fr;padding:16px 20px 28px;}
   .cv-right{display:none;}
-  .cv-title{font-size:clamp(32px,10vw,52px);}
+  .cv-title{font-size:clamp(32px,10vw,56px);}
 
   /* chapter header */
-  .ch{grid-template-columns:1fr;padding:36px 18px 18px;gap:0;}
-  .ch-r{font-size:52px;margin-bottom:-4px;}
-  .ch-i{max-width:100%;}
+  .ch{grid-template-columns:1fr;padding:40px 20px 20px;gap:0;}
+  .ch-r{font-size:56px;margin-bottom:-8px;}
 
   /* section rule */
-  .sr{padding:0 18px;}
+  .sr{padding:0 20px;}
 
-  /* image duo — stack vertically */
+  /* image duo — stack on mobile */
   .ib-duo{grid-template-columns:1fr;}
 
   /* editorial panel */
-  .ep{padding:22px 18px;}
-  .ep-in.t{grid-template-columns:1fr;gap:10px;}
+  .ep{padding:24px 20px;}
+  .ep-in.t{grid-template-columns:1fr;gap:12px;}
 
   /* pull quote */
-  .pq{padding:44px 20px;}
-  .pq-dc{font-size:56px;top:14px;left:14px;}
+  .pq{padding:48px 24px;}
+  .pq-dc{font-size:60px;top:16px;left:16px;}
 
   /* ending */
-  #end{padding:44px 18px;}
+  #end{padding:48px 20px;}
+  .en-tt{font-size:clamp(28px,9vw,52px);}
 
-  /* lightbox */
-  #lb-prev{left:4px;}
-  #lb-next{right:4px;}
+  /* lightbox nav buttons closer on small screen */
+  #lb-prev{left:4px;}#lb-next{right:4px;}
   #lb-wrap{max-width:96vw;}
   #lb-info{flex-direction:column;gap:4px;align-items:center;text-align:center;}
+
+  /* close bar */
+  #lb-close-bar{padding:12px 20px;}
   .cb-keys{display:none;}
 
-  /* mute + vol */
+  /* mute btn */
+  #mute-btn{bottom:72px;right:14px;}
+
   #mute-btn{bottom:20px;right:16px;}
 }
 
-/* ── TABLET (iPad) ── */
 @media(min-width:769px) and (max-width:1024px){
+  /* iPad */
   .ch-r{font-size:clamp(72px,10vw,120px);}
   .ep-in.t{gap:20px;}
   .cv-title{font-size:clamp(40px,7vw,64px);}
   .ib-duo{grid-template-columns:1fr 1fr;}
-  #lb-prev{left:-36px;}
-  #lb-next{right:-36px;}
-  .mh-meta{display:none;}
+  #lb-prev{left:-44px;}#lb-next{right:-44px;}
 }
 </style>
 </head>
 <body>
+<!-- AUDIO -->
+<audio id="bgm" loop preload="auto">
+  <source src="Photo_Album_Summer.mp3" type="audio/mpeg">
+</audio>
+
+<!-- MUTE BUTTON -->
+<div id="mute-btn" onclick="toggleMute()" title="Toggle music">
+  <svg class="icon-sound" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
+  <svg class="icon-muted" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+</div>
+
+<!-- POLAROID MODAL -->
+
 <div id="cDot"></div><div id="cRing"></div>
 
 <!-- INTRO -->
 <div id="intro">
   <div class="in-eye">Apecoft Studio presents</div>
   <div class="in-logo">ÉTOILE</div>
-  <div class="in-sub">LUMIÈRE GIRLS · Vol.01 · Summer Memories</div>
+  <div class="in-sub">Vol.01 · Summer Memories · Akane & Mina</div>
   <div class="in-line"></div>
   <div class="in-jp">この夏を、忘れない。</div>
   <div class="in-how">How would you like to read?</div>
@@ -473,24 +489,15 @@ body.hov #cRing{width:42px;height:42px;}
         <div class="vol-btn" onclick="toggleVolMenu()">Vol.01 ▾</div>
         <div class="vol-dropdown" id="volDropdown">
           <div class="vol-item active">
-            <div class="vol-item-left">
-              <div class="vol-item-name">Vol.01</div>
-              <div class="vol-item-sub">Summer Memories</div>
-            </div>
-            <span class="vol-badge now">Now</span>
+            <div><div class="vol-item-name">Vol.01</div><div class="vol-item-sub">Summer Memories</div></div>
+            <div class="vol-item-badge current">Now</div>
           </div>
           <div class="vol-item" onclick="window.location.href='../vol02/quiet-mornings.html'">
-            <div class="vol-item-left">
-              <div class="vol-item-name">Vol.02</div>
-              <div class="vol-item-sub">Quiet Mornings</div>
-            </div>
-            <span class="vol-badge soon">↗</span>
+            <div><div class="vol-item-name">Vol.02</div><div class="vol-item-sub">Quiet Mornings · Ayame</div></div>
+            <div class="vol-item-badge soon">↗</div>
           </div>
           <div class="vol-item" onclick="window.location.href='../index.html'">
-            <div class="vol-item-left">
-              <div class="vol-item-name">← All Volumes</div>
-              <div class="vol-item-sub">Back to ÉTOILE Home</div>
-            </div>
+            <div><div class="vol-item-name">← All Volumes</div><div class="vol-item-sub">Back to ÉTOILE Home</div></div>
           </div>
         </div>
       </div>
@@ -509,7 +516,7 @@ body.hov #cRing{width:42px;height:42px;}
     <div class="rv d1">
       <div class="cv-vol">Vol.01 · July Special 2025 · presented by Apecoft Studio</div>
       <div class="cv-title">Summer<br><em>Memories</em></div>
-      <div class="cv-deck">Two girls. One summer. A season that exists only in memory — soft, golden, and impossible to hold.</div>
+      <div class="cv-deck">Two girls. One summer. A season that exists only in memory, soft, golden, and impossible to hold.</div>
       <div class="cv-jp">この夏を、忘れない。アカネとミナ、ふたりの物語。</div>
     </div>
     <div class="cv-right rv d2">
@@ -535,25 +542,25 @@ body.hov #cRing{width:42px;height:42px;}
       <div class="ch-tt rv d2">Morning <em class="pk">Light</em></div>
       <div class="ch-s rv d2">朝の光 — ふたりの朝</div>
       <div class="ch-b pk rv d3"></div>
-      <div class="ch-i rv d3">Two separate mornings, two different worlds — but somewhere in the same summer light, Akane and Mina were both waking up to the same kind of day.</div>
+      <div class="ch-i rv d3">Two separate mornings, two different worlds, but somewhere in the same summer light, Akane and Mina were both waking up to the same kind of day.</div>
     </div></div>
 
     <div class="ib c rv"><img src="Mina1.png" alt="Mina Post 01 — Morning"></div>
     <div class="ep rv"><div class="ep-in t">
-      <div><div class="ep-k bl">Mina · Post 01 · 朝の目覚め</div><div class="ep-p">"目が覚めたら、ふわっと光が溢れてて、なんだか幸せな気分。"</div><div class="ep-b">When Mina woke up, the light was already spilling softly across her room — the kind of morning that feels like a gift before the day has asked anything of you.</div></div>
-      <div><div class="ep-j">目が覚めたら、ふわっと光が溢れてて、なんだか幸せな気分。</div><div class="ep-c"><span>Morning · Post 01 — Mina</span><span class="ep-pg">03</span></div></div>
+      <div><div class="ep-k bl">Mina · Post 01 · 朝の目覚め</div><div class="ep-p">"目が覚めたら、ふわっと光が溢れてて。" ☀️</div><div class="ep-b">When Mina woke up, the light was already spilling softly across her room, the kind of morning that feels like a gift before the day has asked anything of you.</div></div>
+      <div><div class="ep-j">When I woke up, the light was already spilling in. Somehow that made me happy.</div><div class="ep-c"><span>Morning · Post 01 — Mina</span><span class="ep-pg">03</span></div></div>
     </div></div>
 
     <div class="ib c rv"><img src="Akane1.png" alt="Akane Post 01 — Morning"></div>
     <div class="ep rv"><div class="ep-in t">
-      <div><div class="ep-k pk">Akane · Post 01 · 朝の光</div><div class="ep-p">"朝の光が、一番きれいなわたしをそっと起こしてくれる。"</div><div class="ep-b">Akane stretched into the warmth of the morning light, not yet ready to let the day begin — just letting herself exist in the in-between. Still half in a dream, but smiling already.</div></div>
-      <div><div class="ep-j">朝の光が、一番きれいなわたしをそっと起こしてくれる。まだ夢の中みたい…でも、今日もいい日になりそう。</div><div class="ep-c"><span>Morning · Post 01 — Akane</span><span class="ep-pg">04</span></div></div>
+      <div><div class="ep-k pk">Akane · Post 01 · 朝の光</div><div class="ep-p">"朝の光が、一番きれいなわたしをそっと起こしてくれる。" ♡</div><div class="ep-b">Akane stretched into the warmth of the morning light, not yet ready to let the day begin, just letting herself exist in the in-between. Still half in a dream, but smiling already.</div></div>
+      <div><div class="ep-j">Morning light wakes me the gentlest way. Still like a dream... but today feels like a good one.</div><div class="ep-c"><span>Morning · Post 01 — Akane</span><span class="ep-pg">04</span></div></div>
     </div></div>
 
     <div class="ib-duo rv"><img src="Mina2.png" alt="Mina Post 02 — Cooking"><img src="Akane2.png" alt="Akane Post 02 — Coffee"></div>
     <div class="ep rv"><div class="ep-in t">
-      <div><div class="ep-k bl">Mina · Post 02</div><div class="ep-p">"今日の気分は、さっぱり塩レモンパスタ！"</div><div class="ep-b">Mina cooked before most people were even awake — the smell of lemon filling the kitchen before the day had properly started.</div><div class="ep-j">今日の気分は、さっぱり塩レモンパスタ！うまくできるといいなっ♪</div><div class="ep-c"><span>Morning · Post 02 — Mina</span><span class="ep-pg">06</span></div></div>
-      <div><div class="ep-k pk">Akane · Post 02</div><div class="ep-p">"Coffee first, smile next. ♡"</div><div class="ep-b">Akane poured slowly, deliberately — the way she did everything she actually cared about. Favourite music, fresh coffee, morning light on her shoulders.</div><div class="ep-j">お気に入りの音楽と、淹れたてのコーヒーで一日が始まる。</div><div class="ep-c"><span>Morning · Post 02 — Akane</span><span class="ep-pg">07</span></div></div>
+      <div><div class="ep-k bl">Mina · Post 02</div><div class="ep-p">"今日の気分は、さっぱり塩レモンパスタ！" 🍋</div><div class="ep-b">Mina cooked before most people were even awake, the smell of lemon filling the kitchen before the day had properly started.</div><div class="ep-j">Feeling like lemon pasta today. Hope it turns out right. ♪</div><div class="ep-c"><span>Morning · Post 02 — Mina</span><span class="ep-pg">06</span></div></div>
+      <div><div class="ep-k pk">Akane · Post 02</div><div class="ep-p">"お気に入りの音楽と、淹れたてのコーヒーで一日が始まる。" ☕</div><div class="ep-b">Akane poured slowly, deliberately, the way she did everything she actually cared about. Favourite music, fresh coffee, morning light on her shoulders.</div><div class="ep-j">Favourite music, fresh coffee. That's how today begins.</div><div class="ep-c"><span>Morning · Post 02 — Akane</span><span class="ep-pg">07</span></div></div>
     </div></div>
   </section>
 
@@ -569,18 +576,18 @@ body.hov #cRing{width:42px;height:42px;}
 
     <div class="ib c rv"><img src="Duo1.png" alt="Summer Selfie — Akane & Mina"></div>
     <div class="ep rv"><div class="ep-in t">
-      <div><div class="ep-k gd">Together · Summer Selfie</div><div class="ep-p">"Coffee, sweets, and sunshine. ✌️"</div><div class="ep-b">At Lumière Café, with cold drinks and a slice of cake between them — Mina held up the camera and Akane leaned in, and for a moment everything was exactly right.</div></div>
-      <div><div class="ep-j">ふたりの時間、いちばん輝くのは、笑ってる瞬間。</div><div class="ep-c"><span>Summer Selfie · Lumière Café</span><span class="ep-pg">10</span></div></div>
+      <div><div class="ep-k gd">Together · Summer Selfie</div><div class="ep-p">"コーヒーと甘いものと、サンシャイン。" ✌️</div><div class="ep-b">At Lumière Café, with cold drinks and a slice of cake between them, Mina held up the camera and Akane leaned in, and for a moment everything was exactly right.</div></div>
+      <div><div class="ep-j">Coffee, sweets, and sunshine. The best kind of afternoon.</div><div class="ep-c"><span>Summer Selfie · Lumière Café</span><span class="ep-pg">10</span></div></div>
     </div></div>
 
     <div class="ib-duo rv"><img src="Mina4.png" alt="Mina Post 04 — Poolside"><img src="Akane4.png" alt="Akane Post 04 — Poolside"></div>
     <div class="ep rv"><div class="ep-in t">
-      <div><div class="ep-k bl">Mina · Post 04</div><div class="ep-p">"Chill, Smile, Sunshine! ♡"</div><div class="ep-b">Mina with a cold blue lemonade, the pool glittering behind her — afternoon poolside was her favourite kind of afternoon.</div><div class="ep-j">プールサイドで、冷たいドリンクと最高のリラックスタイム。</div><div class="ep-c"><span>Poolside · Post 04 — Mina</span><span class="ep-pg">12</span></div></div>
-      <div><div class="ep-k pk">Akane · Post 04</div><div class="ep-p">"Poolside Refresh, Just for Me. ♡"</div><div class="ep-b">Akane at the pool's edge with a pink cocktail in hand — the shimmer of the water behind her, everything warm and unhurried.</div><div class="ep-j">水面がきらめくたび、心まで軽くなる。この瞬間が、夏の魔法。</div><div class="ep-c"><span>Poolside · Post 04 — Akane</span><span class="ep-pg">13</span></div></div>
+      <div><div class="ep-k bl">Mina · Post 04</div><div class="ep-p">"ただ、ここで、気持ちいい。" ♡</div><div class="ep-b">Mina with a cold blue lemonade, the pool glittering behind her, afternoon poolside was her favourite kind of afternoon.</div><div class="ep-j">Just here. Just this. It feels so good. ♡</div><div class="ep-c"><span>Poolside · Post 04 — Mina</span><span class="ep-pg">12</span></div></div>
+      <div><div class="ep-k pk">Akane · Post 04</div><div class="ep-p">"水面がきらめくたびに、心まで軽くなる。" ♡</div><div class="ep-b">Akane at the pool's edge with a pink cocktail in hand, the shimmer of the water behind her, everything warm and unhurried.</div><div class="ep-j">Every shimmer on the water lifts something in me. Summer magic. ✦</div><div class="ep-c"><span>Poolside · Post 04 — Akane</span><span class="ep-pg">13</span></div></div>
     </div></div>
   </section>
 
-  <div class="pq d2 rv"><div class="pq-dc gd">"</div><div class="pq-t">"Some summers leave a mark — not a scar, but a glow."</div><div class="pq-j">ある夏は、心に跡を残す。傷ではなく、輝き。</div></div>
+  <div class="pq d2 rv"><div class="pq-dc gd">"</div><div class="pq-t">"Some summers leave a mark, not a scar, but a glow."</div><div class="pq-j">ある夏は、心に跡を残す。傷ではなく、輝き。</div></div>
 
   <div class="sr rv"><div class="sr-l"></div><div class="sr-t">Chapter Three · 夕暮れの光</div><div class="sr-l"></div></div>
   <section id="sunset">
@@ -589,19 +596,19 @@ body.hov #cRing{width:42px;height:42px;}
       <div class="ch-tt rv d2">Golden <em class="pk">Hour</em></div>
       <div class="ch-s rv d2">夕暮れの光 — ふたりの海</div>
       <div class="ch-b pk rv d3"></div>
-      <div class="ch-i rv d3">By evening the light had turned gold. They found themselves at the shore — watching the last of summer burn itself out across the water.</div>
+      <div class="ch-i rv d3">By evening the light had turned gold. They found themselves at the shore, watching the last of summer burn itself out across the water.</div>
     </div></div>
 
     <div class="ib-duo rv"><img src="Akane3.png" alt="Akane Post 03 — Beach"><img src="Mina3.png" alt="Mina Post 03 — Beach"></div>
     <div class="ep rv"><div class="ep-in t">
-      <div><div class="ep-k pk">Akane · Post 03</div><div class="ep-p">"Beach Walk, Heart Light. ♡"</div><div class="ep-b">Akane walked the shore with her hat in hand, the sea breeze catching her hair — free in a way that only the beach can make you feel.</div><div class="ep-j">波の音、風の匂い、太陽のぬくもり。全部が、私を自由にしてくれる。</div><div class="ep-c"><span>Beach · Post 03 — Akane</span><span class="ep-pg">20</span></div></div>
-      <div><div class="ep-k bl">Mina · Post 03</div><div class="ep-p">"Sunshine on my skin, Peace in my heart. ♡"</div><div class="ep-b">The sea wind moved through Mina's hair and she felt, suddenly, very light — like the summer had been slowly teaching her something she couldn't quite name yet.</div><div class="ep-j">海風がふわりと髪を揺らして、心まで軽くなるみたい。今日は、わたしの自由時間。</div><div class="ep-c"><span>Beach · Post 03 — Mina</span><span class="ep-pg">21</span></div></div>
+      <div><div class="ep-k pk">Akane · Post 03</div><div class="ep-p">"波の音、風の匂い、太陽のぬくもり。" ♡</div><div class="ep-b">Akane walked the shore with her hat in hand, the sea breeze catching her hair, free in a way that only the beach can make you feel.</div><div class="ep-j">The sound of waves, the scent of wind, the warmth of sun. All of it sets me free.</div><div class="ep-c"><span>Beach · Post 03 — Akane</span><span class="ep-pg">20</span></div></div>
+      <div><div class="ep-k bl">Mina · Post 03</div><div class="ep-p">"海風が、ふわりと髪を揺らしていく。" ♡</div><div class="ep-b">The sea wind moved through Mina's hair and she felt, suddenly, very light, like the summer had been slowly teaching her something she couldn't quite name yet.</div><div class="ep-j">The sea wind drifts softly through my hair. This moment is mine. ✦</div><div class="ep-c"><span>Beach · Post 03 — Mina</span><span class="ep-pg">21</span></div></div>
     </div></div>
 
     <div class="ib c rv"><img src="Duo2.png" alt="Akane & Mina — Sunset Walk"></div>
     <div class="ep dk rv"><div class="ep-in t">
-      <div><div class="ep-k lt">Together · Last Scene</div><div class="ep-p">"This summer will stay with us."</div><div class="ep-b">Walking together as the sun went down — the sand still warm underfoot, the sky turning every colour at once. Neither of them spoke. They didn't need to.</div></div>
-      <div><div class="ep-j">この夏を、忘れない。ふたりで歩いた、あの夕暮れの海。言葉はいらなかった。ただ、そこにいるだけで十分だった。</div><div class="ep-c"><span>Golden Hour · Together</span><span class="ep-pg">26</span></div></div>
+      <div><div class="ep-k lt">Together · Last Scene</div><div class="ep-p">"この夏を、忘れない。" ✦</div><div class="ep-b">Walking together as the sun went down, the sand still warm underfoot, the sky turning every colour at once. Neither of them spoke. They didn't need to.</div></div>
+      <div><div class="ep-j">This summer. We won't forget it. Not ever.</div><div class="ep-c"><span>Golden Hour · Together</span><span class="ep-pg">26</span></div></div>
     </div></div>
   </section>
 </div>
@@ -615,20 +622,44 @@ body.hov #cRing{width:42px;height:42px;}
       <div class="ch-tt rv d2">Morning <em class="pk">Glow</em></div>
       <div class="ch-s rv d2">アカネの章 — 彼女の夏</div>
       <div class="ch-b pk rv d3"></div>
-      <div class="ch-i rv d3">Akane's summer begins in soft morning light — warm, unhurried, entirely her own. Before the world asks anything of her, there are quiet hours that belong only to herself.</div>
+      <div class="ch-i rv d3">Akane's summer begins in soft morning light, warm and unhurried. Before the world asks anything of her, there are quiet hours that belong only to herself.</div>
     </div></div>
 
     <div class="ib c rv"><img src="Akane1.png" alt="Akane Post 01"></div>
-    <div class="ep rv"><div class="ep-in t"><div><div class="ep-k pk">Akane · Post 01</div><div class="ep-p">"Just woke up. ♡"</div><div class="ep-b">Morning light has a way of making everything feel like the start of something. Akane stretched into the warmth of it, still half in a dream — but smiling already.</div></div><div><div class="ep-j">朝の光が、一番きれいなわたしをそっと起こしてくれる。まだ夢の中みたい…でも、今日もいい日になりそう。</div><div class="ep-c"><span>Post 01 — Akane</span><span class="ep-pg">03</span></div></div></div></div>
+    <div class="ep rv"><div class="ep-in t">
+      <div><div class="ep-k pk">Akane · Post 01</div>
+        <div class="ep-p">"Still half asleep. Don't look." ♡</div>
+        <div class="ep-b">She hasn't noticed you yet. The morning light is doing something unfair to her hair and she's just sitting there, completely unbothered. You don't say anything. You just watch.</div>
+      </div>
+      <div><div class="ep-j">まだ半分眠ってる。見ないでよ。</div><div class="ep-c"><span>Post 01 — Akane</span><span class="ep-pg">03</span></div></div>
+    </div></div>
 
     <div class="ib c rv"><img src="Akane2.png" alt="Akane Post 02"></div>
-    <div class="ep rv"><div class="ep-in t"><div><div class="ep-k pk">Akane · Post 02</div><div class="ep-p">"Coffee first, smile next. ♡"</div><div class="ep-b">She makes pour-over coffee the same way every morning — slowly, deliberately, with favourite music low in the background. A ritual that belongs entirely to her.</div></div><div><div class="ep-j">お気に入りの音楽と、淹れたてのコーヒーで一日が始まる。Coffee first, smile next. ♡</div><div class="ep-c"><span>Post 02 — Akane</span><span class="ep-pg">05</span></div></div></div></div>
+    <div class="ep rv"><div class="ep-in t">
+      <div><div class="ep-k pk">Akane · Post 02</div>
+        <div class="ep-p">"I made enough for two. Don't make it weird." ☕</div>
+        <div class="ep-b">She didn't say good morning. She just handed you a cup. It was exactly how you take it. You didn't mention that either.</div>
+      </div>
+      <div><div class="ep-j">ふたり分、作っといたから。変な顔しないでよ。</div><div class="ep-c"><span>Post 02 — Akane</span><span class="ep-pg">05</span></div></div>
+    </div></div>
 
     <div class="ib c rv"><img src="Akane3.png" alt="Akane Post 03"></div>
-    <div class="ep rv"><div class="ep-in t"><div><div class="ep-k pk">Akane · Post 03</div><div class="ep-p">"Beach Walk, Heart Light. ♡"</div><div class="ep-b">Akane walked the shore with her hat in hand, the sea breeze catching her hair — free in a way that only the beach can make you feel.</div></div><div><div class="ep-j">波の音、風の匂い、太陽のぬくもり。全部が、私を自由にしてくれる。Beach Walk, Heart Light. ♡</div><div class="ep-c"><span>Post 03 — Akane</span><span class="ep-pg">08</span></div></div></div></div>
+    <div class="ep rv"><div class="ep-in t">
+      <div><div class="ep-k pk">Akane · Post 03</div>
+        <div class="ep-p">"Keep up. I'm not slowing down for you." ✦</div>
+        <div class="ep-b">She lied. She slowed down. She kept glancing back to check you were still there. You pretended not to notice. She pretended not to care.</div>
+      </div>
+      <div><div class="ep-j">置いていくよ。遅れないでよね。</div><div class="ep-c"><span>Post 03 — Akane</span><span class="ep-pg">08</span></div></div>
+    </div></div>
 
     <div class="ib c rv"><img src="Akane4.png" alt="Akane Post 04"></div>
-    <div class="ep rv"><div class="ep-in t"><div><div class="ep-k pk">Akane · Post 04</div><div class="ep-p">"Poolside Refresh, Just for Me. ♡"</div><div class="ep-b">At the pool's edge with a pink cocktail in hand — the shimmer of the water behind her, everything warm and unhurried. The perfect afternoon.</div></div><div><div class="ep-j">水面がきらめくたび、心まで軽くなる。この瞬間が、夏の魔法。Poolside Refresh, Just for Me. ♡</div><div class="ep-c"><span>Post 04 — Akane</span><span class="ep-pg">10</span></div></div></div></div>
+    <div class="ep rv"><div class="ep-in t">
+      <div><div class="ep-k pk">Akane · Post 04</div>
+        <div class="ep-p">"Stop staring. The view is that way." ♡</div>
+        <div class="ep-b">She pointed at the pool. She was smiling though. Just a little. The kind of smile she gives when she's trying not to.</div>
+      </div>
+      <div><div class="ep-j">見すぎ。景色、あっちにあるから。</div><div class="ep-c"><span>Post 04 — Akane</span><span class="ep-pg">10</span></div></div>
+    </div></div>
   </section>
 
   <div class="pq rv"><div class="pq-dc bl">"</div><div class="pq-t">"And somewhere across the summer, Mina was living her own version of the same days."</div><div class="pq-j">そして夏のどこかで、ミナも同じ日々を生きていた。</div><div class="pq-a">— Interlude · ÉTOILE Vol.01</div></div>
@@ -640,20 +671,44 @@ body.hov #cRing{width:42px;height:42px;}
       <div class="ch-tt rv d2">Blue <em class="bl">Days</em></div>
       <div class="ch-s rv d2">ミナの章 — 彼女の夏</div>
       <div class="ch-b bl rv d3"></div>
-      <div class="ch-i rv d3">Mina's summer has a different texture — fresh, light, and full of small joys. She finds magic in ordinary mornings and turns every afternoon into something worth remembering.</div>
+      <div class="ch-i rv d3">Mina's summer has a different texture, fresh, light, and full of small joys. She finds magic in ordinary mornings and turns every afternoon into something worth remembering.</div>
     </div></div>
 
     <div class="ib c rv"><img src="Mina1.png" alt="Mina Post 01"></div>
-    <div class="ep rv"><div class="ep-in t"><div><div class="ep-k bl">Mina · Post 01</div><div class="ep-p">"目が覚めたら、ふわっと光が溢れてて。"</div><div class="ep-b">When Mina woke up, the light was already spilling softly through the curtains — the kind of morning that feels like a gift before the day has asked anything of you.</div></div><div><div class="ep-j">目が覚めたら、ふわっと光が溢れてて、なんだか幸せな気分。</div><div class="ep-c"><span>Post 01 — Mina</span><span class="ep-pg">13</span></div></div></div></div>
+    <div class="ep rv"><div class="ep-in t">
+      <div><div class="ep-k bl">Mina · Post 01</div>
+        <div class="ep-p">"Good morning~ Did you sleep well? ☀️"</div>
+        <div class="ep-b">She's already been awake for an hour. She'll never admit that. She already knows what she wants for breakfast, what music she'll play, and exactly how to make you smile before noon.</div>
+      </div>
+      <div><div class="ep-j">おはよー。よく眠れた？</div><div class="ep-c"><span>Post 01 — Mina</span><span class="ep-pg">13</span></div></div>
+    </div></div>
 
     <div class="ib c rv"><img src="Mina2.png" alt="Mina Post 02"></div>
-    <div class="ep rv"><div class="ep-in t"><div><div class="ep-k bl">Mina · Post 02</div><div class="ep-p">"今日の気分は、さっぱり塩レモンパスタ！"</div><div class="ep-b">Mina cooked before most people were even awake. The kitchen smelled like lemons and possibility — she approached everything with enthusiasm and a willingness to improvise.</div></div><div><div class="ep-j">今日の気分は、さっぱり塩レモンパスタ！うまくできるといいなっ♪</div><div class="ep-c"><span>Post 02 — Mina</span><span class="ep-pg">15</span></div></div></div></div>
+    <div class="ep rv"><div class="ep-in t">
+      <div><div class="ep-k bl">Mina · Post 02</div>
+        <div class="ep-p">"Try it. And don't say it's too much lemon." 🍋</div>
+        <div class="ep-b">It is too much lemon. You eat it anyway. She watches your face for a reaction. She looks so proud of herself you don't have the heart to say anything except: "it's perfect."</div>
+      </div>
+      <div><div class="ep-j">食べてみて。レモン多すぎとか言わないでよ。</div><div class="ep-c"><span>Post 02 — Mina</span><span class="ep-pg">15</span></div></div>
+    </div></div>
 
     <div class="ib c rv"><img src="Mina3.png" alt="Mina Post 03"></div>
-    <div class="ep rv"><div class="ep-in t"><div><div class="ep-k bl">Mina · Post 03</div><div class="ep-p">"Sunshine on my skin, Peace in my heart. ♡"</div><div class="ep-b">The sea wind moved through her hair and she felt, suddenly, very light — like the summer had been slowly teaching her something she couldn't quite name yet.</div></div><div><div class="ep-j">海風がふわりと髪を揺らして、心まで軽くなるみたい。今日は、わたしの自由時間。</div><div class="ep-c"><span>Post 03 — Mina</span><span class="ep-pg">17</span></div></div></div></div>
+    <div class="ep rv"><div class="ep-in t">
+      <div><div class="ep-k bl">Mina · Post 03</div>
+        <div class="ep-p">"Race you to the water. Loser buys drinks. ✌️"</div>
+        <div class="ep-b">She's already running. She already knows she's going to win. She'll still celebrate like it's a surprise. You don't mind losing to her. Not even a little.</div>
+      </div>
+      <div><div class="ep-j">水まで競争しよ。負けた方がジュース買ってね。</div><div class="ep-c"><span>Post 03 — Mina</span><span class="ep-pg">17</span></div></div>
+    </div></div>
 
     <div class="ib c rv"><img src="Mina4.png" alt="Mina Post 04"></div>
-    <div class="ep rv"><div class="ep-in t"><div><div class="ep-k bl">Mina · Post 04</div><div class="ep-p">"Chill, Smile, Sunshine! ♡"</div><div class="ep-b">Poolside with a cold blue lemonade, the water glittering in the afternoon sun — Mina in her element, perfectly at ease in the long summer afternoon.</div></div><div><div class="ep-j">プールサイドで、冷たいドリンクと最高のリラックスタイム。Chill, Smile, Sunshine! ♡</div><div class="ep-c"><span>Post 04 — Mina</span><span class="ep-pg">19</span></div></div></div></div>
+    <div class="ep rv"><div class="ep-in t">
+      <div><div class="ep-k bl">Mina · Post 04</div>
+        <div class="ep-p">"This is my spot. You can share it. Just this once. ♡"</div>
+        <div class="ep-b">She said just this once. She's been saying that all summer. You both know what it means. Neither of you says it out loud.</div>
+      </div>
+      <div><div class="ep-j">ここわたしの場所ね。今回だけ、一緒でもいいよ。♡</div><div class="ep-c"><span>Post 04 — Mina</span><span class="ep-pg">19</span></div></div>
+    </div></div>
   </section>
 
   <div class="pq d2 rv"><div class="pq-dc gd">"</div><div class="pq-t">"Until the day their summers finally met."</div><div class="pq-j">そして、ふたりの夏がついに交わった日。</div><div class="pq-a">— Interlude · ÉTOILE Vol.01</div></div>
@@ -665,19 +720,19 @@ body.hov #cRing{width:42px;height:42px;}
       <div class="ch-tt rv d2">Summer <em class="gd">Memories</em></div>
       <div class="ch-s rv d2">ふたりの夏 — Together</div>
       <div class="ch-b gd rv d3"></div>
-      <div class="ch-i rv d3">Two separate summers. Two different mornings. And then — the moment they finally met. What followed was something neither of them could have planned, and neither would ever forget.</div>
+      <div class="ch-i rv d3">Two separate summers. Two different mornings. And then, the moment they finally met. What followed was something neither of them could have planned, and neither would ever forget.</div>
     </div></div>
 
     <div class="ib c rv"><img src="Duo1.png" alt="Summer Selfie"></div>
     <div class="ep rv"><div class="ep-in t"><div><div class="ep-k gd">Together · Summer Selfie</div><div class="ep-p">"Coffee, sweets, and sunshine. ✌️"</div><div class="ep-b">At Lumière Café — cold drinks, a slice of cake, and a selfie they'd both keep forever. The best moments are always the ones you don't plan.</div></div><div><div class="ep-j">ふたりの時間、いちばん輝くのは、笑ってる瞬間。</div><div class="ep-c"><span>Summer Selfie · Lumière Café</span><span class="ep-pg">22</span></div></div></div></div>
 
     <div class="ib c rv"><img src="Duo2.png" alt="Sunset Walk"></div>
-    <div class="ep dk rv"><div class="ep-in t"><div><div class="ep-k lt">Together · Last Scene</div><div class="ep-p">"This summer will stay with us."</div><div class="ep-b">Walking together as the sun went down — the sand still warm underfoot, the sky turning every colour at once. Neither of them spoke. They didn't need to.</div></div><div><div class="ep-j">この夏を、忘れない。ふたりで歩いた、あの夕暮れの海。言葉はいらなかった。ただ、そこにいるだけで十分だった。</div><div class="ep-c"><span>Golden Hour · Together</span><span class="ep-pg">26</span></div></div></div></div>
+    <div class="ep dk rv"><div class="ep-in t"><div><div class="ep-k lt">Together · Last Scene</div><div class="ep-p">"This summer will stay with us." ✦</div><div class="ep-b">Walking together as the sun went down, the sand still warm underfoot, the sky turning every colour at once. Neither of them spoke. They didn't need to.</div></div><div><div class="ep-j">この夏を、忘れない。ふたりで歩いた、あの夕暮れの海。言葉はいらなかった。ただ、そこにいるだけで十分だった。</div><div class="ep-c"><span>Golden Hour · Together</span><span class="ep-pg">26</span></div></div></div></div>
   </section>
 </div>
 
 <!-- SHARED ENDING -->
-<div class="pq rv"><div class="pq-dc gd">"</div><div class="pq-t">"The kind of glow that stays warm inside you, long after the season ends."</div><div class="pq-j">季節が終わっても、ずっとその温もりを胸に宿すような輝き。</div><div class="pq-a">— ÉTOILE · Lumière Girls · Vol.01</div></div>
+<div class="pq rv"><div class="pq-dc gd">"</div><div class="pq-t">"The kind of glow that stays warm inside you, long after the season ends."</div><div class="pq-j">季節が終わっても、ずっとその温もりを胸に宿すような輝き。</div><div class="pq-a">— ÉTOILE · Vol.01 · Summer Memories · Akane & Mina</div></div>
 
 <section id="end">
   <div class="en-img rv"><img src="End.png" alt="Ending — Beach at Sunset"></div>
@@ -685,11 +740,13 @@ body.hov #cRing{width:42px;height:42px;}
   <div class="en-tt rv d1">This summer will<br>stay with us.</div>
   <div class="en-jp rv d2">この夏を、忘れない。アカネとミナ、ふたりの物語。</div>
   <div class="en-rl rv d3"></div>
-  <div class="rv d3"><div class="en-v2">Vol.02 — Coming Soon · 続く</div></div>
-  <div class="en-cr rv" style="margin-top:4px;">ÉTOILE · LUMIÈRE GIRLS · Vol.01 · July 2025<br>Art Direction &amp; Photography · Apecoft Studio<br>Featuring Akane &amp; Mina · アカネとミナ<br>© 2025 Apecoft Studio · All artwork original</div>
+  <div class="rv d3" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+    <div class="en-v2" onclick="window.location.href='../vol02/quiet-mornings.html'">Vol.02 · Quiet Mornings · Ayame →</div>
+    <div class="en-v2" onclick="window.location.href='../index.html'" style="color:var(--muted);">← All Volumes</div>
+  </div>
+  <div class="en-cr rv" style="margin-top:4px;">ÉTOILE · Vol.01 · Summer Memories · July 2025<br>Featuring Akane &amp; Mina · © 2025 Apecoft Studio · All artwork original</div>
 </section>
 
-<!-- AUDIO -->
 <!-- LIGHTBOX -->
 <div id="lb">
   <div id="lb-wrap">
@@ -708,41 +765,49 @@ body.hov #cRing{width:42px;height:42px;}
   <div class="cb-keys">· Esc · Tap outside</div>
 </div>
 
-<audio id="bgm" loop preload="auto">
-  <source src="Photo_Album_Summer.mp3" type="audio/mpeg">
-</audio>
-
 <script>
+/* ── CURSOR (desktop only) ── */
 const cDot=document.getElementById('cDot'),cRing=document.getElementById('cRing');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cDot.style.left=mx+'px';cDot.style.top=my+'px';});
-(function a(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;cRing.style.left=rx+'px';cRing.style.top=ry+'px';requestAnimationFrame(a);})();
-document.querySelectorAll('.mc,.en-v2,.mh-mode').forEach(el=>{
-  el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
-  el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
-});
+const isTouch=('ontouchstart' in window);
+if(!isTouch){
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cDot.style.left=mx+'px';cDot.style.top=my+'px';});
+  (function a(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;cRing.style.left=rx+'px';cRing.style.top=ry+'px';requestAnimationFrame(a);})();
+}
 
 /* ── AUDIO ── */
-const bgm = document.getElementById('bgm');
-let bgmMuted = false;
-bgm.volume = 0;
+const bgm=document.getElementById('bgm');
+let muted=false;
+bgm.volume=0;
 
 function fadeInBgm(){
   bgm.play().catch(()=>{});
-  let v = 0;
-  const iv = setInterval(()=>{
-    v = Math.min(v + 0.015, 0.3);
-    bgm.volume = bgmMuted ? 0 : v;
-    if(v >= 0.3) clearInterval(iv);
-  }, 80);
+  let v=0;
+  const iv=setInterval(()=>{
+    v=Math.min(v+0.02,0.32);
+    bgm.volume=muted?0:v;
+    if(v>=0.32)clearInterval(iv);
+  },80);
 }
-
 function toggleMute(){
-  bgmMuted = !bgmMuted;
-  bgm.volume = bgmMuted ? 0 : 0.3;
-  document.getElementById('mute-btn').classList.toggle('muted', bgmMuted);
+  muted=!muted;
+  bgm.volume=muted?0:0.32;
+  document.getElementById('mute-btn').classList.toggle('muted',muted);
+}
+function duckBgm(on){
+  bgm.volume=on?(muted?0:0.08):(muted?0:0.32);
 }
 
+/* ── VOL MENU ── */
+function toggleVolMenu(){
+  document.getElementById('volDropdown').classList.toggle('open');
+}
+document.addEventListener('click',e=>{
+  if(!document.getElementById('vol-menu').contains(e.target))
+    document.getElementById('volDropdown').classList.remove('open');
+});
+
+/* ── INTRO + MODE ── */
 document.body.style.overflow='hidden';
 function enter(m){
   document.body.classList.add('mode-'+m);
@@ -752,9 +817,10 @@ function enter(m){
   t.textContent=(m==='blended'?'Your Story':'Her Story')+' ↩';
   t.className='mh-mode '+(m==='blended'?'your':'her');
   window.scrollTo(0,0);
-  initImages(); // wrap images after mode set
+  initImages();
+  // Start music on user interaction
   fadeInBgm();
-  document.getElementById('mute-btn').classList.add('show');
+  document.getElementById('mute-btn').classList.add('visible');
 }
 function switchMode(){
   document.body.classList.remove('mode-blended','mode-her');
@@ -762,16 +828,8 @@ function switchMode(){
   document.body.style.overflow='hidden';
   window.scrollTo(0,0);
 }
-function toggleVolMenu(){
-  document.getElementById('volDropdown').classList.toggle('open');
-}
-// Close vol dropdown when clicking outside
-document.addEventListener('click',e=>{
-  const vm=document.getElementById('vol-menu');
-  if(vm&&!vm.contains(e.target))
-    document.getElementById('volDropdown').classList.remove('open');
-});
 
+/* ── MASTHEAD ── */
 const mh=document.getElementById('mh');
 let ly=0;
 window.addEventListener('scroll',()=>{
@@ -779,17 +837,17 @@ window.addEventListener('scroll',()=>{
   let light=false;
   document.querySelectorAll('.ep:not(.dk)').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<60&&r.bottom>0)light=true;});
   mh.classList.toggle('light',light||y>window.innerHeight*.85);
-  mh.classList.toggle('hide',y>ly&&y>100);
+  mh.classList.toggle('hide',y>ly&&y>80);
   ly=y;
   const tot=document.body.scrollHeight-window.innerHeight;
   document.getElementById('rp').style.width=(y/tot*100)+'%';
 },{passive:true});
 
+/* ── SCROLL REVEAL ── */
 const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on');});},{threshold:.05,rootMargin:'0px 0px -24px 0px'});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 
-/* ══ IMAGE HOVER WRAP + LIGHTBOX ══ */
-// Tint map: match image src to character colour
+/* ── IMAGE HOVER + LIGHTBOX ── */
 function getTint(src){
   const s=src.toLowerCase();
   if(s.includes('akane')) return 'tint-pk';
@@ -800,21 +858,19 @@ function getTint(src){
   return 'tint-pk';
 }
 
-let lbImages=[]; // [{src,alt,caption}]
-let lbIdx=0;
+let lbImages=[],lbIdx=0;
 
 function buildLbImages(){
   lbImages=[];
-  // Collect all visible wrapped images in DOM order
   document.querySelectorAll('.img-hover-wrap img').forEach(img=>{
-    // Only include images in visible (non-hidden) sections
-    let el=img;
-    let hidden=false;
+    let el=img,hidden=false;
     while(el&&el!==document.body){
-      if(el.style.display==='none'||(el.classList.contains('blended-only')&&document.body.classList.contains('mode-her'))||(el.classList.contains('her-only')&&document.body.classList.contains('mode-blended'))){hidden=true;break;}
+      if(el.style.display==='none'
+        ||(el.classList.contains('blended-only')&&document.body.classList.contains('mode-her'))
+        ||(el.classList.contains('her-only')&&document.body.classList.contains('mode-blended'))){hidden=true;break;}
       el=el.parentElement;
     }
-    if(!hidden) lbImages.push({src:img.src,alt:img.alt||''});
+    if(!hidden)lbImages.push({src:img.src,alt:img.alt||''});
   });
 }
 
@@ -825,65 +881,51 @@ function openLb(src){
   renderLb();
   document.getElementById('lb').classList.add('open');
   document.body.style.overflow='hidden';
+  duckBgm(true);
 }
 function closeLb(){
   document.getElementById('lb').classList.remove('open');
   document.body.style.overflow='auto';
+  duckBgm(false);
 }
 function lbNav(dir){
   lbIdx=Math.max(0,Math.min(lbImages.length-1,lbIdx+dir));
   renderLb();
 }
 function renderLb(){
-  const item=lbImages[lbIdx];
-  if(!item)return;
+  const item=lbImages[lbIdx];if(!item)return;
   const img=document.getElementById('lb-img');
   img.style.opacity='0';
-  img.style.transition='opacity 0.2s';
   setTimeout(()=>{
-    img.src=item.src;
-    img.alt=item.alt;
+    img.src=item.src;img.alt=item.alt;
     img.onload=()=>{img.style.opacity='1';};
-    // try immediately in case cached
     if(img.complete)img.style.opacity='1';
-  },180);
-  // caption from alt
+  },160);
   document.getElementById('lb-caption').textContent=item.alt||'';
   document.getElementById('lb-counter').textContent=String(lbIdx+1).padStart(2,'0')+' / '+String(lbImages.length).padStart(2,'0');
   document.getElementById('lb-prev').disabled=(lbIdx===0);
   document.getElementById('lb-next').disabled=(lbIdx===lbImages.length-1);
 }
 
-// Wrap all images — including cover and end
 let imagesInited=false;
 function initImages(){
-  if(imagesInited)return;
-  imagesInited=true;
-  // cover-img-wrap, .ib, .ib-duo, .en-img
-  const selectors=[
-    '.cover-img-wrap img',
-    '.ib img',
-    '.ib-duo img',
-    '.en-img img'
-  ];
-  selectors.forEach(sel=>{
+  if(imagesInited)return;imagesInited=true;
+  ['.cover-img-wrap img','.ib img','.ib-duo img','.en-img img'].forEach(sel=>{
     document.querySelectorAll(sel).forEach(img=>{
       if(img.closest('.img-hover-wrap'))return;
-      const src=img.getAttribute('src')||'';
-      const tint=getTint(src);
+      const tint=getTint(img.getAttribute('src')||'');
       const wrap=document.createElement('div');
       wrap.className='img-hover-wrap '+tint;
-      wrap.title='Click to view full image';
-      img.parentNode.insertBefore(wrap,img);
-      wrap.appendChild(img);
+      img.parentNode.insertBefore(wrap,img);wrap.appendChild(img);
       wrap.addEventListener('click',()=>openLb(img.src));
-      wrap.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
-      wrap.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+      if(!isTouch){
+        wrap.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
+        wrap.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+      }
     });
   });
 }
 
-// Lightbox keyboard + click outside
 document.addEventListener('keydown',e=>{
   const lb=document.getElementById('lb');
   if(!lb.classList.contains('open'))return;
@@ -891,31 +933,16 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowRight')lbNav(1);
   if(e.key==='ArrowLeft')lbNav(-1);
 });
-// Close on tap outside image (backdrop click)
 document.getElementById('lb').addEventListener('click',e=>{
   if(!document.getElementById('lb-wrap').contains(e.target))closeLb();
 });
-// Touch swipe in lightbox
 let lbTx=0;
 document.getElementById('lb').addEventListener('touchstart',e=>{lbTx=e.touches[0].clientX;},{passive:true});
 document.getElementById('lb').addEventListener('touchend',e=>{
   const dx=e.changedTouches[0].clientX-lbTx;
   if(Math.abs(dx)>48)lbNav(dx<0?1:-1);
 },{passive:true});
-</script>
-<!-- MUTE BUTTON -->
-<div id="mute-btn" onclick="toggleMute()" title="Toggle music">
-  <svg class="ic-sound" viewBox="0 0 24 24">
-    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-  </svg>
-  <svg class="ic-muted" viewBox="0 0 24 24">
-    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-    <line x1="23" y1="9" x2="17" y2="15"/>
-    <line x1="17" y1="9" x2="23" y2="15"/>
-  </svg>
-</div>
 
+</script>
 </body>
 </html>

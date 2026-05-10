@@ -365,7 +365,53 @@ body.hov #cRing{width:42px;height:42px;}
 .m-dot.active{background:var(--warm);transform:scale(1.5);}
 .memory-label{text-align:center;padding:8px;background:var(--dark);font-size:7px;letter-spacing:.5em;text-transform:uppercase;color:var(--muted2);}
 
-/* MOBILE */
+/* PRIVATE REVEAL OVERLAY */
+.priv-reveal{
+  position:relative;
+  overflow:hidden;
+}
+.priv-reveal-overlay{
+  position:absolute;inset:0;z-index:10;
+  background:#07050a;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:16px;
+  pointer-events:none;
+  opacity:1;
+  transition:opacity 1.2s ease;
+}
+.priv-reveal-overlay.gone{opacity:0;pointer-events:none;}
+.pro-pre{
+  font-size:7px;letter-spacing:.7em;text-transform:uppercase;
+  color:rgba(196,149,106,.5);
+  opacity:0;transform:translateY(8px);
+  transition:opacity .8s ease,transform .8s ease;
+}
+.priv-reveal-overlay.visible .pro-pre{opacity:1;transform:none;}
+.pro-title{
+  font-family:var(--display);
+  font-size:clamp(28px,5vw,64px);
+  font-weight:300;font-style:italic;
+  color:var(--cream);letter-spacing:.08em;
+  opacity:0;transform:translateY(12px);
+  transition:opacity 1s ease .2s,transform 1s ease .2s;
+}
+.priv-reveal-overlay.visible .pro-title{opacity:1;transform:none;}
+.pro-line{
+  width:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--warm),transparent);
+  transition:width 1.2s ease .4s;
+}
+.priv-reveal-overlay.visible .pro-line{width:clamp(80px,15vw,160px);}
+.pro-sub{
+  font-family:var(--jp);font-weight:200;
+  font-size:9px;letter-spacing:.45em;
+  color:rgba(250,247,242,.28);
+  opacity:0;transform:translateY(8px);
+  transition:opacity .8s ease .5s,transform .8s ease .5s;
+}
+.priv-reveal-overlay.visible .pro-sub{opacity:1;transform:none;}
+
+
 @media(max-width:768px){
   #cDot,#cRing{display:none;}body{cursor:auto;}
   .in-logo{font-size:clamp(44px,15vw,80px);letter-spacing:.15em;}
@@ -495,7 +541,9 @@ body.hov #cRing{width:42px;height:42px;}
 <!-- ══ COVER ══ -->
 <section id="cover">
   <div class="cover-img-wrap rv">
-    <img src="ayame_cover.png" alt="ÉTOILE Vol.02 — Quiet Mornings · Ayame">
+    <div class="img-hover-wrap">
+      <img src="ayame_cover.png" alt="ÉTOILE Vol.02 — Quiet Mornings · Ayame">
+    </div>
   </div>
   <div class="cover-text">
     <div class="rv d1">
@@ -532,7 +580,7 @@ body.hov #cRing{width:42px;height:42px;}
       <div class="ch-s rv d2">静かな朝 — はじまりの時間</div>
       <div class="ch-b warm rv d3"></div>
       <div class="ch-i rv d3 before-only">Before the city asks anything of her, there are quiet hours that belong entirely to herself. You've wondered what they look like.</div>
-      <div class="ch-i rv d3 after-only">She used to keep her mornings to herself. Now, sometimes, she lets you stay.</div>
+      <div class="ch-i rv d3 after-only">She used to keep her mornings to herself. Now, sometimes, she lets you stay. ✦</div>
     </div>
   </div>
 
@@ -545,13 +593,14 @@ body.hov #cRing{width:42px;height:42px;}
   <div class="ep rv"><div class="ep-in t">
     <div>
       <div class="ep-k warm">Ayame · Post 01 · Morning Routine</div>
-      <div class="ep-p before-only">"The mirror knows her before anyone else does."</div>
-      <div class="ep-p after-only">"She stopped hiding from mirrors the morning you stayed."</div>
+      <div class="ep-p before-only">"鏡は、誰よりも先に、わたしを知っている。" ✦</div>
+      <div class="ep-p after-only">"She stopped hiding from mirrors the morning you stayed." ♡</div>
       <div class="ep-b before-only">Morning routine. Before the world sees her. Before she decides who to be today.</div>
       <div class="ep-b after-only">She doesn't turn away from the mirror anymore. Not when you're here. It's a small thing. It means everything.</div>
     </div>
     <div>
-      <div class="ep-j">はじまりの静けさ。鏡の向こうの、素顔のわたし。</div>
+      <div class="ep-j before-only">The mirror knows her before anyone else does.</div>
+      <div class="ep-j after-only">はじまりの静けさ。鏡の向こうの、素顔のわたし。</div>
       <div class="ep-c"><span>Morning · Post 01 — Ayame</span><span class="ep-pg">01</span></div>
     </div>
   </div></div>
@@ -565,13 +614,14 @@ body.hov #cRing{width:42px;height:42px;}
   <div class="ep rv"><div class="ep-in t">
     <div>
       <div class="ep-k warm">Ayame · Post 02 · Breakfast</div>
-      <div class="ep-p before-only">"She cooks alone. She likes it that way."</div>
-      <div class="ep-p after-only">"She made enough for two. She didn't say so. You noticed."</div>
+      <div class="ep-p before-only">"静かな朝の香り。やさしい時間が、今日をはじめる。" ☕</div>
+      <div class="ep-p after-only">"She made enough for two. She didn't say so. You noticed." ♡</div>
       <div class="ep-b before-only">Breakfast, slow and unhurried. The kind of morning she doesn't share with many people.</div>
       <div class="ep-b after-only">The pan was already on when you woke up. She'd made enough for two without being asked. Some things she says with actions, not words.</div>
     </div>
     <div>
-      <div class="ep-j">静かな朝の香り。やさしい時間が、今日をはじめる。</div>
+      <div class="ep-j before-only">The scent of a quiet morning. A gentle hour, beginning today.</div>
+      <div class="ep-j after-only">静かな朝の香り。やさしい時間が、今日をはじめる。</div>
       <div class="ep-c"><span>Morning · Post 02 — Ayame</span><span class="ep-pg">02</span></div>
     </div>
   </div></div>
@@ -585,20 +635,27 @@ body.hov #cRing{width:42px;height:42px;}
   <div class="ep rv"><div class="ep-in t">
     <div>
       <div class="ep-k warm">Ayame · Post 03 · Morning Prep</div>
-      <div class="ep-p before-only">"She moves through mornings like they belong to her."</div>
-      <div class="ep-p after-only">"She hums, sometimes. Only when she thinks no one is listening."</div>
+      <div class="ep-p before-only">"朝は、わたしだけのもの。" ✦</div>
+      <div class="ep-p after-only">"She hums, sometimes. Only when she thinks no one is listening." ♡</div>
       <div class="ep-b before-only">The soft sounds of a morning kitchen. Water, light, the city waking up outside the window.</div>
       <div class="ep-b after-only">She hums when she cooks. Quietly, like it's a secret. You don't tell her you've heard it. Some things are better left unmentioned.</div>
     </div>
     <div>
-      <div class="ep-j">静かな朝の支度。やわらかな光と、水の音。</div>
+      <div class="ep-j before-only">Mornings belong only to me.</div>
+      <div class="ep-j after-only">静かな朝の支度。やわらかな光と、水の音。</div>
       <div class="ep-c"><span>Morning · Post 03 — Ayame</span><span class="ep-pg">03</span></div>
     </div>
   </div></div>
 
   <!-- PRIVATE POST 04 — after-only -->
   <div class="after-only">
-    <div class="ib c rv" style="position:relative;">
+    <div class="ib c rv priv-reveal" style="position:relative;">
+      <div class="priv-reveal-overlay" data-reveal="true">
+        <div class="pro-pre">Ayame · Private Collection</div>
+        <div class="pro-title">Her Private Zone</div>
+        <div class="pro-line"></div>
+        <div class="pro-sub">あなただけが知っている、彼女の時間。</div>
+      </div>
       <div class="img-hover-wrap">
         <img src="ayame_private_post04.png" alt="Morning Exercise · Private Post 04 · 静かな朝だけは、誰にも触れさせたくない。">
       </div>
@@ -607,7 +664,7 @@ body.hov #cRing{width:42px;height:42px;}
     <div class="ep priv-panel rv"><div class="ep-in t">
       <div>
         <div class="ep-k priv">✦ Private · Post 04 · Morning Exercise</div>
-        <div class="ep-p">"Don't come in. Just — stay there. That's enough."</div>
+        <div class="ep-p">"Don't come in. Just stay there. That's enough." ✦</div>
         <div class="ep-b">This part of her morning has always been off-limits. Even now. She didn't say you could watch. She just didn't close the door all the way. You stayed in the doorway. You didn't say a word. She finished her set. Then: "You can make coffee."</div>
       </div>
       <div>
@@ -619,7 +676,13 @@ body.hov #cRing{width:42px;height:42px;}
 
   <!-- PRIVATE POST 05 — after-only -->
   <div class="after-only">
-    <div class="ib c rv" style="position:relative;">
+    <div class="ib c rv priv-reveal" style="position:relative;">
+      <div class="priv-reveal-overlay" data-reveal="true">
+        <div class="pro-pre">Ayame · Private Collection</div>
+        <div class="pro-title">Her Private Zone</div>
+        <div class="pro-line"></div>
+        <div class="pro-sub">あなただけが知っている、彼女の時間。</div>
+      </div>
       <div class="img-hover-wrap">
         <img src="ayame_private_post05.png" alt="Morning Swimming · Private Post 05 · 朝の静けさだけは、誰にも邪魔されたくない。">
       </div>
@@ -629,7 +692,7 @@ body.hov #cRing{width:42px;height:42px;}
       <div>
         <div class="ep-k priv">✦ Private · Post 05 · Morning Swimming</div>
         <div class="ep-p">"You're the only one I've ever let stay for this part."</div>
-        <div class="ep-b">She swims alone every morning. Always has. The rooftop pool before the city wakes — that's hers. She didn't invite you. She just didn't ask you to leave. You understood the difference. That's why you're still here.</div>
+        <div class="ep-b">She swims alone every morning. Always has. The rooftop pool before the city wakes, that's hers. She didn't invite you. She just didn't ask you to leave. You understood the difference. That's why you're still here.</div>
       </div>
       <div>
         <div class="ep-j">朝の静けさだけは、誰にも邪魔されたくない。<br>でも、あなただけは、いていい。</div>
@@ -670,13 +733,14 @@ body.hov #cRing{width:42px;height:42px;}
   <div class="ep rv"><div class="ep-in t">
     <div>
       <div class="ep-k cool">Ayame · Post 06 · Dressing Room</div>
-      <div class="ep-p before-only">"She dresses like she's preparing for something important. Every day."</div>
-      <div class="ep-p after-only">"She asked which one looked better. You said both. She rolled her eyes."</div>
-      <div class="ep-b before-only">The ritual of preparation. Quiet, deliberate, unhurried. She takes getting ready seriously — not for others, but for herself.</div>
+      <div class="ep-p before-only">"今日のわたしを、ていねいに整えていく。" ✦</div>
+      <div class="ep-p after-only">"She asked which one looked better. You said both. She rolled her eyes." ♡</div>
+      <div class="ep-b before-only">The ritual of preparation. Quiet, deliberate, unhurried. She takes getting ready seriously, not for others, but for herself.</div>
       <div class="ep-b after-only">She asked your opinion for the first time. You gave the wrong answer. The right answer, apparently, was the black one. You're still learning.</div>
     </div>
     <div>
-      <div class="ep-j">静かな支度の時間。今日のわたしを、整えていく。</div>
+      <div class="ep-j before-only">Composing myself carefully. Today's version of me, taking shape.</div>
+      <div class="ep-j after-only">静かな支度の時間。今日のわたしを、整えていく。</div>
       <div class="ep-c"><span>City · Post 06 — Ayame</span><span class="ep-pg">06</span></div>
     </div>
   </div></div>
@@ -690,12 +754,13 @@ body.hov #cRing{width:42px;height:42px;}
   <div class="ep rv"><div class="ep-in t">
     <div>
       <div class="ep-k cool">Ayame · Post 07 · Winter Sunlight</div>
-      <div class="ep-p">"In winter light, she looks like she belongs to the city."</div>
-      <div class="ep-b before-only">The streets in January. Cold air, pale sun, and Ayame — who moves through it all like she was made for exactly this.</div>
-      <div class="ep-b after-only">You spotted her from across the street. She didn't see you. For a moment you just watched — she was so completely herself out there. You forgot to call out.</div>
+      <div class="ep-p">"冬の光のなかに、静かに溶けていく。" ✦</div>
+      <div class="ep-b before-only">The streets in January. Cold air, pale sun, and Ayame, who moves through it all like she was made for exactly this.</div>
+      <div class="ep-b after-only">You spotted her from across the street. She didn't see you. For a moment you just watched, she was so completely herself out there. You forgot to call out.</div>
     </div>
     <div>
-      <div class="ep-j">冬の光のなかで、静かに、街へ溶けていく。</div>
+      <div class="ep-j before-only">Quietly dissolving into the winter light.</div>
+      <div class="ep-j after-only">冬の光のなかで、静かに、街へ溶けていく。</div>
       <div class="ep-c"><span>City · Post 07 — Ayame</span><span class="ep-pg">07</span></div>
     </div>
   </div></div>
@@ -709,13 +774,14 @@ body.hov #cRing{width:42px;height:42px;}
   <div class="ep rv"><div class="ep-in t">
     <div>
       <div class="ep-k cool">Ayame · Post 08 · Window Seat</div>
-      <div class="ep-p before-only">"She sits at the same window every time. Always alone."</div>
-      <div class="ep-p after-only">"She saved the seat across from her. She said she didn't. The cup was already there."</div>
-      <div class="ep-b before-only">A winter afternoon. A café window. The snow outside, the coffee inside, and her — quietly watching the city go by.</div>
+      <div class="ep-p before-only">"いつもの窓際。いつも、ひとりで。" ✦</div>
+      <div class="ep-p after-only">"She saved the seat across from her. She said she didn't. The cup was already there." ♡</div>
+      <div class="ep-b before-only">A winter afternoon. A café window. The snow outside, the coffee inside, and her, quietly watching the city go by.</div>
       <div class="ep-b after-only">The cup across from hers was empty when you arrived. She'd ordered for you. She looked out the window when you mentioned it. You didn't push it.</div>
     </div>
     <div>
-      <div class="ep-j">冬の午後、静かな光のなかで。</div>
+      <div class="ep-j before-only">The same window seat. Always alone. And that's perfectly fine.</div>
+      <div class="ep-j after-only">冬の午後、静かな光のなかで。</div>
       <div class="ep-c"><span>City · Post 08 — Ayame</span><span class="ep-pg">08</span></div>
     </div>
   </div></div>
@@ -739,7 +805,7 @@ body.hov #cRing{width:42px;height:42px;}
       <div class="ch-tt rv d2">Night <em class="gold">City</em></div>
       <div class="ch-s rv d2">静かな夜 — 夜景の光に</div>
       <div class="ch-b gold rv d3"></div>
-      <div class="ch-i rv d3">The city at night is a different place. She moves through it differently too — slower, softer, like she's finally letting herself breathe.</div>
+      <div class="ch-i rv d3">The city at night is a different place. She moves through it differently too, slower, softer, like she's finally letting herself breathe.</div>
     </div>
   </div>
 
@@ -752,13 +818,14 @@ body.hov #cRing{width:42px;height:42px;}
   <div class="ep rv"><div class="ep-in t">
     <div>
       <div class="ep-k gold">Ayame · Post 09 · Shopping Light</div>
-      <div class="ep-p before-only">"She shops alone. She prefers it."</div>
-      <div class="ep-p after-only">"She bought something she didn't show you. You didn't ask. She smiled."</div>
+      <div class="ep-p before-only">"ひとりで買い物。それが、わたしのやり方。" ✦</div>
+      <div class="ep-p after-only">"She bought something she didn't show you. You didn't ask. She smiled." ♡</div>
       <div class="ep-b before-only">Evening shopping. The stores lit warm against the winter dark. She takes her time with everything.</div>
       <div class="ep-b after-only">She disappeared into a shop for twenty minutes. Came out with one small bag. Held it like it was private. You walked beside her and said nothing. She appreciated that.</div>
     </div>
     <div>
-      <div class="ep-j">静かな夜の光に、少しだけ心がほどける。</div>
+      <div class="ep-j before-only">Shopping alone. That's just my way.</div>
+      <div class="ep-j after-only">静かな夜の光に、少しだけ心がほどける。</div>
       <div class="ep-c"><span>Evening · Post 09 — Ayame</span><span class="ep-pg">09</span></div>
     </div>
   </div></div>
@@ -772,20 +839,27 @@ body.hov #cRing{width:42px;height:42px;}
   <div class="ep rv"><div class="ep-in t">
     <div>
       <div class="ep-k gold">Ayame · Post 10 · City Dinner</div>
-      <div class="ep-p before-only">"She dines alone and doesn't seem lonely at all."</div>
-      <div class="ep-p after-only">"She talked more than usual. You ordered the wine. She said thank you without looking up."</div>
+      <div class="ep-p before-only">"夜景の光に、静かに心を預ける。" ✦</div>
+      <div class="ep-p after-only">"She talked more than usual. You ordered the wine. She said thank you without looking up." ♡</div>
       <div class="ep-b before-only">Dinner overlooking Tokyo. She holds a glass of red wine and watches the city below. She looks entirely at peace with her own company.</div>
-      <div class="ep-b after-only">She talked more than usual — about small things, work things, nothing important. You listened. The city sparkled below. She refilled your glass before her own.</div>
+      <div class="ep-b after-only">She talked more than usual, about small things, work things, nothing important. You listened. The city sparkled below. She refilled your glass before her own.</div>
     </div>
     <div>
-      <div class="ep-j">夜景の光に、静かに心を預ける。</div>
+      <div class="ep-j before-only">In the glow of the city lights, I quietly entrust my heart.</div>
+      <div class="ep-j after-only">夜景の光に、静かに心を預ける。</div>
       <div class="ep-c"><span>Evening · Post 10 — Ayame</span><span class="ep-pg">10</span></div>
     </div>
   </div></div>
 
   <!-- PRIVATE POST 12 — memory slideshow — after-only -->
   <div class="after-only">
-    <div class="rv" style="position:relative;">
+    <div class="rv priv-reveal" style="position:relative;">
+      <div class="priv-reveal-overlay" data-reveal="true">
+        <div class="pro-pre">Ayame · Private Collection</div>
+        <div class="pro-title">Early Hours</div>
+        <div class="pro-line"></div>
+        <div class="pro-sub">夜だけが知っている、もうひとりのわたし。</div>
+      </div>
       <div class="private-badge" style="position:absolute;top:16px;left:16px;z-index:10;">✦ Private · Early Hours</div>
       <div class="memory-outer" id="memoryOuter">
         <!-- Image side -->
@@ -794,7 +868,16 @@ body.hov #cRing{width:42px;height:42px;}
             <img src="ayame_private_post12a.png" alt="Early Hours · Memory 01">
           </div>
           <div class="memory-slide" data-idx="1">
-            <img src="ayame_private_post12b.png" alt="Early Hours · Memory 02">
+            <img src="ayame_private_post12e.png" alt="Early Hours · Memory 02">
+          </div>
+          <div class="memory-slide" data-idx="2">
+            <img src="ayame_private_post12b.png" alt="Early Hours · Memory 03">
+          </div>
+          <div class="memory-slide" data-idx="3">
+            <img src="ayame_private_post12c.png" alt="Early Hours · Memory 04">
+          </div>
+          <div class="memory-slide" data-idx="4">
+            <img src="ayame_private_post12d.png" alt="Early Hours · Memory 05">
           </div>
           <!-- เพิ่มภาพใหม่ได้ตรงนี้ -->
         </div>
@@ -802,13 +885,16 @@ body.hov #cRing{width:42px;height:42px;}
         <div class="memory-panel">
           <div class="memory-panel-top">
             <div class="mp-tag">✦ Private · Post 12 · Early Hours</div>
-            <div class="mp-quote" id="mpQuote">"You're still here. I didn't ask you to stay."</div>
-            <div class="mp-jp" id="mpJp">まだいるんだ。いてって言ってないのに。</div>
+            <div class="mp-quote" id="mpQuote">"Hey. You're still awake?"</div>
+            <div class="mp-jp" id="mpJp">ねえ。まだ起きてるの？</div>
           </div>
           <div class="memory-panel-bottom">
             <div class="memory-dots" id="memoryDots">
               <div class="m-dot active" onclick="goMemory(0)"></div>
               <div class="m-dot" onclick="goMemory(1)"></div>
+              <div class="m-dot" onclick="goMemory(2)"></div>
+              <div class="m-dot" onclick="goMemory(3)"></div>
+              <div class="m-dot" onclick="goMemory(4)"></div>
             </div>
             <div class="memory-hint">Tap image · Swipe to browse</div>
           </div>
@@ -819,7 +905,7 @@ body.hov #cRing{width:42px;height:42px;}
       <div>
         <div class="ep-k priv">✦ Private · Post 12 · Early Hours</div>
         <div class="ep-p">"You're still here. I didn't ask you to stay. I'm glad you did."</div>
-        <div class="ep-b">Late. Later than usual. She didn't check the time. Neither did you. At some point the city went quiet below. She said nothing for a long while. Then, softly — "Don't go yet."</div>
+        <div class="ep-b">Late. Later than usual. She didn't check the time. Neither did you. At some point the city went quiet below. She said nothing for a long while. Then, softly... "Don't go yet."</div>
       </div>
       <div>
         <div class="ep-j">夜だけが知っている、もうひとりのわたし。<br>あなただけに、見せていいと思った。</div>
@@ -838,11 +924,11 @@ body.hov #cRing{width:42px;height:42px;}
     <div class="ep dk rv"><div class="ep-in t">
       <div>
         <div class="ep-k lt">Ayame · Post 11 · Midnight Silence</div>
-        <div class="ep-p">"The city watches over her. She doesn't need anyone to."</div>
+        <div class="ep-p">"街が静かになると、少しだけ楽になる。" ✦</div>
         <div class="ep-b">Midnight. The city lights through the window. She is still, and the night is still, and everything feels like it's exactly where it should be.</div>
       </div>
       <div>
-        <div class="ep-j">静かな夜の終わりに、ようやく心がほどけていく。</div>
+        <div class="ep-j">When the city finally goes quiet, something in me eases.</div>
         <div class="ep-c"><span>Night · Post 11 — Ayame</span><span class="ep-pg">11</span></div>
       </div>
     </div></div>
@@ -862,16 +948,19 @@ body.hov #cRing{width:42px;height:42px;}
 <!-- ENDING -->
 <section id="end">
   <div class="en-img rv">
-    <img src="ayame_end.png" alt="ÉTOILE Vol.02 Ending — Quiet Mornings">
+    <div class="img-hover-wrap">
+      <img src="ayame_end.png" alt="ÉTOILE Vol.02 Ending — Quiet Mornings">
+    </div>
   </div>
-  <div class="en-fin rv">— Fin · Vol.02 Complete —</div>
+  <div class="en-fin rv">Fin · Vol.02 Complete ✦</div>
   <div class="en-tt rv d1 before-only">Some days fade softly<br>into silence.</div>
-  <div class="en-tt rv d1 after-only">"Goodnight."<br><em style="font-size:.65em;color:var(--warm);">— Ayame</em></div>
+  <div class="en-tt rv d1 after-only">"Goodnight."<br><em style="font-size:.65em;color:var(--warm);">Ayame</em></div>
   <div class="en-jp rv d2 before-only">静かな日々は、やがて静寂のなかへ溶けていく。<br>アヤメ、ひとりの物語。</div>
   <div class="en-jp rv d2 after-only">あなただけが知っている、彼女の朝。<br>静かな日々を、ともに。</div>
   <div class="en-rl rv d3"></div>
-  <div class="rv d3">
-    <div class="en-back" onclick="window.location.href='../index.html'">← Back to ÉTOILE</div>
+  <div class="rv d3" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+    <div class="en-back" onclick="window.location.href='../vol01/summer-memories.html'">← Vol.01 · Summer Memories</div>
+    <div class="en-back" onclick="window.location.href='../index.html'">← All Volumes</div>
   </div>
   <div class="en-cr rv">ÉTOILE · Vol.02 · Quiet Mornings · January 2026<br>Featuring Ayame · アヤメ · Winter Editorial<br>© 2026 Apecoft Studio · All artwork original</div>
 </section>
@@ -879,8 +968,11 @@ body.hov #cRing{width:42px;height:42px;}
 <script>
 /* MEMORY SLIDESHOW */
 const MEM_QUOTES=[
-  {en:'"You\'re still here. I didn\'t ask you to stay."',       jp:'まだいるんだ。いてって言ってないのに。'},
-  {en:'"Some mornings deserve silence. You understand that now."',jp:'静かな朝だけは、少しだけ心が軽くなる。'},
+  {en:'"Hey. You\'re still awake?"',                                    jp:'ねえ。まだ起きてるの？'},
+  {en:'"I sleep better when the city finally goes quiet. You noticed that, didn\'t you."', jp:'街が静かになると、やっと眠れる気がする。気づいてたでしょ。'},
+  {en:'"Don\'t look at me like that. I can feel it even with my eyes closed."',           jp:'そんな目で見ないでよ。目閉じてても、わかるから。'},
+  {en:'"You\'re warm. That\'s fine. Stay."',                             jp:'あったかいね。…べつに、いいけど。いてよ。'},
+  {en:'"Next time knock. Actually, don\'t. Just come in."',              jp:'次はノックしてよ。…やっぱり、しなくていい。そのまま来て。'},
 ];
 let memTimer=null,memCurrent=0,memPaused=false;
 
@@ -949,6 +1041,7 @@ function enter(m){
   fadeInBgm();
   document.getElementById('mute-btn').classList.add('show');
   if(m==='after') setTimeout(initMemory, 800);
+  if(m==='after') setTimeout(initPrivReveal, 100);
 }
 function switchMode(){
   document.body.classList.remove('mode-before','mode-after');
@@ -1026,6 +1119,21 @@ document.getElementById('lb').addEventListener('click',e=>{if(!document.getEleme
 let lbTx=0;
 document.getElementById('lb').addEventListener('touchstart',e=>{lbTx=e.touches[0].clientX;},{passive:true});
 document.getElementById('lb').addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-lbTx;if(Math.abs(dx)>48)lbNav(dx<0?1:-1);},{passive:true});
+
+/* PRIVATE REVEAL */
+function initPrivReveal(){
+  const privObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting)return;
+      const overlay=e.target.querySelector('.priv-reveal-overlay');
+      if(!overlay||overlay.dataset.done)return;
+      overlay.dataset.done='1';
+      setTimeout(()=>overlay.classList.add('visible'),120);
+      setTimeout(()=>overlay.classList.add('gone'),2800);
+    });
+  },{threshold:0.25});
+  document.querySelectorAll('.priv-reveal').forEach(el=>privObs.observe(el));
+}
 </script>
 </body>
 </html>

@@ -19,7 +19,7 @@
   --jp:'Noto Serif JP',serif;
   --sans:'DM Sans',sans-serif;
 }
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;scrollbar-gutter:stable;}
 body{background:var(--dark);color:var(--cream);font-family:var(--sans);font-weight:300;overflow-x:hidden;cursor:none;}
 body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:0.028;pointer-events:none;z-index:200;}
 
@@ -1026,6 +1026,7 @@ const bgm=document.getElementById('bgm2');
 let bgmMuted=false;bgm.volume=0;
 function fadeInBgm(){bgm.play().catch(()=>{});let v=0;const iv=setInterval(()=>{v=Math.min(v+0.015,0.3);bgm.volume=bgmMuted?0:v;if(v>=0.3)clearInterval(iv);},80);}
 function toggleMute(){bgmMuted=!bgmMuted;bgm.volume=bgmMuted?0:0.3;document.getElementById('mute-btn').classList.toggle('muted',bgmMuted);}
+function duckBgm(on){bgm.volume=on?(bgmMuted?0:0.07):(bgmMuted?0:0.3);}
 
 /* MODE */
 document.body.style.overflow='hidden';
@@ -1086,8 +1087,8 @@ function buildLbImages(){
     if(!hidden)lbImages.push({src:img.src,alt:img.alt||''});
   });
 }
-function openLb(src){buildLbImages();lbIdx=lbImages.findIndex(i=>i.src===src);if(lbIdx<0)lbIdx=0;renderLb();document.getElementById('lb').classList.add('open');document.body.style.overflow='hidden';}
-function closeLb(){document.getElementById('lb').classList.remove('open');document.body.style.overflow='auto';}
+function openLb(src){buildLbImages();lbIdx=lbImages.findIndex(i=>i.src===src);if(lbIdx<0)lbIdx=0;renderLb();document.getElementById('lb').classList.add('open');document.body.style.overflow='hidden';duckBgm(true);}
+function closeLb(){document.getElementById('lb').classList.remove('open');document.body.style.overflow='auto';duckBgm(false);}
 function lbNav(dir){lbIdx=Math.max(0,Math.min(lbImages.length-1,lbIdx+dir));renderLb();}
 function renderLb(){
   const item=lbImages[lbIdx];if(!item)return;

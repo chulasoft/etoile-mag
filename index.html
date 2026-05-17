@@ -173,6 +173,7 @@ header{
 }
 .vol-card.v01 .vol-cover::before{background:rgba(226,173,192,0.07);}
 .vol-card.v02 .vol-cover::before{background:rgba(196,149,106,0.07);}
+.vol-card.v03 .vol-cover::before{background:rgba(196,149,106,0.07);}
 .vol-card:hover .vol-cover::before{opacity:0;}
 
 /* Bottom gradient on cover */
@@ -219,6 +220,7 @@ header{
 }
 .vol-card.v01 .ve-tag{color:var(--pink);border-color:rgba(226,173,192,.3);}
 .vol-card.v02 .ve-tag{color:var(--warm);border-color:rgba(196,149,106,.3);}
+.vol-card.v03 .ve-tag{color:#c4956a;border-color:rgba(196,149,106,.3);}
 /* Clamp sub text to 2 lines max */
 .ve-sub{
   font-size:9px;letter-spacing:.15em;color:var(--muted);line-height:1.6;
@@ -231,8 +233,10 @@ header{
 }
 .vol-card.v01 .ve-btn{color:var(--pink);border-color:rgba(226,173,192,.3);}
 .vol-card.v02 .ve-btn{color:var(--warm);border-color:rgba(196,149,106,.3);}
+.vol-card.v03 .ve-btn{color:#c4956a;border-color:rgba(196,149,106,.3);}
 .vol-card.v01:hover .ve-btn{background:var(--pink);color:var(--dark);border-color:var(--pink);}
 .vol-card.v02:hover .ve-btn{background:var(--warm);color:var(--dark);border-color:var(--warm);}
+.vol-card.v03:hover .ve-btn{background:#c4956a;color:var(--dark);border-color:#c4956a;}
 
 /* Coming soon state */
 .vol-card.coming .vol-cover img{filter:saturate(0) brightness(.6);}
@@ -302,7 +306,10 @@ footer{
 <!-- HEADER -->
 <header>
   <div class="h-logo">É<em>TOILE</em></div>
-  <div class="h-by">presented by Apecoft Studio</div>
+  <div style="display:flex;align-items:center;gap:20px;">
+    <div class="h-by" style="cursor:pointer;transition:color .25s;" onmouseenter="this.style.color='var(--cream)'" onmouseleave="this.style.color=''" onclick="goTo('our-girls.html')">Our Girls</div>
+    <div class="h-by">presented by Apecoft Studio</div>
+  </div>
 </header>
 
 <!-- HERO -->
@@ -330,8 +337,7 @@ footer{
     </div>
   </div>
 
-  <!-- Cards grid -->
-  <div class="volumes-cards">
+  <div class="volumes-cards" style="grid-template-columns:repeat(3,1fr);">
 
   <!-- Vol.01 -->
   <div class="vol-card v01" id="card01" onclick="goTo('vol01/summer-memories.html')">
@@ -346,7 +352,7 @@ footer{
     <div class="vol-enter">
       <div class="ve-left">
         <div class="ve-tag">Akane & Mina</div>
-        <div class="ve-sub">Lumière Girls · Summer 2025<br>ルミエールガールズ · 夏の記憶</div>
+        <div class="ve-sub">Summer 2025<br>この夏を、忘れない。</div>
       </div>
       <div class="ve-btn">Enter ↗</div>
     </div>
@@ -365,7 +371,26 @@ footer{
     <div class="vol-enter">
       <div class="ve-left">
         <div class="ve-tag">Ayame</div>
-        <div class="ve-sub">Slow Lifestyle Editorial · Winter 2026<br>静かな朝が、いちばん私を整えてくれる。</div>
+        <div class="ve-sub">Winter 2026<br>静かな朝が、いちばん私を整えてくれる。</div>
+      </div>
+      <div class="ve-btn">Enter ↗</div>
+    </div>
+  </div>
+
+  <!-- Vol.03 -->
+  <div class="vol-card v03" id="card03" onclick="goTo('vol03/little-moment.html')">
+    <div class="vol-cover">
+      <img src="vol03/rina_cover.png" alt="ÉTOILE Vol.03 — Little Moment">
+      <div class="vol-cover-grad"></div>
+      <div class="vol-cover-info">
+        <div class="vci-num">Vol.03 · March Special 2026</div>
+        <div class="vci-title">Little<br>Moment</div>
+      </div>
+    </div>
+    <div class="vol-enter">
+      <div class="ve-left">
+        <div class="ve-tag">Rina & Nuna</div>
+        <div class="ve-sub">Spring 2026<br>静かな朝が、心をやさしく包み込む。</div>
       </div>
       <div class="ve-btn">Enter ↗</div>
     </div>

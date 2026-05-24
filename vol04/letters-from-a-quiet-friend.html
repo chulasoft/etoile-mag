@@ -294,7 +294,7 @@ body.hov #cRing{width:42px;height:42px;}
     <div class="mh-logo">É<em>TOILE</em></div>
     <div class="mh-meta">Vol.04 · Letters From A Quiet Friend · Apecoft Studio</div>
     <div class="mh-right">
-      <div class="vol-btn" onclick="go('../index.html')">← All Volumes</div>
+      <div class="vol-btn" onclick="goTo('../index.html')">← All Volumes</div>
       <div class="mh-letter" id="letterTag" onclick="backToIntro()">
         <span class="suzune-only">✉ Suzune ↩</span>
         <span class="shiori-only">✉ Shiori ↩</span>
@@ -811,9 +811,9 @@ body.hov #cRing{width:42px;height:42px;}
   <div class="en-tt rv">Some journeys stay<br><em>long after the train leaves</em></div>
   <div class="en-jp rv">電車が去ったあとも、<br>少しだけ温もりが残っていた。</div>
   <div class="en-rl rv"></div>
-  <div class="en-back rv" onclick="go('../vol03/little-moment.html')">← Vol.03 · Little Moment</div>
-  <div class="en-back rv" onclick="go('../index.html')">← Back to ÉTOILE</div>
-  <div class="en-cr rv">ÉTOILE Vol.04 · Letters From A Quiet Friend<br>featuring Suzune & Shiori · presented by Apecoft Studio<br>Late Summer Editorial Collection 2026</div>
+  <div class="en-back rv" onclick="goTo('../vol03/little-moment.html')">← Vol.03 · Little Moment</div>
+  <div class="en-back rv" onclick="goTo('../index.html')">← Back to ÉTOILE</div>
+  <div class="en-cr rv" style="margin-top:4px;">ÉTOILE · Vol.04 · Letters From A Quiet Friend · April 2026<br>Featuring Suzune & Shiori · © 2026 Apecoft Studio · All artwork original</div>
 </section>
 
 <script>
@@ -861,7 +861,7 @@ window.addEventListener('scroll',()=>{
 
 // ── Vol menu ──────────────────────────────────────────────────
 
-function go(url){document.body.style.transition='opacity .5s ease';document.body.style.opacity='0';setTimeout(()=>window.location.href=url,500);}
+function goTo(url){document.body.style.transition='opacity .5s ease';document.body.style.opacity='0';setTimeout(()=>window.location.href=url,500);}
 
 // ── Lightbox ──────────────────────────────────────────────────
 function openLb(src){

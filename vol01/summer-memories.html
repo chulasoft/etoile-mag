@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ÉTOILE — Vol.01 · Summer Memories · Akane & Mina</title>
+<title>ÉTOILE Vol.01 — Summer Memories · Akane & Mina</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;1,6..96,300&family=Noto+Serif+JP:wght@200;300&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -15,7 +15,7 @@
   --display:'Bodoni Moda',serif;--serif:'Cormorant Garamond',serif;
   --jp:'Noto Serif JP',serif;--sans:'DM Sans',sans-serif;
 }
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;scrollbar-gutter:stable;}
 body{background:var(--dark);color:var(--cream);font-family:var(--sans);font-weight:300;overflow-x:hidden;cursor:none;}
 body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:0.028;pointer-events:none;z-index:200;}
 #cDot,#cRing{position:fixed;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%);}
@@ -65,6 +65,7 @@ body.hov #cRing{width:42px;height:42px;}
 #mh.light .mh-logo em{color:var(--pink-deep);}
 .mh-meta{font-size:7px;letter-spacing:.4em;color:rgba(250,247,242,.28);text-transform:uppercase;transition:color .5s;}
 #mh.light .mh-meta{color:var(--muted);}
+.mh-right{display:flex;align-items:center;gap:10px;}
 .mh-mode{font-size:7px;letter-spacing:.4em;text-transform:uppercase;padding:4px 12px;border:1px solid;cursor:pointer;transition:all .3s;}
 .mh-mode.your{color:var(--pink);border-color:rgba(226,173,192,.3);}
 .mh-mode.her{color:var(--blue);border-color:rgba(154,191,214,.3);}
@@ -293,8 +294,8 @@ body.hov #cRing{width:42px;height:42px;}
 .en-tt{font-family:var(--display);font-size:clamp(28px,6vw,76px);font-weight:300;font-style:italic;line-height:1.05;color:var(--cream);margin-bottom:14px;}
 .en-jp{font-family:var(--jp);font-weight:200;font-size:10px;letter-spacing:.45em;color:var(--muted);line-height:2.8;margin-bottom:32px;}
 .en-rl{width:52px;height:1px;background:var(--gold);margin:0 auto 28px;}
-.en-v2{display:inline-block;font-size:7px;letter-spacing:.6em;text-transform:uppercase;color:var(--muted);border:1px solid rgba(122,104,114,.22);padding:11px 32px;cursor:pointer;transition:border-color .3s,color .3s;margin-bottom:32px;}
-.en-v2:hover{border-color:var(--pink);color:var(--pink);}
+.en-back{display:inline-block;font-size:7px;letter-spacing:.6em;text-transform:uppercase;color:var(--muted);border:1px solid rgba(122,104,114,.22);padding:11px 32px;cursor:pointer;transition:border-color .3s,color .3s;margin-bottom:32px;}
+.en-back:hover{border-color:var(--pink);color:var(--pink);}
 .en-cr{font-size:7px;letter-spacing:.35em;text-transform:uppercase;color:var(--muted2);line-height:2.6;}
 
 /* REVEAL */
@@ -344,7 +345,7 @@ body.hov #cRing{width:42px;height:42px;}
 
 /* ── MUTE BUTTON ── */
 #mute-btn{
-  position:fixed;bottom:clamp(60px,10vh,80px);right:clamp(16px,3vw,28px);z-index:500;
+  position:fixed;bottom:28px;right:24px;z-index:500;
   width:38px;height:38px;border-radius:50%;
   border:1px solid rgba(250,247,242,.18);
   background:rgba(9,6,8,.55);backdrop-filter:blur(8px);
@@ -352,7 +353,7 @@ body.hov #cRing{width:42px;height:42px;}
   cursor:pointer;transition:border-color .3s,opacity .5s;
   opacity:0;
 }
-#mute-btn.visible{opacity:1;}
+#mute-btn.show{opacity:1;}
 #mute-btn:hover{border-color:var(--pink);}
 #mute-btn svg{width:15px;height:15px;fill:none;stroke:rgba(250,247,242,.6);stroke-width:1.5;transition:stroke .3s;}
 #mute-btn:hover svg{stroke:var(--pink);}
@@ -418,8 +419,6 @@ body.hov #cRing{width:42px;height:42px;}
   .cb-keys{display:none;}
 
   /* mute btn */
-  #mute-btn{bottom:72px;right:14px;}
-
   #mute-btn{bottom:20px;right:16px;}
 }
 
@@ -483,24 +482,9 @@ body.hov #cRing{width:42px;height:42px;}
 <div id="mh">
   <div class="mh-row">
     <div class="mh-logo">É<em>TOILE</em></div>
-    <div class="mh-meta">Vol.01 · July 2025 · Apecoft Studio</div>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div id="vol-menu">
-        <div class="vol-btn" onclick="toggleVolMenu()">Vol.01 ▾</div>
-        <div class="vol-dropdown" id="volDropdown">
-          <div class="vol-item active">
-            <div><div class="vol-item-name">Vol.01</div><div class="vol-item-sub">Summer Memories</div></div>
-            <div class="vol-item-badge current">Now</div>
-          </div>
-          <div class="vol-item" onclick="window.location.href='../vol02/quiet-mornings.html'">
-            <div><div class="vol-item-name">Vol.02</div><div class="vol-item-sub">Quiet Mornings · Ayame</div></div>
-            <div class="vol-item-badge soon">↗</div>
-          </div>
-          <div class="vol-item" onclick="window.location.href='../index.html'">
-            <div><div class="vol-item-name">← All Volumes</div><div class="vol-item-sub">Back to ÉTOILE Home</div></div>
-          </div>
-        </div>
-      </div>
+    <div class="mh-meta">Vol.01 · Summer Memories · Apecoft Studio</div>
+    <div class="mh-right">
+      <div class="vol-btn" onclick="goTo('../index.html')">← All Volumes</div>
       <div class="mh-mode your" id="modeTag" onclick="switchMode()">Your Story ↩</div>
     </div>
   </div>
@@ -741,8 +725,8 @@ body.hov #cRing{width:42px;height:42px;}
   <div class="en-jp rv d2">この夏を、忘れない。アカネとミナ、ふたりの物語。</div>
   <div class="en-rl rv d3"></div>
   <div class="rv d3" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-    <div class="en-v2" onclick="window.location.href='../vol02/quiet-mornings.html'">Vol.02 · Quiet Mornings · Ayame →</div>
-    <div class="en-v2" onclick="window.location.href='../index.html'" style="color:var(--muted);">← All Volumes</div>
+    <div class="en-back" onclick="window.location.href='../vol02/quiet-mornings.html'">Vol.02 · Quiet Mornings · Ayame →</div>
+    <div class="en-back" onclick="window.location.href='../index.html'" style="color:var(--muted);">← All Volumes</div>
   </div>
   <div class="en-cr rv" style="margin-top:4px;">ÉTOILE · Vol.01 · Summer Memories · July 2025<br>Featuring Akane &amp; Mina · © 2025 Apecoft Studio · All artwork original</div>
 </section>
@@ -789,6 +773,7 @@ function fadeInBgm(){
     if(v>=0.32)clearInterval(iv);
   },80);
 }
+function goTo(url){document.body.style.transition='opacity .5s ease';document.body.style.opacity='0';setTimeout(()=>window.location.href=url,500);}
 function toggleMute(){
   muted=!muted;
   bgm.volume=muted?0:0.32;
@@ -820,7 +805,7 @@ function enter(m){
   initImages();
   // Start music on user interaction
   fadeInBgm();
-  document.getElementById('mute-btn').classList.add('visible');
+  document.getElementById('mute-btn').classList.add('show');
 }
 function switchMode(){
   document.body.classList.remove('mode-blended','mode-her');

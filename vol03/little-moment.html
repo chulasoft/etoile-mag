@@ -367,29 +367,10 @@ body.hov #cRing{width:42px;height:42px;}
   <div id="rp"></div>
   <div class="mh-row">
     <div class="mh-logo">É<em>TOILE</em></div>
-    <div class="mh-meta">Vol.03 · Little Moment · March 2026</div>
+    <div class="mh-meta">Vol.03 · Little Moment · Apecoft Studio</div>
     <div class="mh-right">
+      <div class="vol-btn" onclick="goTo('../index.html')">← All Volumes</div>
       <div class="mh-mode" id="modeTag" onclick="switchMode()">With Rina ↩</div>
-      <div id="vol-menu">
-        <div class="vol-btn" onclick="toggleVolMenu()">Vol.03 ▾</div>
-        <div class="vol-dropdown" id="volDropdown">
-          <div class="vol-item active">
-            <div><div class="vol-item-name">Vol.03</div><div class="vol-item-sub">Little Moment · Rina</div></div>
-            <div class="vol-badge now">Now</div>
-          </div>
-          <div class="vol-item" onclick="goTo('../vol02/quiet-mornings.html')">
-            <div><div class="vol-item-name">Vol.02</div><div class="vol-item-sub">Quiet Mornings · Ayame</div></div>
-            <div class="vol-badge go">↗</div>
-          </div>
-          <div class="vol-item" onclick="goTo('../vol01/summer-memories.html')">
-            <div><div class="vol-item-name">Vol.01</div><div class="vol-item-sub">Summer Memories · Akane & Mina</div></div>
-            <div class="vol-badge go">↗</div>
-          </div>
-          <div class="vol-item" onclick="goTo('../index.html')">
-            <div><div class="vol-item-name">← All Volumes</div><div class="vol-item-sub">Back to ÉTOILE Home</div></div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -976,13 +957,14 @@ function enter(m){
   const tag=document.getElementById('modeTag');
   tag.textContent=m==='rina'?'With Rina ↩':'With Nuna ↩';
   tag.className='mh-mode '+(m==='rina'?'rina':'nuna');
+  // show content & enable scroll immediately — scrollbar appears right away
+  document.body.style.overflow='auto';
+  document.getElementById('main').style.display='block';
+  document.getElementById('end').style.display='block';
+  document.getElementById('mute-btn').classList.add('show'); // immediate like vol02
   setTimeout(()=>{
-    document.body.style.overflow='auto';
-    document.getElementById('main').style.display='block';
-    document.getElementById('end').style.display='block';
     initImages();
     fadeInBgm();
-    document.getElementById('mute-btn').classList.add('show');
     if(m==='nuna') setTimeout(initNunaReveal,100);
     initSlideshows();
   },1300);

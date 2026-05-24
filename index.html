@@ -174,6 +174,7 @@ header{
 .vol-card.v01 .vol-cover::before{background:rgba(226,173,192,0.07);}
 .vol-card.v02 .vol-cover::before{background:rgba(196,149,106,0.07);}
 .vol-card.v03 .vol-cover::before{background:rgba(196,149,106,0.07);}
+.vol-card.v04 .vol-cover::before{background:rgba(223,168,152,0.07);}
 .vol-card:hover .vol-cover::before{opacity:0;}
 
 /* Bottom gradient on cover */
@@ -194,6 +195,8 @@ header{
 }
 .vol-card.v01 .vci-num{color:var(--pink);}
 .vol-card.v02 .vci-num{color:var(--warm);}
+.vol-card.v03 .vci-num{color:#c4956a;}
+.vol-card.v04 .vci-num{color:#dfa898;}
 .vci-title{
   font-family:var(--display);
   font-size:clamp(18px,2.8vw,28px);
@@ -221,6 +224,7 @@ header{
 .vol-card.v01 .ve-tag{color:var(--pink);border-color:rgba(226,173,192,.3);}
 .vol-card.v02 .ve-tag{color:var(--warm);border-color:rgba(196,149,106,.3);}
 .vol-card.v03 .ve-tag{color:#c4956a;border-color:rgba(196,149,106,.3);}
+.vol-card.v04 .ve-tag{color:#dfa898;border-color:rgba(223,168,152,.3);}
 /* Clamp sub text to 2 lines max */
 .ve-sub{
   font-size:9px;letter-spacing:.15em;color:var(--muted);line-height:1.6;
@@ -234,9 +238,11 @@ header{
 .vol-card.v01 .ve-btn{color:var(--pink);border-color:rgba(226,173,192,.3);}
 .vol-card.v02 .ve-btn{color:var(--warm);border-color:rgba(196,149,106,.3);}
 .vol-card.v03 .ve-btn{color:#c4956a;border-color:rgba(196,149,106,.3);}
+.vol-card.v04 .ve-btn{color:#dfa898;border-color:rgba(223,168,152,.3);}
 .vol-card.v01:hover .ve-btn{background:var(--pink);color:var(--dark);border-color:var(--pink);}
 .vol-card.v02:hover .ve-btn{background:var(--warm);color:var(--dark);border-color:var(--warm);}
 .vol-card.v03:hover .ve-btn{background:#c4956a;color:var(--dark);border-color:#c4956a;}
+.vol-card.v04:hover .ve-btn{background:#dfa898;color:var(--dark);border-color:#dfa898;}
 
 /* Coming soon state */
 .vol-card.coming .vol-cover img{filter:saturate(0) brightness(.6);}
@@ -337,7 +343,7 @@ footer{
     </div>
   </div>
 
-  <div class="volumes-cards" style="grid-template-columns:repeat(3,1fr);">
+  <div class="volumes-cards" style="grid-template-columns:repeat(2,1fr);">
 
   <!-- Vol.01 -->
   <div class="vol-card v01" id="card01" onclick="goTo('vol01/summer-memories.html')">
@@ -391,6 +397,25 @@ footer{
       <div class="ve-left">
         <div class="ve-tag">Rina & Nuna</div>
         <div class="ve-sub">Spring 2026<br>静かな朝が、心をやさしく包み込む。</div>
+      </div>
+      <div class="ve-btn">Enter ↗</div>
+    </div>
+  </div>
+
+  <!-- Vol.04 -->
+  <div class="vol-card v04" id="card04" onclick="goTo('vol04/letters-from-a-quiet-friend.html')">
+    <div class="vol-cover">
+      <img src="vol04/suzu_shi_cover.png" alt="ÉTOILE Vol.04 — Letters From A Quiet Friend">
+      <div class="vol-cover-grad"></div>
+      <div class="vol-cover-info">
+        <div class="vci-num">Vol.04 · April Special 2026</div>
+        <div class="vci-title">Letters From<br>A Quiet Friend</div>
+      </div>
+    </div>
+    <div class="vol-enter">
+      <div class="ve-left">
+        <div class="ve-tag">Suzune & Shiori</div>
+        <div class="ve-sub">Summer 2026<br>何気ない日々が、いちばん大切だった。</div>
       </div>
       <div class="ve-btn">Enter ↗</div>
     </div>

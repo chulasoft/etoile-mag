@@ -141,21 +141,16 @@ body.hov #cRing{width:42px;height:42px;}
 
 /* MASTHEAD */
 #mh{position:fixed;top:0;left:0;right:0;z-index:600;border-bottom:1px solid rgba(250,247,242,.06);transition:background .5s,border-color .5s,transform .38s ease;}
-#mh.light{background:rgba(248,244,238,.96);backdrop-filter:blur(16px);border-color:var(--rule);}
-#mh.hide{transform:translateY(-100%);}
+
 .mh-row{display:flex;align-items:center;justify-content:space-between;padding:13px clamp(20px,4vw,52px);}
 .mh-logo{font-family:var(--display);font-size:clamp(16px,2vw,22px);font-weight:300;letter-spacing:.28em;color:var(--cream);transition:color .5s;}
-#mh.light .mh-logo{color:var(--ink);}
 .mh-logo em{font-style:italic;color:var(--warm);}
-#mh.light .mh-logo em{color:var(--warm-deep);}
 .mh-meta{font-size:7px;letter-spacing:.4em;color:rgba(250,247,242,.28);text-transform:uppercase;transition:color .5s;}
-#mh.light .mh-meta{color:var(--muted);}
 .mh-right{display:flex;align-items:center;gap:10px;}
 
 /* VOL MENU */
 #vol-menu{position:relative;}
 .vol-btn{font-size:7px;letter-spacing:.4em;text-transform:uppercase;padding:4px 12px;border:1px solid rgba(250,247,242,.15);cursor:pointer;color:rgba(250,247,242,.4);transition:all .3s;background:transparent;}
-#mh.light .vol-btn{border-color:var(--rule);color:var(--muted);}
 .vol-btn:hover{color:var(--cream);border-color:rgba(250,247,242,.3);}
 .vol-dropdown{position:absolute;top:calc(100% + 8px);right:0;background:rgba(10,8,7,.96);backdrop-filter:blur(16px);border:1px solid rgba(250,247,242,.1);min-width:178px;opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .25s,transform .25s,visibility .25s;z-index:700;}
 .vol-dropdown.open{opacity:1;visibility:visible;transform:none;}
@@ -173,7 +168,7 @@ body.hov #cRing{width:42px;height:42px;}
 .mh-mode.before{color:var(--warm);border-color:rgba(196,149,106,.3);}
 .mh-mode.after{color:var(--cool);border-color:rgba(138,168,188,.3);}
 .mh-mode:hover{opacity:.7;}
-#rp{height:1px;background:linear-gradient(90deg,var(--warm),var(--gold));width:0%;transition:width .1s linear;}
+#rp{height:2px;background:linear-gradient(90deg,var(--warm),var(--gold));width:0%;transition:width .1s linear;}
 
 /* STORY MODES */
 .mode-before .after-only{display:none;}
@@ -947,7 +942,7 @@ body.hov #cRing{width:42px;height:42px;}
     <div class="en-back" onclick="window.location.href='../vol01/summer-memories.html'">← Vol.01 · Summer Memories</div>
     <div class="en-back" onclick="window.location.href='../index.html'">← All Volumes</div>
   </div>
-  <div class="en-cr rv" style="margin-top:4px;">ÉTOILE · Vol.02 · Quiet Mornings · January 2026<br>Featuring Ayame · © 2026 Apecoft Studio · All artwork original</div>
+  <div class="en-cr rv">ÉTOILE · Vol.02 · Quiet Mornings · January 2026<br>Featuring Ayame · アヤメ · Winter Editorial<br>© 2026 Apecoft Studio · All artwork original</div>
 </section>
 
 <script>
@@ -1042,16 +1037,12 @@ document.addEventListener('click',e=>{const vm=document.getElementById('vol-menu
 
 /* MASTHEAD */
 const mh=document.getElementById('mh');
-let ly=0;
 window.addEventListener('scroll',()=>{
   const y=window.scrollY;
-  let light=false;
-  document.querySelectorAll('.ep:not(.dk):not(.priv-panel)').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<60&&r.bottom>0)light=true;});
-  mh.classList.toggle('light',light||y>window.innerHeight*.85);
-  mh.classList.toggle('hide',y>ly&&y>80);
-  ly=y;
   const tot=document.body.scrollHeight-window.innerHeight;
   document.getElementById('rp').style.width=(y/tot*100)+'%';
+  mh.style.background=window.scrollY>60?'rgba(8,5,10,.92)':'transparent';
+  mh.style.backdropFilter=window.scrollY>60?'blur(16px)':'none';
 },{passive:true});
 
 /* REVEAL */

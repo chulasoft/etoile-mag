@@ -313,6 +313,7 @@ body.hov #cRing{width:46px;height:46px;}
       <div class="ab-tt">ÉTOILE <em>Arcana</em></div>
       <div class="ab-jp">カードを引いて、運命の一枚に出会う。<br>メジャーアルカナ・コレクション。</div>
       <span class="ab-cta">Draw a Card ✦</span>
+      <span class="ab-cta" style="margin-left:10px;" onclick="event.stopPropagation();goTo('arcana-collection.html')">View Collection ↗</span>
     </div>
     <div class="ab-card">
       <div class="abc-star">✦ ✦ ✦</div>
@@ -440,10 +441,35 @@ addEventListener('scroll',()=>{if(_st1)return;_st1=true;requestAnimationFrame(()
 _st1=false;});});
 
 /* ══ NAV ══ */
-function goTo(url){document.body.style.transition='opacity .5s ease';document.body.style.opacity='0';setTimeout(()=>location.href=url,500);}
+let _leaving=false;
+function goTo(url){
+  if(_leaving)return;_leaving=true;
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){location.href=url;return;}
+  document.body.style.transition='opacity .42s ease,filter .42s ease,transform .42s ease';
+  document.body.style.opacity='0';document.body.style.filter='blur(3px)';document.body.style.transform='scale(.992)';
+  setTimeout(()=>{location.href=url;},420);
+}
 
 /* ══ LOADER ══ */
 addEventListener('load',()=>setTimeout(()=>document.getElementById('loader').classList.add('done'),550));
+
+/* ══ Sprint2b: magnetic buttons ══ */
+(function(){
+  if(('ontouchstart' in window)||(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches))return;
+  const sel='.en-back,.ab,.vol-btn,.mh-mode,.mh-letter,.arc-btn,.di-read';
+  document.querySelectorAll(sel).forEach(btn=>{
+    const strength=0.32;
+    const _ct=getComputedStyle(btn).transitionProperty;
+    if(!/all|transform/.test(_ct))btn.style.transition=(getComputedStyle(btn).transition||'')+',transform .25s cubic-bezier(.22,1,.36,1)';
+    btn.addEventListener('pointermove',e=>{
+      const r=btn.getBoundingClientRect();
+      const mx=e.clientX-(r.left+r.width/2), my=e.clientY-(r.top+r.height/2);
+      btn.style.transform=`translate(${mx*strength}px,${my*strength}px)`;
+    });
+    btn.addEventListener('pointerleave',()=>{btn.style.transform='';});
+  });
+})();
+
 </script>
 </body>
 </html>

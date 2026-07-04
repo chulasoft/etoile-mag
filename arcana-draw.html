@@ -223,9 +223,14 @@ body.hov #cRing{width:42px;height:42px;}
   body{cursor:auto!important;}
   #cDot,#cRing{display:none!important;}
 }
+
+#coll-link{position:fixed;top:18px;right:20px;z-index:700;font-size:7px;letter-spacing:.42em;text-transform:uppercase;color:rgba(196,149,106,.6);border:1px solid rgba(196,149,106,.3);padding:8px 16px;cursor:pointer;background:rgba(8,4,20,.5);backdrop-filter:blur(8px);transition:all .3s;text-decoration:none;}
+#coll-link:hover{color:var(--gold);border-color:var(--gold);}
+@media(max-width:560px){#coll-link{top:12px;right:12px;padding:7px 12px;}}
 </style>
 </head>
 <body>
+<a id="coll-link" href="arcana-collection.html" onclick="return goToColl(event)">✦ Collection</a>
 
 <canvas id="stars"></canvas>
 <div id="flash"></div>
@@ -353,7 +358,9 @@ if(!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').ma
 /* ══ STATE ══ */
 let deck=[...ARC].sort(()=>Math.random()-.5);
 let idx=0,busy=false,revealed=false;
-const discovered=new Set();
+const DISCOVERY_KEY='etoile_arcana_discovered';
+let _dsaved=[];try{_dsaved=JSON.parse(localStorage.getItem(DISCOVERY_KEY)||'[]');}catch(e){}
+const discovered=new Set(_dsaved);
 let sparkleTimer=null;
 
 const deckArea=document.getElementById('deck-area');
@@ -376,8 +383,17 @@ const aura=document.getElementById('aura');
     coll.appendChild(d);
   });
 })();
+/* reflect persisted discovery on load */
+(function(){
+  document.getElementById('collCount').textContent=discovered.size;
+  discovered.forEach(num=>{
+    const c=ARC.find(x=>x.num===num); const slot=document.getElementById('cslot-'+num);
+    if(c&&slot){slot.classList.add('got');slot.style.background=c.color;slot.style.borderColor=c.color;}
+  });
+})();
 function markDiscovered(card){
   discovered.add(card.num);
+  try{localStorage.setItem(DISCOVERY_KEY,JSON.stringify([...discovered]));}catch(e){}
   document.getElementById('collCount').textContent=discovered.size;
   const slot=document.getElementById('cslot-'+card.num);
   if(slot&&!slot.classList.contains('got')){
@@ -629,6 +645,31 @@ if(!('ontouchstart' in window)){
     el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
   });
 }
+
+/* ══ Sprint2b: magnetic buttons ══ */
+(function(){
+  if(('ontouchstart' in window)||(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches))return;
+  const sel='.en-back,.ab,.vol-btn,.mh-mode,.mh-letter,.arc-btn,.di-read';
+  document.querySelectorAll(sel).forEach(btn=>{
+    const strength=0.32;
+    const _ct=getComputedStyle(btn).transitionProperty;
+    if(!/all|transform/.test(_ct))btn.style.transition=(getComputedStyle(btn).transition||'')+',transform .25s cubic-bezier(.22,1,.36,1)';
+    btn.addEventListener('pointermove',e=>{
+      const r=btn.getBoundingClientRect();
+      const mx=e.clientX-(r.left+r.width/2), my=e.clientY-(r.top+r.height/2);
+      btn.style.transform=`translate(${mx*strength}px,${my*strength}px)`;
+    });
+    btn.addEventListener('pointerleave',()=>{btn.style.transform='';});
+  });
+})();
+
+
+/* nav to collection */
+function goToColl(ev){if(ev)ev.preventDefault();
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){location.href='arcana-collection.html';return false;}
+  document.body.style.transition='opacity .42s ease,filter .42s ease,transform .42s ease';
+  document.body.style.opacity='0';document.body.style.filter='blur(3px)';document.body.style.transform='scale(.992)';
+  setTimeout(()=>location.href='arcana-collection.html',420);return false;}
 </script>
 </body>
 </html>

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ÉTOILE Arcana Collection — Draw</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;1,6..96,300&family=Noto+Serif+JP:wght@200;300&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --gold:#c4956a;--cream:#faf7f2;--dark:#04020d;--dark2:#080422;
+  --acc:#c4956a;--acc-rgb:196,149,106;
+  --display:'Bodoni Moda',serif;--jp:'Noto Serif JP',serif;--sans:'DM Sans',sans-serif;
+  --cw:270px;--img-h:405px;--bar-h:84px;--ch:489px;
+}
+html,body{height:100%;overflow-x:hidden;}
+body{background:var(--dark);color:var(--cream);font-family:var(--sans);font-weight:300;cursor:none;user-select:none;}
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(ellipse 65% 55% at 50% 0%,rgba(var(--acc-rgb),.13),transparent),
+  radial-gradient(ellipse 45% 50% at 15% 72%,rgba(8,5,32,.7),transparent),
+  radial-gradient(ellipse 50% 40% at 85% 75%,rgba(var(--acc-rgb),.06),transparent);
+  pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.022;pointer-events:none;z-index:0;}
+
+/* CURSOR */
+#cDot,#cRing{position:fixed;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%);}
+#cDot{width:4px;height:4px;background:var(--acc);}
+#cRing{width:26px;height:26px;border:1px solid rgba(var(--acc-rgb),.35);transition:width .3s,height .3s;}
+body.hov #cRing{width:40px;height:40px;border-color:rgba(var(--acc-rgb),.6);}
+
+/* PAGE */
+#page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(20px,4vh,52px) 20px;gap:clamp(20px,3.5vh,40px);}
+
+/* HEADER */
+.arc-header{text-align:center;}
+.arc-eye{font-size:6.5px;letter-spacing:.62em;color:var(--gold);text-transform:uppercase;margin-bottom:9px;opacity:.7;}
+.arc-logo{font-family:var(--display);font-size:clamp(26px,5vw,56px);font-weight:300;letter-spacing:.22em;color:var(--cream);}
+.arc-logo em{font-style:italic;color:var(--gold);}
+.arc-sub{font-size:6.5px;letter-spacing:.55em;color:rgba(250,247,242,.24);margin-top:5px;text-transform:uppercase;}
+.arc-divider{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:11px auto 0;animation:gl 1.8s ease .4s forwards;}
+@keyframes gl{to{width:130px;}}
+
+/* SCENE — overflow visible for spread animation */
+#scene{display:flex;flex-direction:column;align-items:center;gap:clamp(16px,3vh,32px);}
+
+/* DECK AREA - always overflow visible so card tilt never clips */
+#deck-area{position:relative;width:var(--cw);height:var(--ch);overflow:visible;}
+
+/* STATIC DECK LAYERS (always visible, hidden during shuffle/reveal) */
+.sdl{position:absolute;inset:0;border-radius:14px;
+  background:
+    repeating-linear-gradient(45deg,transparent,transparent 7px,rgba(var(--acc-rgb),.02) 7px,rgba(var(--acc-rgb),.02) 8px),
+    repeating-linear-gradient(-45deg,transparent,transparent 7px,rgba(var(--acc-rgb),.02) 7px,rgba(var(--acc-rgb),.02) 8px),
+    radial-gradient(ellipse at 50% 0%,rgba(var(--acc-rgb),.14),transparent 55%),
+    radial-gradient(ellipse at 50% 100%,rgba(var(--acc-rgb),.08),transparent 55%),
+    linear-gradient(155deg,#07041c,#03010e,#080422);
+  border:1px solid rgba(var(--acc-rgb),.26);
+  transition:opacity .4s ease;}
+#sdl1{transform:rotate(-2.5deg) translateY(9px) translateX(-5px);opacity:.32;}
+#sdl2{transform:rotate(-1.1deg) translateY(4px) translateX(-2px);opacity:.52;}
+#sdl3{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  opacity:.78;overflow:hidden;}
+#sdl3::before{content:'';position:absolute;inset:10px;border:1px solid rgba(var(--acc-rgb),.16);border-radius:9px;}
+.sdl-oc{position:absolute;width:18px;height:18px;border-color:rgba(var(--acc-rgb),.2);border-style:solid;}
+.sdl-oc.tl{top:13px;left:13px;border-width:1px 0 0 1px;}
+.sdl-oc.tr{top:13px;right:13px;border-width:1px 1px 0 0;}
+.sdl-oc.bl{bottom:13px;left:13px;border-width:0 0 1px 1px;}
+.sdl-oc.br{bottom:13px;right:13px;border-width:0 1px 1px 0;}
+.sdl-star{font-size:14px;color:rgba(var(--acc-rgb),.22);letter-spacing:6px;}
+.sdl-logo{font-family:var(--display);font-size:22px;font-weight:300;letter-spacing:.28em;color:rgba(var(--acc-rgb),.5);}
+.sdl-logo em{font-style:italic;}
+.sdl-label{font-size:6px;letter-spacing:.62em;color:rgba(var(--acc-rgb),.26);text-transform:uppercase;}
+
+/* FAN CARDS (dynamically created) */
+.fan-card{position:absolute;inset:0;border-radius:14px;cursor:pointer;
+  background:
+    repeating-linear-gradient(45deg,transparent,transparent 7px,rgba(var(--acc-rgb),.02) 7px,rgba(var(--acc-rgb),.02) 8px),
+    repeating-linear-gradient(-45deg,transparent,transparent 7px,rgba(var(--acc-rgb),.02) 7px,rgba(var(--acc-rgb),.02) 8px),
+    radial-gradient(ellipse at 50% 0%,rgba(var(--acc-rgb),.14),transparent 55%),
+    radial-gradient(ellipse at 50% 100%,rgba(var(--acc-rgb),.08),transparent 55%),
+    linear-gradient(155deg,#07041c,#03010e,#080422);
+  border:1px solid rgba(var(--acc-rgb),.28);
+  transform-origin:bottom center;
+  transition:transform .5s cubic-bezier(.4,0,.2,1), opacity .35s ease;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;overflow:hidden;}
+.fan-card::before{content:'';position:absolute;inset:10px;border:1px solid rgba(var(--acc-rgb),.16);border-radius:9px;pointer-events:none;}
+.fan-card .fc-logo{font-family:var(--display);font-size:20px;font-weight:300;letter-spacing:.28em;color:rgba(var(--acc-rgb),.5);}
+.fan-card .fc-logo em{font-style:italic;}
+.fan-card .fc-star{font-size:14px;color:rgba(var(--acc-rgb),.22);letter-spacing:6px;}
+.fan-card .fc-label{font-size:5.5px;letter-spacing:.65em;color:rgba(var(--acc-rgb),.25);text-transform:uppercase;}
+.fan-card .fc-oc{position:absolute;width:18px;height:18px;border-color:rgba(var(--acc-rgb),.2);border-style:solid;}
+.fan-card .fc-oc.tl{top:12px;left:12px;border-width:1px 0 0 1px;}
+.fan-card .fc-oc.tr{top:12px;right:12px;border-width:1px 1px 0 0;}
+.fan-card .fc-oc.bl{bottom:12px;left:12px;border-width:0 0 1px 1px;}
+.fan-card .fc-oc.br{bottom:12px;right:12px;border-width:0 1px 1px 0;}
+
+/* DRAW CARD (the one that flips) */
+#draw-card{position:absolute;inset:0;perspective:1100px;z-index:20;display:none;}
+.ci{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:none;}
+.cf{position:absolute;inset:0;border-radius:14px;backface-visibility:hidden;-webkit-backface-visibility:hidden;}
+.back{
+  background:
+    repeating-linear-gradient(45deg,transparent,transparent 7px,rgba(var(--acc-rgb),.022) 7px,rgba(var(--acc-rgb),.022) 8px),
+    repeating-linear-gradient(-45deg,transparent,transparent 7px,rgba(var(--acc-rgb),.022) 7px,rgba(var(--acc-rgb),.022) 8px),
+    radial-gradient(ellipse at 50% 0%,rgba(var(--acc-rgb),.15),transparent 55%),
+    radial-gradient(ellipse at 50% 100%,rgba(var(--acc-rgb),.09),transparent 55%),
+    linear-gradient(155deg,#07041c,#03010e,#080422);
+  border:1px solid rgba(var(--acc-rgb),.3);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;overflow:hidden;}
+.back::before{content:'';position:absolute;inset:10px;border:1px solid rgba(var(--acc-rgb),.17);border-radius:9px;}
+.oc{position:absolute;width:18px;height:18px;border-color:rgba(var(--acc-rgb),.22);border-style:solid;}
+.oc.tl{top:13px;left:13px;border-width:1px 0 0 1px;}
+.oc.tr{top:13px;right:13px;border-width:1px 1px 0 0;}
+.oc.bl{bottom:13px;left:13px;border-width:0 0 1px 1px;}
+.oc.br{bottom:13px;right:13px;border-width:0 1px 1px 0;}
+.bl{font-family:var(--display);font-size:22px;font-weight:300;letter-spacing:.28em;color:rgba(var(--acc-rgb),.52);}
+.bl em{font-style:italic;}
+.bs{font-size:15px;color:rgba(var(--acc-rgb),.22);letter-spacing:7px;}
+.bb{font-size:6px;letter-spacing:.62em;color:rgba(var(--acc-rgb),.26);text-transform:uppercase;}
+
+/* CARD FRONT */
+.front{transform:rotateY(180deg);overflow:hidden;border:1px solid rgba(var(--acc-rgb),.38);background:var(--dark2);}
+.fi{position:absolute;top:0;left:0;right:0;height:var(--img-h);}
+.fi img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+.fi-fb{width:100%;height:100%;background:linear-gradient(155deg,#0e0535,#06021a);display:flex;align-items:center;justify-content:center;}
+.fb-num{font-family:var(--display);font-size:66px;font-style:italic;color:rgba(var(--acc-rgb),.09);}
+.fn{position:absolute;top:11px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:.36em;color:rgba(250,247,242,.4);z-index:2;background:rgba(4,2,13,.65);padding:3px 13px;border-radius:30px;white-space:nowrap;}
+.fb{position:absolute;top:var(--img-h);bottom:0;left:0;right:0;
+  background:var(--dark2);border-top:1px solid rgba(var(--acc-rgb),.14);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:0 12px;gap:4px;}
+.fbn{font-family:var(--display);font-size:clamp(15px,2.8vw,20px);font-style:italic;font-weight:300;color:var(--cream);text-align:center;line-height:1.1;}
+.fbc{font-size:7px;letter-spacing:.42em;text-transform:uppercase;margin-top:2px;}
+.fbs{font-size:5.5px;letter-spacing:.52em;color:rgba(250,247,242,.2);text-transform:uppercase;}
+
+/* FOIL */
+.foil{position:absolute;inset:0;border-radius:14px;
+  background:radial-gradient(ellipse 55% 55% at var(--fx,50%) var(--fy,50%),rgba(255,255,255,.18) 0%,transparent 65%),
+  repeating-linear-gradient(calc(105deg + var(--fr,.5)*75deg),
+    rgba(255,0,60,.045),rgba(255,130,0,.045) 10%,rgba(255,250,0,.045) 20%,
+    rgba(0,255,90,.045) 30%,rgba(0,170,255,.045) 40%,rgba(110,0,255,.045) 50%,
+    rgba(255,0,145,.045) 60%,rgba(255,0,60,.045) 70%);
+  mix-blend-mode:color-dodge;opacity:0;pointer-events:none;transition:opacity .4s;}
+.shimmer{position:absolute;inset:0;border-radius:14px;background:radial-gradient(ellipse 28% 28% at var(--fx,50%) var(--fy,50%),rgba(255,255,255,.08),transparent);mix-blend-mode:screen;opacity:0;pointer-events:none;transition:opacity .3s;}
+.ci.rev .foil,.ci.rev .shimmer{opacity:1;}
+
+/* PROMPT */
+#prompt{text-align:center;transition:opacity .4s;}
+#prompt.hide{opacity:0;pointer-events:none;}
+.pt{font-family:var(--jp);font-size:9px;letter-spacing:.4em;color:rgba(250,247,242,.24);margin-bottom:13px;}
+.ph{display:flex;align-items:center;justify-content:center;gap:7px;}
+.pd{width:3px;height:3px;border-radius:50%;background:var(--acc);animation:bl 2s infinite;}
+.pd:nth-child(2){animation-delay:.28s;}.pd:nth-child(3){animation-delay:.56s;}
+.ptx{font-size:6.5px;letter-spacing:.52em;text-transform:uppercase;color:rgba(250,247,242,.2);}
+@keyframes bl{0%,100%{opacity:.15;}50%{opacity:.85;}}
+
+/* CARD INFO */
+#card-info{text-align:center;opacity:0;transform:translateY(14px);transition:opacity .6s,transform .6s;pointer-events:none;}
+#card-info.on{opacity:1;transform:none;pointer-events:auto;}
+.ci-ep{font-size:8px;letter-spacing:.5em;margin-bottom:6px;font-family:var(--jp);font-weight:200;}
+.ci-nm{font-family:var(--display);font-size:clamp(20px,4vw,30px);font-style:italic;font-weight:300;color:var(--cream);}
+.ci-ch{font-size:7.5px;letter-spacing:.5em;text-transform:uppercase;color:rgba(250,247,242,.35);margin-top:4px;}
+
+/* BUTTONS */
+#btn-area{display:flex;gap:12px;opacity:0;transform:translateY(10px);transition:opacity .5s .22s,transform .5s .22s;pointer-events:none;}
+#btn-area.on{opacity:1;transform:none;pointer-events:auto;}
+.ab{font-size:7px;letter-spacing:.52em;text-transform:uppercase;padding:10px 26px;border:1px solid;cursor:pointer;background:transparent;font-family:var(--sans);font-weight:300;transition:all .3s;}
+.ab.p{color:var(--acc);border-color:rgba(var(--acc-rgb),.4);}
+.ab.p:hover{background:rgba(var(--acc-rgb),.08);}
+.ab.g{color:rgba(250,247,242,.32);border-color:rgba(250,247,242,.12);}
+.ab.g:hover{color:rgba(250,247,242,.55);}
+
+/* PARTICLES */
+.particle{position:fixed;pointer-events:none;border-radius:50%;z-index:500;animation:pf var(--d,.7s) ease-out var(--dl,0s) forwards;}
+@keyframes pf{0%{opacity:1;transform:translate(-50%,-50%) scale(1);}100%{opacity:0;transform:translate(calc(-50% + var(--tx)),calc(-50% + var(--ty))) scale(0);}}
+
+@media(max-width:520px){:root{--cw:185px;--img-h:278px;--bar-h:76px;--ch:354px;}#cDot,#cRing{display:none;}body{cursor:auto;}}
+
+/* legacy archive badge */
+#legacy-badge{position:fixed;bottom:14px;left:14px;z-index:9000;font-size:7px;letter-spacing:.35em;text-transform:uppercase;padding:6px 12px;background:rgba(8,5,10,.8);backdrop-filter:blur(8px);border:1px solid rgba(196,149,106,.4);color:#c4956a;text-decoration:none;font-family:'DM Sans',sans-serif;opacity:.75;transition:opacity .3s;}
+#legacy-badge:hover{opacity:1;}
+</style>
+</head>
+<body>
+<a id="legacy-badge" href="../arcana-draw.html">Legacy Archive · View Current ↗</a>
+<div id="cDot"></div><div id="cRing"></div>
+<div id="page">
+  <header class="arc-header">
+    <div class="arc-eye">Apecoft Studio · Arcana Series</div>
+    <div class="arc-logo">É<em>TOILE</em></div>
+    <div class="arc-sub">Major Arcana Collection</div>
+    <div class="arc-divider"></div>
+  </header>
+
+  <div id="scene">
+    <div id="deck-area">
+      <!-- Static deck (visible on load and after return) -->
+      <div class="sdl" id="sdl1"></div>
+      <div class="sdl" id="sdl2"></div>
+      <div class="sdl" id="sdl3">
+        <div class="sdl-oc tl"></div><div class="sdl-oc tr"></div>
+        <div class="sdl-oc bl"></div><div class="sdl-oc br"></div>
+        <div class="sdl-star">✦ ✦ ✦</div>
+        <div class="sdl-logo">É<em>TOILE</em></div>
+        <div class="sdl-label">Arcana Collection</div>
+      </div>
+      <div id="draw-card">
+        <div class="ci" id="ci">
+          <div class="cf back">
+            <div class="oc tl"></div><div class="oc tr"></div>
+            <div class="oc bl"></div><div class="oc br"></div>
+            <div class="bs">✦ ✦ ✦</div>
+            <div class="bl">É<em>TOILE</em></div>
+            <div class="bb">Arcana Collection</div>
+          </div>
+          <div class="cf front" id="front">
+            <div class="fi" id="fi">
+              <img id="fimg" src="" alt="" onerror="this.style.display='none';document.getElementById('ffb').style.display='flex'">
+              <div class="fi-fb" id="ffb" style="display:none"><div class="fb-num" id="fbnum"></div></div>
+            </div>
+            <div class="fn" id="fnum"></div>
+            <div class="fb">
+              <div class="fbn" id="fbn"></div>
+              <div class="fbc" id="fbc"></div>
+              <div class="fbs">ÉTOILE Arcana Collection</div>
+            </div>
+            <div class="foil" id="foil"></div>
+            <div class="shimmer" id="shim"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="prompt">
+      <div class="pt">カードをシャッフルして引いてください</div>
+      <div class="ph"><div class="pd"></div><div class="pd"></div><div class="pd"></div>
+        <div class="ptx">Click to shuffle & draw</div></div>
+    </div>
+
+    <div id="card-info">
+      <div class="ci-ep" id="ciep"></div>
+      <div class="ci-nm" id="cinm"></div>
+      <div class="ci-ch" id="cich"></div>
+    </div>
+    <div id="btn-area">
+      <button class="ab g" onclick="returnCard()">↩ Return</button>
+      <button class="ab p" onclick="returnCard()">Draw Again ✦</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ARC=[
+  {num:'XVII',name:'The Star',char:'Mina',jp:'ミナ',color:'#9abfd6',rgb:'154,191,214',img:'../arcana/mina_star.png'},
+  {num:'XIX',name:'The Sun',char:'Mina',jp:'ミナ',color:'#f5d06a',rgb:'245,208,106',img:'../arcana/mina_sun.png'},
+  {num:'XVIII',name:'The Moon',char:'Shiori',jp:'シオリ',color:'#8aaec6',rgb:'138,174,198',img:'../arcana/shiori_moon.png'},
+  {num:'VIII',name:'Strength',char:'Akane',jp:'アカネ',color:'#e2adc0',rgb:'226,173,192',img:'../arcana/akane_strength.png'},
+  {num:'XXI',name:'The World',char:'Suzune',jp:'スズネ',color:'#dfa898',rgb:'223,168,152',img:'../arcana/suzune_world.png'},
+  {num:'IX',name:'The Hermit',char:'Ayame',jp:'アヤメ',color:'#c4956a',rgb:'196,149,106',img:'../arcana/ayame_hermit.png'},
+  {num:'II',name:'High Priestess',char:'Rina',jp:'リナ',color:'#c8a86e',rgb:'200,168,110',img:'../arcana/rina_priestess.png'},
+];
+
+let deck=[...ARC].sort(()=>Math.random()-.5);
+let idx=0, busy=false, revealed=false;
+
+const deckArea=document.getElementById('deck-area');
+const drawCard=document.getElementById('draw-card');
+const ci=document.getElementById('ci');
+const info=document.getElementById('card-info');
+const btns=document.getElementById('btn-area');
+const prompt=document.getElementById('prompt');
+
+// ── Build fan card DOM ─────────────────────────────────────────
+function makeFanCard(){
+  const d=document.createElement('div');
+  d.className='fan-card';
+  d.innerHTML=`
+    <div class="fc-oc tl"></div><div class="fc-oc tr"></div>
+    <div class="fc-oc bl"></div><div class="fc-oc br"></div>
+    <div class="fc-star">✦ ✦ ✦</div>
+    <div class="fc-logo">É<em>TOILE</em></div>
+    <div class="fc-label">Arcana</div>`;
+  return d;
+}
+
+// ── Spread positions: 7 cards fan out left/right ───────────────
+const SPREAD=[
+  {x:-285,y:28,r:-28},
+  {x:-195,y:10,r:-17},
+  {x:-100,y:-2,r:-8},
+  {x:0,y:-8,r:0},
+  {x:100,y:-2,r:8},
+  {x:195,y:10,r:17},
+  {x:285,y:28,r:28},
+];
+
+// ── MAIN: click triggers full sequence ─────────────────────────
+deckArea.style.cursor='pointer';
+deckArea.addEventListener('click', onDeckClick);
+
+function onDeckClick(){
+  if(busy||revealed)return;
+  busy=true;
+  prompt.classList.add('hide');
+  // Hide static deck layers during shuffle
+  document.querySelectorAll('.sdl').forEach(d=>d.style.opacity='0');
+  // overflow always visible - never set hidden
+
+  // Create 7 fan cards
+  const cards=SPREAD.map(()=>{
+    const c=makeFanCard();
+    deckArea.appendChild(c);
+    return c;
+  });
+
+  // ── Phase 1: SPREAD OUT (0 → 560ms) ──────────────────────────
+  requestAnimationFrame(()=>{
+    cards.forEach((c,i)=>{
+      const p=SPREAD[i];
+      c.style.transition='transform .52s cubic-bezier(.4,0,.2,1), opacity .3s ease';
+      c.style.transform=`translateX(${p.x}px) translateY(${p.y}px) rotate(${p.r}deg)`;
+      c.style.opacity= i===3 ? '1' : '0.82';
+    });
+  });
+
+  // ── Phase 2: SHUFFLE (600 → 1300ms) ──────────────────────────
+  // Cards interleave: left ones move right, right ones move left,
+  // alternating past center with a slight lift
+  setTimeout(()=>{
+    const shufflePairs=[
+      [0,6],[1,5],[2,4]  // pairs shuffled in sequence
+    ];
+    shufflePairs.forEach(([li,ri],step)=>{
+      const delay=step*160;
+      setTimeout(()=>{
+        // Left card leaps over center
+        const lp=SPREAD[li];
+        cards[li].style.transition=`transform ${.28+step*.04}s cubic-bezier(.4,0,.2,1)`;
+        cards[li].style.transform=`translateX(${-lp.x*.1}px) translateY(-18px) rotate(${-lp.r*.3}deg)`;
+        // Right card leaps over center
+        const rp=SPREAD[ri];
+        cards[ri].style.transition=`transform ${.28+step*.04}s cubic-bezier(.4,0,.2,1)`;
+        cards[ri].style.transform=`translateX(${-rp.x*.1}px) translateY(-18px) rotate(${-rp.r*.3}deg)`;
+      },delay);
+
+      setTimeout(()=>{
+        // Land in center stack
+        [li,ri].forEach(i=>{
+          cards[i].style.transition=`transform .22s cubic-bezier(.2,0,.4,1), opacity .2s`;
+          const small=(Math.random()-0.5)*3;
+          cards[i].style.transform=`translateX(${small}px) translateY(${Math.random()*2}px) rotate(${small*.4}deg)`;
+          cards[i].style.opacity='0.7';
+        });
+      },delay+260);
+    });
+
+    // Center card: slight lift then settle
+    setTimeout(()=>{
+      cards[3].style.transition='transform .22s ease';
+      cards[3].style.transform='translateY(-10px) rotate(0deg)';
+    },200);
+    setTimeout(()=>{
+      cards[3].style.transition='transform .22s ease';
+      cards[3].style.transform='translateY(0px) rotate(0deg)';
+    },420);
+  }, 600);
+
+  // ── Phase 3: STACK TOGETHER (1350 → 1750ms) ───────────────────
+  setTimeout(()=>{
+    cards.forEach((c,i)=>{
+      c.style.transition=`transform .38s cubic-bezier(.4,0,.2,1) ${i*.02}s, opacity .3s ease ${i*.02}s`;
+      const micro=(Math.random()-0.5)*1.4;
+      c.style.transform=`translateX(${micro}px) translateY(${Math.random()*1}px) rotate(${micro*.3}deg)`;
+      c.style.opacity= i===6 ? '1' : (i>3?0.68:0.45);
+    });
+  }, 1350);
+
+  // ── Phase 4: Remove fans, show draw card, fly out ─────────────
+  setTimeout(()=>{
+    cards.forEach(c=>c.remove());
+    // keep overflow:visible so tilt never clips
+
+    // Show the real draw card
+    drawCard.style.display='block';
+    drawCard.style.transform='none';
+
+    const card=deck[idx%deck.length]; idx++;
+    loadCard(card);
+    setAcc(card.rgb,card.color);
+
+    // Rise
+    setTimeout(()=>{
+      drawCard.style.transition='transform .32s cubic-bezier(.4,0,.2,1)';
+      drawCard.style.transform='translateY(-22px) scale(1.04)';
+    }, 60);
+
+    // Flip
+    setTimeout(()=>{
+      ci.style.transition='transform .88s cubic-bezier(.25,.8,.25,1)';
+      ci.style.transform='rotateY(180deg)';
+    }, 400);
+
+    // Reveal
+    setTimeout(()=>{
+      ci.classList.add('rev');
+      revealed=true;
+      busy=false;
+
+      document.getElementById('ciep').textContent='Major Arcana · '+card.num;
+      document.getElementById('ciep').style.color=card.color;
+      document.getElementById('cinm').textContent=card.name;
+      document.getElementById('cich').textContent=card.char+' · '+card.jp;
+      info.classList.add('on');
+      btns.classList.add('on');
+
+      const r=drawCard.getBoundingClientRect();
+      burst(r.left+r.width/2, r.top+r.height/2, card.color);
+    }, 1100);
+
+  }, 1750);
+}
+
+// ── Return card ───────────────────────────────────────────────
+function returnCard(){
+  if(busy)return;
+  busy=true;
+  btns.classList.remove('on');
+  info.classList.remove('on');
+
+  setTimeout(()=>{
+    ci.style.transition='transform .62s cubic-bezier(.25,.8,.25,1)';
+    ci.style.transform='rotateY(0deg)';
+    ci.classList.remove('rev');
+  },140);
+
+  setTimeout(()=>{
+    drawCard.style.transition='transform .52s cubic-bezier(.22,1,.36,1)';
+    drawCard.style.transform='none';
+    revealed=false;
+  },620);
+
+  setTimeout(()=>{
+    drawCard.style.display='none';
+    setAcc('196,149,106','#c4956a');
+    // Restore static deck layers
+    document.getElementById('sdl1').style.opacity='';
+    document.getElementById('sdl2').style.opacity='';
+    document.getElementById('sdl3').style.opacity='';
+    prompt.classList.remove('hide');
+    busy=false;
+  },1000);
+}
+
+// ── Helpers ───────────────────────────────────────────────────
+function setAcc(rgb,hex){
+  document.documentElement.style.setProperty('--acc-rgb',rgb);
+  document.documentElement.style.setProperty('--acc',hex);
+}
+function loadCard(c){
+  document.getElementById('fnum').textContent=c.num;
+  document.getElementById('fbn').textContent=c.name;
+  document.getElementById('fbc').textContent=c.char+' · '+c.jp;
+  document.getElementById('fbc').style.color=c.color;
+  document.getElementById('fbnum').textContent=c.num;
+  const img=document.getElementById('fimg');
+  img.style.display='block';
+  document.getElementById('ffb').style.display='none';
+  img.src=c.img;
+  document.getElementById('fnum').style.borderBottom=`1px solid ${c.color}55`;
+}
+function burst(cx,cy,color){
+  for(let i=0;i<36;i++){
+    const p=document.createElement('div');p.className='particle';
+    const a=(i/36)*Math.PI*2+(Math.random()-.5)*.5;
+    const dist=60+Math.random()*140;
+    const sz=1.5+Math.random()*4;
+    const d=.45+Math.random()*.6;const dl=Math.random()*.16;
+    p.style.cssText=`left:${cx}px;top:${cy}px;width:${sz}px;height:${sz}px;background:${color};--tx:${Math.cos(a)*dist}px;--ty:${Math.sin(a)*dist}px;--d:${d}s;--dl:${dl}s;`;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),(d+dl)*1000+100);
+  }
+}
+
+// ── Foil + Tilt ───────────────────────────────────────────────
+let tt;
+drawCard.addEventListener('mousemove',e=>{
+  if(!revealed)return;
+  const r=drawCard.getBoundingClientRect();
+  const x=(e.clientX-r.left)/r.width, y=(e.clientY-r.top)/r.height;
+  ci.style.transition='transform .07s linear';
+  ci.style.transform=`rotateY(${180+(x-.5)*22}deg) rotateX(${(y-.5)*-22}deg)`;
+  document.getElementById('foil').style.setProperty('--fx',`${x*100}%`);
+  document.getElementById('foil').style.setProperty('--fy',`${y*100}%`);
+  document.getElementById('foil').style.setProperty('--fr',x);
+  document.getElementById('shim').style.setProperty('--fx',`${x*100}%`);
+  document.getElementById('shim').style.setProperty('--fy',`${y*100}%`);
+  clearTimeout(tt);
+});
+drawCard.addEventListener('mouseleave',()=>{
+  if(!revealed)return;
+  tt=setTimeout(()=>{
+    ci.style.transition='transform .78s cubic-bezier(.34,1.36,.64,1)';
+    ci.style.transform='rotateY(180deg)';
+  },55);
+});
+
+// ── Cursor ────────────────────────────────────────────────────
+const cd=document.getElementById('cDot'),cr=document.getElementById('cRing');
+let mx=0,my=0,rx=0,ry=0;
+if(!('ontouchstart' in window)){
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cd.style.left=mx+'px';cd.style.top=my+'px';});
+  (function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(loop);})();
+  [deckArea,...document.querySelectorAll('.ab')].forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+  });
+}
+</script>
+</body>
+</html>

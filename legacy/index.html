@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ÉTOILE — Apecoft Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;1,6..96,300&family=Noto+Serif+JP:wght@200;300&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --pink:#e2adc0;    --pink-deep:#b8688a;
+  --gold:#c4a464;    --gold-pale:rgba(196,164,100,0.12);
+  --warm:#c4956a;    --warm-pale:rgba(196,149,106,0.12);
+  --cream:#faf7f2;   --ink:#0c0910;
+  --dark:#07050a;    --dark2:#100c14;
+  --muted:#7a6872;   --muted2:#4e4050;
+  --display:'Bodoni Moda',serif;
+  --serif:'Cormorant Garamond',serif;
+  --jp:'Noto Serif JP',serif;
+  --sans:'DM Sans',sans-serif;
+}
+html,body{width:100%;min-height:100%;overflow-x:hidden;}
+body{
+  background:var(--dark);
+  color:var(--cream);
+  font-family:var(--sans);
+  font-weight:300;
+  cursor:none;
+}
+
+/* GRAIN */
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity:0.028;pointer-events:none;z-index:9000;
+}
+
+/* CURSOR */
+#cDot,#cRing{position:fixed;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%);transition:opacity .3s;}
+#cDot{width:5px;height:5px;background:var(--gold);}
+#cRing{width:28px;height:28px;border:1px solid rgba(196,164,100,0.4);transition:transform .4s ease,width .3s,height .3s,border-color .3s;}
+body.hov #cRing{width:60px;height:60px;border-color:rgba(196,164,100,0.6);}
+
+/* ── HEADER ── */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  padding:20px clamp(20px,5vw,60px);
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(to bottom,rgba(7,5,10,0.8),transparent);
+}
+.h-logo{
+  font-family:var(--display);
+  font-size:clamp(16px,2.2vw,22px);
+  font-weight:300;letter-spacing:.3em;
+  color:var(--cream);
+}
+.h-logo em{font-style:italic;color:var(--gold);}
+.h-by{
+  font-size:7px;letter-spacing:.5em;
+  color:var(--muted);text-transform:uppercase;
+}
+
+/* ── HERO ── */
+.hero{
+  min-height:100svh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:clamp(80px,12vh,140px) clamp(20px,5vw,60px) clamp(40px,6vh,80px);
+  position:relative;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 60% at 50% 50%, rgba(196,164,100,0.04) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-pre{
+  font-size:8px;letter-spacing:.7em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:20px;
+  opacity:0;animation:fadeUp 1s ease .3s forwards;
+}
+.hero-logo{
+  font-family:var(--display);
+  font-size:clamp(72px,16vw,180px);
+  font-weight:300;letter-spacing:.2em;
+  color:var(--cream);line-height:1;
+  opacity:0;animation:fadeUp 1.4s ease .6s forwards;
+}
+.hero-line{
+  width:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin:28px auto;
+  animation:growLine 1.5s ease 1.2s forwards;
+}
+.hero-sub{
+  font-family:var(--jp);font-weight:200;
+  font-size:10px;letter-spacing:.5em;
+  color:var(--muted);
+  opacity:0;animation:fadeUp 1s ease 1.5s forwards;
+}
+.hero-desc{
+  font-family:var(--serif);font-size:clamp(14px,1.8vw,18px);
+  font-style:italic;font-weight:300;
+  color:rgba(250,247,242,.45);
+  max-width:480px;line-height:1.8;margin-top:14px;
+  opacity:0;animation:fadeUp 1s ease 1.8s forwards;
+}
+.hero-scroll{
+  position:absolute;bottom:clamp(24px,4vh,40px);
+  left:0;right:0;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  opacity:0;animation:fadeUp 1s ease 2.2s forwards;
+}
+.hero-scroll-line{
+  width:1px;height:44px;
+  background:linear-gradient(to bottom,var(--gold),transparent);
+  animation:pulse 2s ease infinite;
+}
+.hero-scroll-lbl{font-size:7px;letter-spacing:.4em;color:var(--muted);text-transform:uppercase;}
+
+/* ── VOLUMES GRID ── */
+.volumes{
+  padding:clamp(60px,10vh,120px) clamp(20px,5vw,60px) clamp(80px,12vh,160px);
+  display:grid;
+  grid-template-columns:1fr;
+  gap:clamp(32px,4vw,52px);
+  max-width:1000px;
+  margin:0 auto;
+}
+.volumes-cards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:clamp(16px,3vw,32px);
+  align-items:start;
+}
+
+/* ── VOL CARD ── */
+.vol-card{
+  width:100%;
+  position:relative;
+  cursor:pointer;
+  opacity:0;transform:translateY(32px);
+  transition:opacity .9s ease, transform .9s ease;
+  display:flex;flex-direction:column;
+}
+.vol-card.on{opacity:1;transform:none;}
+.vol-card:nth-child(2){transition-delay:.2s;}
+
+/* Cover image */
+.vol-cover{
+  position:relative;overflow:hidden;
+  aspect-ratio:4/3;
+  background:var(--dark2);
+  flex-shrink:0;
+}
+.vol-cover img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:top center;
+  display:block;
+  transition:transform .9s cubic-bezier(0.4,0,0.2,1), filter .6s ease;
+  filter:saturate(.9) brightness(.92);
+}
+.vol-card:hover .vol-cover img{
+  transform:scale(1.04);
+  filter:saturate(1.05) brightness(1.0);
+}
+
+/* Tint overlay */
+.vol-cover::before{
+  content:'';position:absolute;inset:0;z-index:1;
+  opacity:1;transition:opacity .55s ease;
+  pointer-events:none;
+}
+.vol-card.v01 .vol-cover::before{background:rgba(226,173,192,0.07);}
+.vol-card.v02 .vol-cover::before{background:rgba(196,149,106,0.07);}
+.vol-card.v03 .vol-cover::before{background:rgba(196,149,106,0.07);}
+.vol-card.v04 .vol-cover::before{background:rgba(223,168,152,0.07);}
+.vol-card:hover .vol-cover::before{opacity:0;}
+
+/* Bottom gradient on cover */
+.vol-cover-grad{
+  position:absolute;bottom:0;left:0;right:0;z-index:2;
+  height:45%;
+  background:linear-gradient(to top,rgba(7,5,10,.85) 0%,transparent 100%);
+}
+
+/* Cover labels (inside image) */
+.vol-cover-info{
+  position:absolute;bottom:0;left:0;right:0;z-index:3;
+  padding:16px 20px 18px;
+}
+.vci-num{
+  font-size:7px;letter-spacing:.55em;text-transform:uppercase;
+  margin-bottom:4px;
+}
+.vol-card.v01 .vci-num{color:var(--pink);}
+.vol-card.v02 .vci-num{color:var(--warm);}
+.vol-card.v03 .vci-num{color:#c4956a;}
+.vol-card.v04 .vci-num{color:#dfa898;}
+.vci-title{
+  font-family:var(--display);
+  font-size:clamp(18px,2.8vw,28px);
+  font-weight:300;font-style:italic;
+  color:var(--cream);line-height:1.1;
+}
+
+/* Enter panel — fixed height so cards match */
+.vol-enter{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;
+  border-top:1px solid rgba(250,247,242,.07);
+  background:var(--dark2);
+  transition:background .3s;
+  height:100px; /* fixed height = equal cards */
+  flex-shrink:0;
+}
+.vol-card:hover .vol-enter{background:rgba(20,16,24,1);}
+.ve-left{flex:1;min-width:0;margin-right:14px;}
+.ve-tag{
+  display:inline-block;font-size:7px;letter-spacing:.45em;
+  text-transform:uppercase;padding:3px 10px;border:1px solid;
+  margin-bottom:7px;white-space:nowrap;
+}
+.vol-card.v01 .ve-tag{color:var(--pink);border-color:rgba(226,173,192,.3);}
+.vol-card.v02 .ve-tag{color:var(--warm);border-color:rgba(196,149,106,.3);}
+.vol-card.v03 .ve-tag{color:#c4956a;border-color:rgba(196,149,106,.3);}
+.vol-card.v04 .ve-tag{color:#dfa898;border-color:rgba(223,168,152,.3);}
+/* Clamp sub text to 2 lines max */
+.ve-sub{
+  font-size:9px;letter-spacing:.15em;color:var(--muted);line-height:1.6;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.ve-btn{
+  font-size:8px;letter-spacing:.4em;text-transform:uppercase;
+  padding:9px 18px;border:1px solid;
+  transition:all .3s;white-space:nowrap;flex-shrink:0;
+}
+.vol-card.v01 .ve-btn{color:var(--pink);border-color:rgba(226,173,192,.3);}
+.vol-card.v02 .ve-btn{color:var(--warm);border-color:rgba(196,149,106,.3);}
+.vol-card.v03 .ve-btn{color:#c4956a;border-color:rgba(196,149,106,.3);}
+.vol-card.v04 .ve-btn{color:#dfa898;border-color:rgba(223,168,152,.3);}
+.vol-card.v01:hover .ve-btn{background:var(--pink);color:var(--dark);border-color:var(--pink);}
+.vol-card.v02:hover .ve-btn{background:var(--warm);color:var(--dark);border-color:var(--warm);}
+.vol-card.v03:hover .ve-btn{background:#c4956a;color:var(--dark);border-color:#c4956a;}
+.vol-card.v04:hover .ve-btn{background:#dfa898;color:var(--dark);border-color:#dfa898;}
+
+/* Coming soon state */
+.vol-card.coming .vol-cover img{filter:saturate(0) brightness(.6);}
+.vol-card.coming:hover .vol-cover img{filter:saturate(0) brightness(.7);}
+.coming-badge{
+  position:absolute;top:16px;right:16px;z-index:4;
+  font-size:7px;letter-spacing:.4em;text-transform:uppercase;
+  padding:4px 12px;
+  background:rgba(7,5,10,.7);backdrop-filter:blur(8px);
+  border:1px solid rgba(250,247,242,.15);
+  color:rgba(250,247,242,.5);
+}
+
+/* ── FOOTER ── */
+footer{
+  padding:clamp(32px,5vh,52px) clamp(20px,5vw,60px);
+  border-top:1px solid rgba(250,247,242,.05);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+}
+.ft-logo{
+  font-family:var(--display);
+  font-size:14px;font-weight:300;letter-spacing:.3em;
+  color:rgba(250,247,242,.25);
+}
+.ft-logo em{font-style:italic;color:rgba(196,164,100,.4);}
+.ft-copy{font-size:7px;letter-spacing:.35em;text-transform:uppercase;color:var(--muted2);}
+
+/* ── DIVIDER ── */
+.series-label{
+  text-align:center;
+  padding:0 clamp(20px,5vw,60px);
+  margin-bottom:clamp(32px,5vw,52px);
+  opacity:0;transform:translateY(20px);
+  transition:opacity .9s ease, transform .9s ease;
+}
+.series-label.on{opacity:1;transform:none;}
+.sl-line-wrap{
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;gap:20px;
+}
+.sl-line{height:1px;background:rgba(250,247,242,.06);}
+.sl-text{font-size:7px;letter-spacing:.6em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+@keyframes growLine{to{width:200px;}}
+@keyframes pulse{0%,100%{opacity:.25;}50%{opacity:.9;}}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  #cDot,#cRing{display:none;}body{cursor:auto;}
+  .hero-logo{font-size:clamp(56px,18vw,96px);letter-spacing:.15em;}
+  .volumes{padding:40px 16px 80px;}
+  .volumes-cards{grid-template-columns:1fr;gap:20px;}
+  .vol-card{width:100%;max-width:420px;margin:0 auto;}
+  header{padding:14px 18px;}
+  footer{flex-direction:column;align-items:center;text-align:center;}
+}
+
+/* legacy archive badge */
+#legacy-badge{position:fixed;bottom:14px;left:14px;z-index:9000;font-size:7px;letter-spacing:.35em;text-transform:uppercase;padding:6px 12px;background:rgba(8,5,10,.8);backdrop-filter:blur(8px);border:1px solid rgba(196,149,106,.4);color:#c4956a;text-decoration:none;font-family:'DM Sans',sans-serif;opacity:.75;transition:opacity .3s;}
+#legacy-badge:hover{opacity:1;}
+</style>
+</head>
+<body>
+<a id="legacy-badge" href="../index.html">Legacy Archive · View Current ↗</a>
+
+<div id="cDot"></div>
+<div id="cRing"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="h-logo">É<em>TOILE</em></div>
+  <div style="display:flex;align-items:center;gap:20px;">
+    <div class="h-by" style="cursor:pointer;transition:color .25s;" onmouseenter="this.style.color='var(--cream)'" onmouseleave="this.style.color=''" onclick="goTo('our-girls.html')">Our Girls</div>
+    <div class="h-by">presented by Apecoft Studio</div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-pre">Apecoft Studio presents</div>
+  <div class="hero-logo">ÉTOILE</div>
+  <div class="hero-line"></div>
+  <div class="hero-sub">エトワール — A Photo Editorial Series</div>
+  <div class="hero-desc">"Every volume, a new story. Every story, a season worth remembering."</div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <div class="hero-scroll-lbl">Browse Volumes</div>
+  </div>
+</section>
+
+<!-- VOLUMES -->
+<section class="volumes">
+
+  <!-- Series divider -->
+  <div class="series-label" id="seriesLabel">
+    <div class="sl-line-wrap">
+      <div class="sl-line"></div>
+      <div class="sl-text">All Volumes</div>
+      <div class="sl-line"></div>
+    </div>
+  </div>
+
+  <div class="volumes-cards" style="grid-template-columns:repeat(2,1fr);">
+
+  <!-- Vol.01 -->
+  <div class="vol-card v01" id="card01" onclick="goTo('vol01/summer-memories.html')">
+    <div class="vol-cover">
+      <img src="../vol01/akane_mina_Cover.png" alt="ÉTOILE Vol.01 — Summer Memories">
+      <div class="vol-cover-grad"></div>
+      <div class="vol-cover-info">
+        <div class="vci-num">Vol.01 · July Special 2025</div>
+        <div class="vci-title">Summer<br>Memories</div>
+      </div>
+    </div>
+    <div class="vol-enter">
+      <div class="ve-left">
+        <div class="ve-tag">Akane & Mina</div>
+        <div class="ve-sub">Summer 2025<br>この夏を、忘れない。</div>
+      </div>
+      <div class="ve-btn">Enter ↗</div>
+    </div>
+  </div>
+
+  <!-- Vol.02 -->
+  <div class="vol-card v02" id="card02" onclick="goTo('vol02/quiet-mornings.html')">
+    <div class="vol-cover">
+      <img src="../vol02/ayame_cover.png" alt="ÉTOILE Vol.02 — Quiet Mornings">
+      <div class="vol-cover-grad"></div>
+      <div class="vol-cover-info">
+        <div class="vci-num">Vol.02 · January Special 2026</div>
+        <div class="vci-title">Quiet<br>Mornings</div>
+      </div>
+    </div>
+    <div class="vol-enter">
+      <div class="ve-left">
+        <div class="ve-tag">Ayame</div>
+        <div class="ve-sub">Winter 2026<br>静かな朝が、いちばん私を整えてくれる。</div>
+      </div>
+      <div class="ve-btn">Enter ↗</div>
+    </div>
+  </div>
+
+  <!-- Vol.03 -->
+  <div class="vol-card v03" id="card03" onclick="goTo('vol03/little-moment.html')">
+    <div class="vol-cover">
+      <img src="../vol03/rina_cover.png" alt="ÉTOILE Vol.03 — Little Moment">
+      <div class="vol-cover-grad"></div>
+      <div class="vol-cover-info">
+        <div class="vci-num">Vol.03 · March Special 2026</div>
+        <div class="vci-title">Little<br>Moment</div>
+      </div>
+    </div>
+    <div class="vol-enter">
+      <div class="ve-left">
+        <div class="ve-tag">Rina & Nuna</div>
+        <div class="ve-sub">Spring 2026<br>静かな朝が、心をやさしく包み込む。</div>
+      </div>
+      <div class="ve-btn">Enter ↗</div>
+    </div>
+  </div>
+
+  <!-- Vol.04 -->
+  <div class="vol-card v04" id="card04" onclick="goTo('vol04/letters-from-a-quiet-friend.html')">
+    <div class="vol-cover">
+      <img src="../vol04/suzu_shi_cover.png" alt="ÉTOILE Vol.04 — Letters From A Quiet Friend">
+      <div class="vol-cover-grad"></div>
+      <div class="vol-cover-info">
+        <div class="vci-num">Vol.04 · April Special 2026</div>
+        <div class="vci-title">Letters From<br>A Quiet Friend</div>
+      </div>
+    </div>
+    <div class="vol-enter">
+      <div class="ve-left">
+        <div class="ve-tag">Suzune & Shiori</div>
+        <div class="ve-sub">Summer 2026<br>何気ない日々が、いちばん大切だった。</div>
+      </div>
+      <div class="ve-btn">Enter ↗</div>
+    </div>
+  </div>
+
+  </div><!-- /volumes-cards -->
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-logo">É<em>TOILE</em></div>
+  <div class="ft-copy">© 2025–2026 Apecoft Studio · All artwork original</div>
+</footer>
+
+<script>
+/* CURSOR */
+const cDot=document.getElementById('cDot'),cRing=document.getElementById('cRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cDot.style.left=mx+'px';cDot.style.top=my+'px';});
+(function a(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;cRing.style.left=rx+'px';cRing.style.top=ry+'px';requestAnimationFrame(a);})();
+document.querySelectorAll('.vol-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+});
+
+/* SCROLL REVEAL */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});
+},{threshold:.08});
+document.querySelectorAll('.vol-card, .series-label').forEach(el=>obs.observe(el));
+
+/* NAVIGATION */
+function goTo(url){
+  document.body.style.transition='opacity .5s ease';
+  document.body.style.opacity='0';
+  setTimeout(()=>window.location.href=url, 500);
+}
+
+/* BACK from vol pages — fade in */
+document.body.style.opacity='0';
+window.addEventListener('load',()=>{
+  document.body.style.transition='opacity .8s ease';
+  document.body.style.opacity='1';
+});
+</script>
+</body>
+</html>

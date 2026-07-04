@@ -221,60 +221,13 @@ footer{padding:clamp(24px,4vh,40px) clamp(20px,5vw,60px);border-top:0.5px solid 
   footer{flex-direction:column;align-items:center;text-align:center;}
 }
 
-/* ═══════════ V2 — CONSTELLATION LAYER ═══════════ */
-:root{--acc:#c4a464;--acc-rgb:196,164,100;}
-#stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
-#glow{position:fixed;width:62vmax;height:62vmax;border-radius:50%;pointer-events:none;z-index:0;background:radial-gradient(circle,rgba(var(--acc-rgb),.05) 0%,transparent 62%);transform:translate(-50%,-50%);transition:background 1.1s ease;left:50%;top:40%;}
-header,.hero,.gallery,footer{position:relative;z-index:1;}
-#cDot{background:var(--acc);transition:background .8s;}
-#cRing{border-color:rgba(var(--acc-rgb),.4);transition:width .3s,height .3s,border-color .8s;}
-#rp{position:fixed;top:0;left:0;right:0;height:2px;z-index:600;}
-#rp-fill{height:100%;width:0;background:linear-gradient(90deg,var(--acc),#c4a464);transition:width .08s linear,background 1s ease;}
-/* hero letter stagger */
-.hero-title{display:flex;justify-content:center;gap:.22em;}
-.hero-title span{opacity:0;transform:translateY(30px) rotate(3deg);animation:hLi .85s cubic-bezier(.22,1,.36,1) forwards;display:inline-block;}
-@keyframes hLi{to{opacity:1;transform:none;}}
-.hero-title span em{font-style:italic;color:var(--gold);}
-/* names ticker */
-#g-ticker{position:relative;z-index:1;border-top:0.5px solid rgba(250,247,242,.05);border-bottom:0.5px solid rgba(250,247,242,.05);padding:11px 0;overflow:hidden;background:rgba(16,12,20,.4);margin-bottom:clamp(28px,5vh,56px);}
-.gt-track{display:flex;gap:42px;white-space:nowrap;animation:gtk 34s linear infinite;width:max-content;}
-.gt-track span{font-size:8px;letter-spacing:.5em;text-transform:uppercase;color:rgba(250,247,242,.22);}
-.gt-track span i{font-style:normal;}
-@keyframes gtk{to{transform:translateX(-50%);}}
-/* row star + shine + tilt */
-.og-star{display:inline-block;font-size:11px;margin-bottom:7px;transition:transform .6s cubic-bezier(.34,1.4,.64,1);}
-.og-row:hover .og-star{transform:rotate(180deg) scale(1.3);}
-.og-shine{position:absolute;inset:0;background:radial-gradient(ellipse 45% 35% at var(--sx,50%) var(--sy,50%),rgba(255,255,255,.08),transparent 70%);opacity:0;transition:opacity .4s;pointer-events:none;z-index:3;}
-.og-row:hover .og-shine{opacity:1;}
-.og-img-inner{perspective:900px;}
-.og-img-inner img{will-change:transform;}
-/* hover glow border in girl color */
-.og-row{transition:opacity .85s ease,transform .85s ease,border-color .4s,box-shadow .5s;}
-.og-row:hover{box-shadow:0 24px 70px -30px rgba(var(--row-rgb,250,247,242),.28);border-color:rgba(var(--row-rgb,250,247,242),.32)!important;}
-/* burst particles */
-.gparticle{position:fixed;pointer-events:none;border-radius:50%;z-index:1500;animation:gpf var(--d,.7s) ease-out var(--dl,0s) forwards;}
-@keyframes gpf{0%{opacity:1;transform:translate(-50%,-50%) scale(1);}100%{opacity:0;transform:translate(calc(-50% + var(--tx)),calc(-50% + var(--ty))) scale(0);}}
-/* detail panel accent dot pulse — cute */
-.di-vol-dot{animation:dotPulse 2.2s ease infinite;}
-@keyframes dotPulse{0%,100%{box-shadow:0 0 0 0 rgba(var(--acc-rgb),.4);}50%{box-shadow:0 0 0 5px rgba(var(--acc-rgb),0);}}
-
-/* ═══ ACCESSIBILITY: reduced motion + pointer gating (design-taste pre-flight) ═══ */
-@media (prefers-reduced-motion: reduce){
-  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important;}
-  html{scroll-behavior:auto!important;}
-  body{cursor:auto!important;}
-  #cDot,#cRing,#stars,#motes,#snow,#flies,#glow,#rays,#aura{display:none!important;}
-}
-@media (pointer:coarse),(hover:none){
-  body{cursor:auto!important;}
-  #cDot,#cRing{display:none!important;}
-}
+/* legacy archive badge */
+#legacy-badge{position:fixed;bottom:14px;left:14px;z-index:9000;font-size:7px;letter-spacing:.35em;text-transform:uppercase;padding:6px 12px;background:rgba(8,5,10,.8);backdrop-filter:blur(8px);border:1px solid rgba(196,149,106,.4);color:#c4956a;text-decoration:none;font-family:'DM Sans',sans-serif;opacity:.75;transition:opacity .3s;}
+#legacy-badge:hover{opacity:1;}
 </style>
 </head>
 <body>
-<canvas id="stars"></canvas>
-<div id="glow"></div>
-<div id="rp"><div id="rp-fill"></div></div>
+<a id="legacy-badge" href="../our-girls.html">Legacy Archive · View Current ↗</a>
 <div id="cDot"></div><div id="cRing"></div>
 <header>
   <div class="h-logo">É<em>TOILE</em></div>
@@ -282,11 +235,10 @@ header,.hero,.gallery,footer{position:relative;z-index:1;}
 </header>
 <section class="hero">
   <div class="hero-pre">ÉTOILE · Apecoft Studio</div>
-  <div class="hero-title" id="heroTitle"></div>
+  <div class="hero-title">Our <em>Girls</em></div>
   <div class="hero-line"></div>
   <div class="hero-sub">エトワールを彩る、彼女たちの物語。</div>
 </section>
-<div id="g-ticker"><div class="gt-track" id="gtTrack"></div></div>
 <section class="gallery" id="gallery"></section>
 <footer>
   <div class="ft-logo">É<em>TOILE</em></div>
@@ -322,7 +274,11 @@ header,.hero,.gallery,footer{position:relative;z-index:1;}
   </div>
   <div class="plbox-hint">Tap card to reveal · Tap outside to close</div>
 </div>
-<script src="girls/girls-data.js"></script>
+<script src="../girls/girls-data.js"></script>
+<script>
+/* legacy path shim: girls-data.js paths are root-relative ('girls/...'); prefix for legacy/ depth */
+(function fix(o){if(Array.isArray(o))o.forEach(fix);else if(o&&typeof o==='object')Object.keys(o).forEach(k=>{if(typeof o[k]==='string'&&o[k].startsWith('girls/'))o[k]='../'+o[k];else fix(o[k]);});})(GIRLS);
+</script>
 <script>
 // ── Render gallery cards from GIRLS[] ─────────────────────────
 function renderGallery(){
@@ -336,9 +292,8 @@ function renderGallery(){
         <div class="og-img-inner">
           <img src="${g.gallery.src}" alt="${g.name}" style="object-position:${g.gallery.pos||'center top'};">
         </div>
-        <div class="og-shine"></div>
         <div class="og-overlay">
-          <div class="og-star" style="color:${g.color};">✦</div>
+          <div class="og-dot" style="background:${g.color};"></div>
           <div class="og-name-en">${g.name}</div>
           <div class="og-name-jp">${g.jp}</div>
         </div>
@@ -364,10 +319,7 @@ function renderGallery(){
         <div class="og-cta"><span class="og-cta-lbl">Meet ${g.name}</span><span class="og-arr">→</span></div>
       </div>`;
     const row=document.createElement('div');
-    const rowRgb=g.color.replace('#','').match(/../g).map(h=>parseInt(h,16)).join(',');
     row.className=`og-row ${dir}`;
-    row.style.setProperty('--row-rgb',rowRgb);
-    row.dataset.acc=rowRgb;
     row.setAttribute('onclick',`openDet('${g.key}')`);
     row.innerHTML=r?sideBlock+imgBlock:imgBlock+sideBlock;
     wrap.appendChild(row);
@@ -448,7 +400,6 @@ function openDet(key){
     <div class="di-footer" style="gap:8px;flex-wrap:wrap;">${volBtns}</div>`;
   document.getElementById('detWrap').classList.add('open');
   document.body.style.overflow='hidden';
-  setTimeout(()=>{burst(innerWidth/2,innerHeight*0.38,g.color);},250);
   // re-bind hover for new ptabs
   bindHover();
 }
@@ -553,142 +504,6 @@ if(!('ontouchstart' in window)){
   (function a(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;cRing.style.left=rx+'px';cRing.style.top=ry+'px';requestAnimationFrame(a);})();
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePolar();closeDet();}});
-
-/* ═══════════ V2 — CONSTELLATION LAYER ═══════════ */
-/* hero letter stagger */
-(function(){
-  const t=document.getElementById('heroTitle');
-  const words=[{txt:'Our',em:false},{txt:'Girls',em:true}];
-  let delay=0.4;
-  words.forEach((wd,wi)=>{
-    [...wd.txt].forEach(ch=>{
-      const s=document.createElement('span');
-      s.style.animationDelay=delay+'s';delay+=0.07;
-      s.innerHTML=wd.em?`<em>${ch}</em>`:ch;
-      t.appendChild(s);
-    });
-    if(wi===0){const sp=document.createElement('span');sp.innerHTML='&nbsp;';sp.style.animationDelay=delay+'s';t.appendChild(sp);}
-  });
-})();
-
-/* names ticker from GIRLS data */
-(function(){
-  const tk=document.getElementById('gtTrack');
-  const items=GIRLS.map(g=>`<span>${g.name} · ${g.jp} · ${g.colorName||''} <i style="color:${g.color};">✦</i></span>`).join('');
-  tk.innerHTML=items+items;
-})();
-
-/* colored constellation starfield — each girl is a star */
-(function(){
-  const cv=document.getElementById('stars'),ctx=cv.getContext('2d');
-  let W,H,stars=[];
-  const COLORS=GIRLS.map(g=>{
-    const [r,gg,b]=g.color.replace('#','').match(/../g).map(h=>parseInt(h,16));
-    return [r,gg,b];
-  });
-  function resize(){
-    W=cv.width=innerWidth;H=cv.height=innerHeight;
-    stars=Array.from({length:Math.min(110,W/12)},()=>{
-      const colored=Math.random()<.3;
-      return{
-        x:Math.random()*W,y:Math.random()*H,
-        r:Math.random()*1.3+.4,
-        c:colored?COLORS[Math.floor(Math.random()*COLORS.length)]:[250,247,242],
-        tw:Math.random()*Math.PI*2,
-        sp:.03+Math.random()*.1,
-        dx:(Math.random()-.5)*.04,
-      };
-    });
-  }
-  resize();addEventListener('resize',resize);
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    const px=(mx/W-.5)*12,py=(my/H-.5)*8;
-    stars.forEach(s=>{
-      s.tw+=s.sp*.05;
-      s.x+=s.dx;if(s.x<0)s.x=W;if(s.x>W)s.x=0;
-      const a=.2+Math.abs(Math.sin(s.tw))*.5;
-      ctx.beginPath();
-      ctx.arc(s.x+px*s.r,s.y+py*s.r,s.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(${s.c[0]},${s.c[1]},${s.c[2]},${a})`;
-      ctx.fill();
-    });
-    requestAnimationFrame(draw);
-  }
-if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){}else requestAnimationFrame(draw);
-})();
-
-/* ambient glow follows cursor */
-(function(){
-  const glow=document.getElementById('glow');
-  let gx=innerWidth/2,gy=innerHeight/2;
-  (function loop(){
-    gx+=(mx-gx)*.04;gy+=(my-gy)*.04;
-    glow.style.left=gx+'px';glow.style.top=gy+'px';
-    requestAnimationFrame(loop);
-  })();
-})();
-
-/* accent takeover on row hover */
-function setAcc(rgb){
-  document.documentElement.style.setProperty('--acc-rgb',rgb);
-  const[r,g,b]=rgb.split(',').map(Number);
-  document.documentElement.style.setProperty('--acc',`rgb(${r},${g},${b})`);
-}
-function bindAccentRows(){
-  document.querySelectorAll('.og-row').forEach(row=>{
-    row.addEventListener('mouseenter',()=>setAcc(row.dataset.acc));
-    row.addEventListener('mouseleave',()=>setAcc('196,164,100'));
-  });
-}
-
-/* 3D tilt + shine on gallery images */
-function bindTilt(){
-  if('ontouchstart' in window)return;
-  document.querySelectorAll('.og-row').forEach(row=>{
-    const inner=row.querySelector('.og-img-inner');
-    const img=inner?inner.querySelector('img'):null;
-    const shine=row.querySelector('.og-shine');
-    if(!inner||!img)return;
-    row.addEventListener('mousemove',e=>{
-      const r=inner.getBoundingClientRect();
-      const x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
-      if(x<0||x>1||y<0||y>1)return;
-      img.style.transition='transform .12s ease-out,filter .5s';
-      img.style.transform=`scale(1.05) rotateY(${(x-.5)*2.2}deg) rotateX(${(y-.5)*-2.2}deg)`;
-      if(shine){shine.style.setProperty('--sx',`${x*100}%`);shine.style.setProperty('--sy',`${y*100}%`);}
-    });
-    row.addEventListener('mouseleave',()=>{
-      img.style.transition='transform .8s cubic-bezier(.22,1,.36,1),filter .5s';
-      img.style.transform='none';
-    });
-  });
-}
-
-/* particle burst in girl color */
-function burst(cx,cy,color){
-  for(let i=0;i<26;i++){
-    const p=document.createElement('div');p.className='gparticle';
-    const a=(i/26)*Math.PI*2+(Math.random()-.5)*.5;
-    const dist=46+Math.random()*100;
-    const sz=1.5+Math.random()*3.5;
-    const d=.45+Math.random()*.5;const dl=Math.random()*.12;
-    p.style.cssText=`left:${cx}px;top:${cy}px;width:${sz}px;height:${sz}px;background:${color};--tx:${Math.cos(a)*dist}px;--ty:${Math.sin(a)*dist}px;--d:${d}s;--dl:${dl}s;`;
-    document.body.appendChild(p);
-    setTimeout(()=>p.remove(),(d+dl)*1000+100);
-  }
-}
-
-/* progress bar */
-let _st1=false;
-addEventListener('scroll',()=>{if(_st1)return;_st1=true;requestAnimationFrame(()=>{
-  const el=document.documentElement;
-  document.getElementById('rp-fill').style.width=(el.scrollTop/(el.scrollHeight-el.clientHeight))*100+'%';
-_st1=false;});},{passive:true});
-
-/* init V2 bindings after gallery render */
-bindAccentRows();
-bindTilt();
 </script>
 </body>
 </html>

@@ -3,464 +3,447 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ÉTOILE — Apecoft Studio</title>
+<title>ÉTOILE — Photobook Series · Apecoft Studio</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;1,6..96,300&family=Noto+Serif+JP:wght@200;300&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --pink:#e2adc0;    --pink-deep:#b8688a;
-  --gold:#c4a464;    --gold-pale:rgba(196,164,100,0.12);
-  --warm:#c4956a;    --warm-pale:rgba(196,149,106,0.12);
-  --cream:#faf7f2;   --ink:#0c0910;
-  --dark:#07050a;    --dark2:#100c14;
-  --muted:#7a6872;   --muted2:#4e4050;
-  --display:'Bodoni Moda',serif;
-  --serif:'Cormorant Garamond',serif;
-  --jp:'Noto Serif JP',serif;
-  --sans:'DM Sans',sans-serif;
+  --gold:#c4956a;--cream:#faf7f2;--muted:#7a7068;--muted2:#504848;
+  --dark:#06040c;--dark2:#0b0814;
+  --pink:#e2adc0;--sky:#9abfd6;--amber:#c4956a;--honey:#c9a06e;--peach:#dfa898;--slate:#8aaec6;
+  --acc:#c4956a;--acc-rgb:196,149,106;
+  --display:'Bodoni Moda',serif;--serif:'Cormorant Garamond',serif;
+  --jp:'Noto Serif JP',serif;--sans:'DM Sans',sans-serif;
 }
-html,body{width:100%;min-height:100%;overflow-x:hidden;}
-body{
-  background:var(--dark);
-  color:var(--cream);
-  font-family:var(--sans);
-  font-weight:300;
-  cursor:none;
-}
+html{scroll-behavior:smooth;scrollbar-gutter:stable;}
+body{background:var(--dark);color:var(--cream);font-family:var(--sans);font-weight:300;overflow-x:hidden;cursor:none;}
+::selection{background:rgba(var(--acc-rgb),.25);}
 
 /* GRAIN */
-body::after{
-  content:'';position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity:0.028;pointer-events:none;z-index:9000;
-}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.028;pointer-events:none;z-index:300;}
+
+/* STARFIELD CANVAS */
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* AMBIENT MOUSE GLOW */
+#glow{position:fixed;width:60vmax;height:60vmax;border-radius:50%;pointer-events:none;z-index:1;
+  background:radial-gradient(circle,rgba(var(--acc-rgb),.05) 0%,transparent 60%);
+  transform:translate(-50%,-50%);transition:background 1.2s ease;left:50%;top:40%;}
 
 /* CURSOR */
-#cDot,#cRing{position:fixed;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%);transition:opacity .3s;}
-#cDot{width:5px;height:5px;background:var(--gold);}
-#cRing{width:28px;height:28px;border:1px solid rgba(196,164,100,0.4);transition:transform .4s ease,width .3s,height .3s,border-color .3s;}
-body.hov #cRing{width:60px;height:60px;border-color:rgba(196,164,100,0.6);}
+#cDot,#cRing{position:fixed;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%);}
+#cDot{width:4px;height:4px;background:var(--acc);transition:background .6s;}
+#cRing{width:28px;height:28px;border:1px solid rgba(var(--acc-rgb),.4);transition:width .3s,height .3s,border-color .6s;}
+body.hov #cRing{width:46px;height:46px;}
 
-/* ── HEADER ── */
-header{
-  position:fixed;top:0;left:0;right:0;z-index:500;
-  padding:20px clamp(20px,5vw,60px);
-  display:flex;align-items:center;justify-content:space-between;
-  background:linear-gradient(to bottom,rgba(7,5,10,0.8),transparent);
-}
-.h-logo{
-  font-family:var(--display);
-  font-size:clamp(16px,2.2vw,22px);
-  font-weight:300;letter-spacing:.3em;
-  color:var(--cream);
-}
-.h-logo em{font-style:italic;color:var(--gold);}
-.h-by{
-  font-size:7px;letter-spacing:.5em;
-  color:var(--muted);text-transform:uppercase;
-}
+/* LOADER */
+#loader{position:fixed;inset:0;z-index:1000;background:var(--dark);display:flex;align-items:center;justify-content:center;transition:opacity .9s ease,visibility .9s;}
+#loader.done{opacity:0;visibility:hidden;}
+.ld-star{font-size:22px;color:var(--gold);animation:ldp 1.4s ease infinite;}
+@keyframes ldp{0%,100%{opacity:.2;transform:scale(.9);}50%{opacity:1;transform:scale(1.1);}}
 
-/* ── HERO ── */
-.hero{
-  min-height:100svh;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  text-align:center;
-  padding:clamp(80px,12vh,140px) clamp(20px,5vw,60px) clamp(40px,6vh,80px);
-  position:relative;
-}
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 70% 60% at 50% 50%, rgba(196,164,100,0.04) 0%,transparent 70%);
-  pointer-events:none;
-}
-.hero-pre{
-  font-size:8px;letter-spacing:.7em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:20px;
-  opacity:0;animation:fadeUp 1s ease .3s forwards;
-}
-.hero-logo{
-  font-family:var(--display);
-  font-size:clamp(72px,16vw,180px);
-  font-weight:300;letter-spacing:.2em;
-  color:var(--cream);line-height:1;
-  opacity:0;animation:fadeUp 1.4s ease .6s forwards;
-}
-.hero-line{
-  width:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent);
-  margin:28px auto;
-  animation:growLine 1.5s ease 1.2s forwards;
-}
-.hero-sub{
-  font-family:var(--jp);font-weight:200;
-  font-size:10px;letter-spacing:.5em;
-  color:var(--muted);
-  opacity:0;animation:fadeUp 1s ease 1.5s forwards;
-}
-.hero-desc{
-  font-family:var(--serif);font-size:clamp(14px,1.8vw,18px);
-  font-style:italic;font-weight:300;
-  color:rgba(250,247,242,.45);
-  max-width:480px;line-height:1.8;margin-top:14px;
-  opacity:0;animation:fadeUp 1s ease 1.8s forwards;
-}
-.hero-scroll{
-  position:absolute;bottom:clamp(24px,4vh,40px);
-  left:0;right:0;
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-  opacity:0;animation:fadeUp 1s ease 2.2s forwards;
-}
-.hero-scroll-line{
-  width:1px;height:44px;
-  background:linear-gradient(to bottom,var(--gold),transparent);
-  animation:pulse 2s ease infinite;
-}
-.hero-scroll-lbl{font-size:7px;letter-spacing:.4em;color:var(--muted);text-transform:uppercase;}
+/* PROGRESS */
+#rp{position:fixed;top:0;left:0;right:0;height:2px;z-index:600;background:transparent;}
+#rp-fill{height:100%;width:0;background:linear-gradient(90deg,var(--acc),var(--gold));transition:width .08s linear,background 1s ease;}
 
-/* ── VOLUMES GRID ── */
-.volumes{
-  padding:clamp(60px,10vh,120px) clamp(20px,5vw,60px) clamp(80px,12vh,160px);
-  display:grid;
-  grid-template-columns:1fr;
-  gap:clamp(32px,4vw,52px);
-  max-width:1000px;
-  margin:0 auto;
-}
-.volumes-cards{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:clamp(16px,3vw,32px);
-  align-items:start;
-}
-
-/* ── VOL CARD ── */
-.vol-card{
-  width:100%;
-  position:relative;
-  cursor:pointer;
-  opacity:0;transform:translateY(32px);
-  transition:opacity .9s ease, transform .9s ease;
-  display:flex;flex-direction:column;
-}
-.vol-card.on{opacity:1;transform:none;}
-.vol-card:nth-child(2){transition-delay:.2s;}
-
-/* Cover image */
-.vol-cover{
-  position:relative;overflow:hidden;
-  aspect-ratio:4/3;
-  background:var(--dark2);
-  flex-shrink:0;
-}
-.vol-cover img{
-  width:100%;height:100%;
-  object-fit:cover;object-position:top center;
-  display:block;
-  transition:transform .9s cubic-bezier(0.4,0,0.2,1), filter .6s ease;
-  filter:saturate(.9) brightness(.92);
-}
-.vol-card:hover .vol-cover img{
-  transform:scale(1.04);
-  filter:saturate(1.05) brightness(1.0);
-}
-
-/* Tint overlay */
-.vol-cover::before{
-  content:'';position:absolute;inset:0;z-index:1;
-  opacity:1;transition:opacity .55s ease;
-  pointer-events:none;
-}
-.vol-card.v01 .vol-cover::before{background:rgba(226,173,192,0.07);}
-.vol-card.v02 .vol-cover::before{background:rgba(196,149,106,0.07);}
-.vol-card.v03 .vol-cover::before{background:rgba(196,149,106,0.07);}
-.vol-card.v04 .vol-cover::before{background:rgba(223,168,152,0.07);}
-.vol-card:hover .vol-cover::before{opacity:0;}
-
-/* Bottom gradient on cover */
-.vol-cover-grad{
-  position:absolute;bottom:0;left:0;right:0;z-index:2;
-  height:45%;
-  background:linear-gradient(to top,rgba(7,5,10,.85) 0%,transparent 100%);
-}
-
-/* Cover labels (inside image) */
-.vol-cover-info{
-  position:absolute;bottom:0;left:0;right:0;z-index:3;
-  padding:16px 20px 18px;
-}
-.vci-num{
-  font-size:7px;letter-spacing:.55em;text-transform:uppercase;
-  margin-bottom:4px;
-}
-.vol-card.v01 .vci-num{color:var(--pink);}
-.vol-card.v02 .vci-num{color:var(--warm);}
-.vol-card.v03 .vci-num{color:#c4956a;}
-.vol-card.v04 .vci-num{color:#dfa898;}
-.vci-title{
-  font-family:var(--display);
-  font-size:clamp(18px,2.8vw,28px);
-  font-weight:300;font-style:italic;
-  color:var(--cream);line-height:1.1;
-}
-
-/* Enter panel — fixed height so cards match */
-.vol-enter{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:16px 20px;
-  border-top:1px solid rgba(250,247,242,.07);
-  background:var(--dark2);
-  transition:background .3s;
-  height:100px; /* fixed height = equal cards */
-  flex-shrink:0;
-}
-.vol-card:hover .vol-enter{background:rgba(20,16,24,1);}
-.ve-left{flex:1;min-width:0;margin-right:14px;}
-.ve-tag{
-  display:inline-block;font-size:7px;letter-spacing:.45em;
-  text-transform:uppercase;padding:3px 10px;border:1px solid;
-  margin-bottom:7px;white-space:nowrap;
-}
-.vol-card.v01 .ve-tag{color:var(--pink);border-color:rgba(226,173,192,.3);}
-.vol-card.v02 .ve-tag{color:var(--warm);border-color:rgba(196,149,106,.3);}
-.vol-card.v03 .ve-tag{color:#c4956a;border-color:rgba(196,149,106,.3);}
-.vol-card.v04 .ve-tag{color:#dfa898;border-color:rgba(223,168,152,.3);}
-/* Clamp sub text to 2 lines max */
-.ve-sub{
-  font-size:9px;letter-spacing:.15em;color:var(--muted);line-height:1.6;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-}
-.ve-btn{
-  font-size:8px;letter-spacing:.4em;text-transform:uppercase;
-  padding:9px 18px;border:1px solid;
-  transition:all .3s;white-space:nowrap;flex-shrink:0;
-}
-.vol-card.v01 .ve-btn{color:var(--pink);border-color:rgba(226,173,192,.3);}
-.vol-card.v02 .ve-btn{color:var(--warm);border-color:rgba(196,149,106,.3);}
-.vol-card.v03 .ve-btn{color:#c4956a;border-color:rgba(196,149,106,.3);}
-.vol-card.v04 .ve-btn{color:#dfa898;border-color:rgba(223,168,152,.3);}
-.vol-card.v01:hover .ve-btn{background:var(--pink);color:var(--dark);border-color:var(--pink);}
-.vol-card.v02:hover .ve-btn{background:var(--warm);color:var(--dark);border-color:var(--warm);}
-.vol-card.v03:hover .ve-btn{background:#c4956a;color:var(--dark);border-color:#c4956a;}
-.vol-card.v04:hover .ve-btn{background:#dfa898;color:var(--dark);border-color:#dfa898;}
-
-/* Coming soon state */
-.vol-card.coming .vol-cover img{filter:saturate(0) brightness(.6);}
-.vol-card.coming:hover .vol-cover img{filter:saturate(0) brightness(.7);}
-.coming-badge{
-  position:absolute;top:16px;right:16px;z-index:4;
-  font-size:7px;letter-spacing:.4em;text-transform:uppercase;
-  padding:4px 12px;
-  background:rgba(7,5,10,.7);backdrop-filter:blur(8px);
-  border:1px solid rgba(250,247,242,.15);
-  color:rgba(250,247,242,.5);
-}
-
-/* ── FOOTER ── */
-footer{
-  padding:clamp(32px,5vh,52px) clamp(20px,5vw,60px);
-  border-top:1px solid rgba(250,247,242,.05);
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:12px;
-}
-.ft-logo{
-  font-family:var(--display);
-  font-size:14px;font-weight:300;letter-spacing:.3em;
-  color:rgba(250,247,242,.25);
-}
-.ft-logo em{font-style:italic;color:rgba(196,164,100,.4);}
-.ft-copy{font-size:7px;letter-spacing:.35em;text-transform:uppercase;color:var(--muted2);}
-
-/* ── DIVIDER ── */
-.series-label{
-  text-align:center;
-  padding:0 clamp(20px,5vw,60px);
-  margin-bottom:clamp(32px,5vw,52px);
-  opacity:0;transform:translateY(20px);
-  transition:opacity .9s ease, transform .9s ease;
-}
-.series-label.on{opacity:1;transform:none;}
-.sl-line-wrap{
-  display:grid;grid-template-columns:1fr auto 1fr;
-  align-items:center;gap:20px;
-}
-.sl-line{height:1px;background:rgba(250,247,242,.06);}
-.sl-text{font-size:7px;letter-spacing:.6em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
-
-/* ── ANIMATIONS ── */
+/* ══ HERO ══ */
+#hero{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;}
+.h-eyebrow{font-size:8px;letter-spacing:.65em;color:var(--gold);text-transform:uppercase;margin-bottom:22px;opacity:0;animation:fadeUp 1s ease .4s forwards;}
+.h-logo{font-family:var(--display);font-size:clamp(64px,15vw,180px);font-weight:300;letter-spacing:.18em;line-height:1;display:flex;justify-content:center;}
+.h-logo span{opacity:0;transform:translateY(40px) rotate(4deg);animation:letterIn .9s cubic-bezier(.22,1,.36,1) forwards;display:inline-block;}
+.h-logo span em{font-style:italic;color:var(--gold);}
+@keyframes letterIn{to{opacity:1;transform:none;}}
+.h-sub{font-size:9px;letter-spacing:.6em;color:rgba(250,247,242,.35);text-transform:uppercase;margin-top:18px;opacity:0;animation:fadeUp 1s ease 1.5s forwards;}
+.h-line{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:26px auto;animation:lineGrow 1.6s ease 1.8s forwards;}
+@keyframes lineGrow{to{width:200px;}}
+.h-jp{font-family:var(--jp);font-weight:200;font-size:11px;letter-spacing:.5em;color:var(--muted);opacity:0;animation:fadeUp 1s ease 2s forwards;line-height:2.4;}
+.h-meta{display:flex;gap:26px;margin-top:34px;opacity:0;animation:fadeUp 1s ease 2.3s forwards;}
+.h-meta span{font-size:7px;letter-spacing:.45em;text-transform:uppercase;color:var(--muted2);}
+.h-meta b{color:rgba(250,247,242,.5);font-weight:300;}
+.h-scroll{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeUp 1s ease 2.8s forwards;}
+.h-scroll-l{width:1px;height:44px;background:linear-gradient(to bottom,var(--gold),transparent);animation:pulse 2.2s ease infinite;}
+.h-scroll-t{font-size:7px;letter-spacing:.5em;color:var(--muted);text-transform:uppercase;writing-mode:vertical-rl;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
-@keyframes growLine{to{width:200px;}}
 @keyframes pulse{0%,100%{opacity:.25;}50%{opacity:.9;}}
 
-/* ── MOBILE ── */
-@media(max-width:768px){
+/* ══ MARQUEE ══ */
+#ticker{position:relative;z-index:2;border-top:1px solid rgba(250,247,242,.05);border-bottom:1px solid rgba(250,247,242,.05);padding:13px 0;overflow:hidden;background:rgba(11,8,20,.4);}
+.tk-track{display:flex;gap:48px;white-space:nowrap;animation:tick 38s linear infinite;width:max-content;}
+.tk-track span{font-size:8px;letter-spacing:.55em;text-transform:uppercase;color:rgba(250,247,242,.22);}
+.tk-track span em{font-style:normal;color:rgba(var(--acc-rgb),.55);transition:color 1s;}
+@keyframes tick{to{transform:translateX(-50%);}}
+
+/* ══ SECTION COMMON ══ */
+.sect{position:relative;z-index:2;padding:clamp(64px,11vh,130px) clamp(22px,5vw,72px);max-width:1480px;margin:0 auto;}
+.s-head{margin-bottom:clamp(36px,6vh,64px);}
+.s-k{font-size:8px;letter-spacing:.6em;color:var(--gold);text-transform:uppercase;margin-bottom:12px;}
+.s-tt{font-family:var(--display);font-size:clamp(30px,5.5vw,64px);font-weight:300;line-height:1.02;color:var(--cream);}
+.s-tt em{font-style:italic;color:var(--acc);transition:color 1s;}
+.s-jp{font-family:var(--jp);font-weight:200;font-size:9px;letter-spacing:.45em;color:var(--muted);margin-top:12px;line-height:2.2;}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s ease;}
+.rv.on{opacity:1;transform:none;}
+.d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}.d4{transition-delay:.4s;}
+
+/* ══ VOLUMES ══ */
+#vol-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(18px,3vw,36px);}
+.vc{position:relative;cursor:pointer;perspective:1200px;}
+.vc-inner{position:relative;border:1px solid rgba(250,247,242,.07);background:var(--dark2);overflow:hidden;transition:border-color .5s,transform .15s ease-out,box-shadow .5s;transform-style:preserve-3d;}
+.vc:hover .vc-inner{border-color:rgba(var(--vc-rgb),.4);box-shadow:0 30px 80px -30px rgba(var(--vc-rgb),.25);}
+.vc-cover{position:relative;aspect-ratio:16/10;overflow:hidden;}
+.vc-cover img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform 1.4s cubic-bezier(.22,1,.36,1),filter .8s;filter:saturate(.85) brightness(.88);}
+.vc:hover .vc-cover img{transform:scale(1.06);filter:saturate(1.05) brightness(1);}
+.vc-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,var(--dark2) 2%,transparent 45%);}
+.vc-shine{position:absolute;inset:0;background:radial-gradient(ellipse 50% 40% at var(--sx,50%) var(--sy,50%),rgba(255,255,255,.09),transparent 70%);opacity:0;transition:opacity .4s;pointer-events:none;z-index:3;}
+.vc:hover .vc-shine{opacity:1;}
+.vc-num{position:absolute;top:18px;left:20px;font-family:var(--display);font-size:clamp(38px,5vw,60px);font-style:italic;font-weight:300;color:rgba(250,247,242,.14);z-index:2;line-height:1;transition:color .6s;}
+.vc:hover .vc-num{color:rgba(var(--vc-rgb),.5);}
+.vc-body{padding:clamp(18px,2.4vw,30px);position:relative;z-index:2;}
+.vc-vol{font-size:7px;letter-spacing:.5em;text-transform:uppercase;color:rgb(var(--vc-rgb));margin-bottom:9px;}
+.vc-tt{font-family:var(--display);font-size:clamp(20px,2.8vw,32px);font-weight:300;font-style:italic;color:var(--cream);line-height:1.08;margin-bottom:10px;}
+.vc-chars{display:flex;gap:7px;margin-bottom:13px;flex-wrap:wrap;}
+.vc-chip{font-size:6.5px;letter-spacing:.42em;text-transform:uppercase;padding:4px 12px;border:1px solid rgba(var(--vc-rgb),.35);color:rgb(var(--vc-rgb));}
+.vc-jp{font-family:var(--jp);font-weight:200;font-size:8.5px;letter-spacing:.32em;color:var(--muted);line-height:2;}
+.vc-go{position:absolute;right:clamp(18px,2.4vw,30px);bottom:clamp(18px,2.4vw,30px);font-size:7px;letter-spacing:.45em;text-transform:uppercase;color:var(--muted2);transition:color .4s,transform .4s;}
+.vc:hover .vc-go{color:rgb(var(--vc-rgb));transform:translateX(4px);}
+
+/* ══ GIRLS CONSTELLATION ══ */
+#girls-row{display:grid;grid-template-columns:repeat(6,1fr);gap:clamp(10px,1.6vw,20px);}
+.gc{position:relative;cursor:pointer;border:1px solid rgba(250,247,242,.06);padding:clamp(18px,2.6vw,30px) clamp(10px,1.6vw,18px);text-align:center;background:rgba(11,8,20,.5);transition:border-color .45s,transform .45s,background .45s;overflow:hidden;}
+.gc::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(var(--g-rgb),.1),transparent);opacity:0;transition:opacity .45s;}
+.gc:hover{border-color:rgba(var(--g-rgb),.45);transform:translateY(-5px);}
+.gc:hover::before{opacity:1;}
+.gc-star{font-size:13px;color:rgb(var(--g-rgb));margin-bottom:10px;display:inline-block;transition:transform .6s cubic-bezier(.34,1.4,.64,1);}
+.gc:hover .gc-star{transform:rotate(180deg) scale(1.25);}
+.gc-name{font-family:var(--display);font-size:clamp(13px,1.7vw,19px);font-style:italic;font-weight:300;color:var(--cream);margin-bottom:4px;}
+.gc-jp{font-family:var(--jp);font-weight:200;font-size:8px;letter-spacing:.3em;color:var(--muted);margin-bottom:9px;}
+.gc-cn{font-size:6px;letter-spacing:.4em;text-transform:uppercase;color:rgb(var(--g-rgb));opacity:.75;}
+.gc-line{width:0;height:1px;background:rgb(var(--g-rgb));margin:10px auto 0;transition:width .5s ease;}
+.gc:hover .gc-line{width:30px;}
+
+/* ══ ARCANA TEASER ══ */
+#arcana-band{position:relative;border:1px solid rgba(250,247,242,.07);background:linear-gradient(150deg,#0a0620,#06040f 55%,#0c0722);overflow:hidden;display:grid;grid-template-columns:1fr auto;align-items:center;gap:clamp(20px,4vw,52px);padding:clamp(30px,5vw,64px);cursor:pointer;transition:border-color .5s;}
+#arcana-band:hover{border-color:rgba(196,149,106,.4);}
+#arcana-band::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(196,149,106,.08),transparent);pointer-events:none;}
+.ab-k{font-size:8px;letter-spacing:.6em;color:var(--gold);text-transform:uppercase;margin-bottom:14px;}
+.ab-tt{font-family:var(--display);font-size:clamp(24px,4vw,46px);font-weight:300;line-height:1.05;color:var(--cream);margin-bottom:12px;}
+.ab-tt em{font-style:italic;color:var(--gold);}
+.ab-jp{font-family:var(--jp);font-weight:200;font-size:9px;letter-spacing:.4em;color:var(--muted);line-height:2.2;margin-bottom:18px;}
+.ab-cta{display:inline-block;font-size:7px;letter-spacing:.55em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(196,149,106,.35);padding:11px 30px;transition:all .35s;}
+#arcana-band:hover .ab-cta{background:rgba(196,149,106,.1);}
+.ab-card{position:relative;width:clamp(110px,14vw,170px);aspect-ratio:2/3.2;border-radius:11px;border:1px solid rgba(196,149,106,.35);
+  background:
+    repeating-linear-gradient(45deg,transparent,transparent 6px,rgba(196,149,106,.025) 6px,rgba(196,149,106,.025) 7px),
+    radial-gradient(ellipse at 50% 0%,rgba(196,149,106,.14),transparent 55%),
+    linear-gradient(155deg,#07041c,#03010e,#080422);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  transform:rotate(5deg);transition:transform .7s cubic-bezier(.22,1,.36,1);}
+#arcana-band:hover .ab-card{transform:rotate(0deg) translateY(-7px) scale(1.04);}
+.ab-card::before{content:'';position:absolute;inset:8px;border:1px solid rgba(196,149,106,.18);border-radius:7px;}
+.abc-star{font-size:13px;color:rgba(196,149,106,.4);letter-spacing:5px;}
+.abc-logo{font-family:var(--display);font-size:15px;letter-spacing:.26em;color:rgba(196,149,106,.55);}
+.abc-logo em{font-style:italic;}
+.abc-lb{font-size:5px;letter-spacing:.6em;color:rgba(196,149,106,.3);text-transform:uppercase;}
+
+/* ══ FOOTER ══ */
+#foot{position:relative;z-index:2;border-top:1px solid rgba(250,247,242,.06);padding:clamp(40px,7vh,72px) clamp(22px,5vw,72px);text-align:center;}
+.f-logo{font-family:var(--display);font-size:clamp(22px,3.4vw,34px);font-weight:300;letter-spacing:.26em;color:var(--cream);margin-bottom:12px;}
+.f-logo em{font-style:italic;color:var(--gold);}
+.f-jp{font-family:var(--jp);font-weight:200;font-size:9px;letter-spacing:.45em;color:var(--muted);margin-bottom:22px;line-height:2.4;}
+.f-cr{font-size:7px;letter-spacing:.4em;text-transform:uppercase;color:var(--muted2);line-height:2.6;}
+
+@media(max-width:880px){
+  #vol-grid{grid-template-columns:1fr;}
+  #girls-row{grid-template-columns:repeat(3,1fr);}
+  #arcana-band{grid-template-columns:1fr;justify-items:center;text-align:center;}
+}
+@media(max-width:560px){
   #cDot,#cRing{display:none;}body{cursor:auto;}
-  .hero-logo{font-size:clamp(56px,18vw,96px);letter-spacing:.15em;}
-  .volumes{padding:40px 16px 80px;}
-  .volumes-cards{grid-template-columns:1fr;gap:20px;}
-  .vol-card{width:100%;max-width:420px;margin:0 auto;}
-  header{padding:14px 18px;}
-  footer{flex-direction:column;align-items:center;text-align:center;}
+  #girls-row{grid-template-columns:repeat(2,1fr);}
+  .h-meta{flex-direction:column;gap:8px;}
+}
+
+/* ═══ ACCESSIBILITY: reduced motion + pointer gating (design-taste pre-flight) ═══ */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important;}
+  html{scroll-behavior:auto!important;}
+  body{cursor:auto!important;}
+  #cDot,#cRing,#stars,#motes,#snow,#flies,#glow,#rays,#aura{display:none!important;}
+}
+@media (pointer:coarse),(hover:none){
+  body{cursor:auto!important;}
+  #cDot,#cRing{display:none!important;}
 }
 </style>
 </head>
 <body>
 
-<div id="cDot"></div>
-<div id="cRing"></div>
+<canvas id="stars"></canvas>
+<div id="glow"></div>
+<div id="cDot"></div><div id="cRing"></div>
+<div id="rp"><div id="rp-fill"></div></div>
 
-<!-- HEADER -->
-<header>
-  <div class="h-logo">É<em>TOILE</em></div>
-  <div style="display:flex;align-items:center;gap:20px;">
-    <div class="h-by" style="cursor:pointer;transition:color .25s;" onmouseenter="this.style.color='var(--cream)'" onmouseleave="this.style.color=''" onclick="goTo('our-girls.html')">Our Girls</div>
-    <div class="h-by">presented by Apecoft Studio</div>
+<div id="loader"><div class="ld-star">✦</div></div>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div class="h-eyebrow">Apecoft Studio Presents</div>
+  <div class="h-logo" id="hLogo"></div>
+  <div class="h-sub">Interactive Photobook Series · Digital Editorial</div>
+  <div class="h-line"></div>
+  <div class="h-jp">星のように、それぞれの物語が輝く。</div>
+  <div class="h-meta">
+    <span>Volumes <b>04</b></span>
+    <span>Girls <b>06</b></span>
+    <span>Est. <b>2025</b></span>
+    <span>Collection <b>Arcana</b></span>
   </div>
-</header>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-pre">Apecoft Studio presents</div>
-  <div class="hero-logo">ÉTOILE</div>
-  <div class="hero-line"></div>
-  <div class="hero-sub">エトワール — A Photo Editorial Series</div>
-  <div class="hero-desc">"Every volume, a new story. Every story, a season worth remembering."</div>
-  <div class="hero-scroll">
-    <div class="hero-scroll-line"></div>
-    <div class="hero-scroll-lbl">Browse Volumes</div>
+  <div class="h-scroll">
+    <div class="h-scroll-l"></div>
+    <div class="h-scroll-t">Scroll</div>
   </div>
 </section>
 
-<!-- VOLUMES -->
-<section class="volumes">
+<!-- ══ TICKER ══ -->
+<div id="ticker"><div class="tk-track" id="tkTrack"></div></div>
 
-  <!-- Series divider -->
-  <div class="series-label" id="seriesLabel">
-    <div class="sl-line-wrap">
-      <div class="sl-line"></div>
-      <div class="sl-text">All Volumes</div>
-      <div class="sl-line"></div>
-    </div>
+<!-- ══ VOLUMES ══ -->
+<section class="sect" id="volumes">
+  <div class="s-head rv">
+    <div class="s-k">The Library · 全四巻</div>
+    <div class="s-tt">Choose your<br><em>story</em></div>
+    <div class="s-jp">それぞれの巻に、それぞれの想い出。</div>
   </div>
+  <div id="vol-grid">
 
-  <div class="volumes-cards" style="grid-template-columns:repeat(2,1fr);">
-
-  <!-- Vol.01 -->
-  <div class="vol-card v01" id="card01" onclick="goTo('vol01/summer-memories.html')">
-    <div class="vol-cover">
-      <img src="vol01/akane_mina_Cover.png" alt="ÉTOILE Vol.01 — Summer Memories">
-      <div class="vol-cover-grad"></div>
-      <div class="vol-cover-info">
-        <div class="vci-num">Vol.01 · July Special 2025</div>
-        <div class="vci-title">Summer<br>Memories</div>
+    <div class="vc rv" style="--vc-rgb:226,173,192" data-acc="226,173,192" onclick="goTo('vol01/summer-memories.html')">
+      <div class="vc-inner">
+        <div class="vc-cover">
+          <img src="vol01/akane_mina_Cover.png" alt="Vol.01 Summer Memories">
+          <div class="vc-num">01</div>
+          <div class="vc-shine"></div>
+        </div>
+        <div class="vc-body">
+          <div class="vc-vol">Vol.01 · July Special 2025</div>
+          <div class="vc-tt">Summer Memories</div>
+          <div class="vc-chars"><span class="vc-chip">Akane</span><span class="vc-chip">Mina</span></div>
+          <div class="vc-jp">この夏を、忘れない。</div>
+          <div class="vc-go">Enter ↗</div>
+        </div>
       </div>
     </div>
-    <div class="vol-enter">
-      <div class="ve-left">
-        <div class="ve-tag">Akane & Mina</div>
-        <div class="ve-sub">Summer 2025<br>この夏を、忘れない。</div>
+
+    <div class="vc rv d1" style="--vc-rgb:196,149,106" data-acc="196,149,106" onclick="goTo('vol02/quiet-mornings.html')">
+      <div class="vc-inner">
+        <div class="vc-cover">
+          <img src="vol02/ayame_cover.png" alt="Vol.02 Quiet Mornings">
+          <div class="vc-num">02</div>
+          <div class="vc-shine"></div>
+        </div>
+        <div class="vc-body">
+          <div class="vc-vol">Vol.02 · January Special 2026</div>
+          <div class="vc-tt">Quiet Mornings</div>
+          <div class="vc-chars"><span class="vc-chip">Ayame</span></div>
+          <div class="vc-jp">静かな朝が、いちばん私を整えてくれる。</div>
+          <div class="vc-go">Enter ↗</div>
+        </div>
       </div>
-      <div class="ve-btn">Enter ↗</div>
     </div>
+
+    <div class="vc rv d2" style="--vc-rgb:201,160,110" data-acc="201,160,110" onclick="goTo('vol03/little-moment.html')">
+      <div class="vc-inner">
+        <div class="vc-cover">
+          <img src="vol03/rina_cover.png" alt="Vol.03 Little Moment">
+          <div class="vc-num">03</div>
+          <div class="vc-shine"></div>
+        </div>
+        <div class="vc-body">
+          <div class="vc-vol">Vol.03 · March Special 2026</div>
+          <div class="vc-tt">Little Moment</div>
+          <div class="vc-chars"><span class="vc-chip">Rina</span><span class="vc-chip">Nuna ᓚ₍⑅^..^₎♡</span></div>
+          <div class="vc-jp">静かな朝が、心をやさしく包み込む。</div>
+          <div class="vc-go">Enter ↗</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vc rv d3" style="--vc-rgb:223,168,152" data-acc="223,168,152" onclick="goTo('vol04/letters-from-a-quiet-friend.html')">
+      <div class="vc-inner">
+        <div class="vc-cover">
+          <img src="vol04/suzu_shi_cover.png" alt="Vol.04 Letters From A Quiet Friend">
+          <div class="vc-num">04</div>
+          <div class="vc-shine"></div>
+        </div>
+        <div class="vc-body">
+          <div class="vc-vol">Vol.04 · April Special 2026</div>
+          <div class="vc-tt">Letters From A Quiet Friend</div>
+          <div class="vc-chars"><span class="vc-chip">Suzune</span><span class="vc-chip">Shiori</span></div>
+          <div class="vc-jp">何気ない日々が、いちばん大切だった。</div>
+          <div class="vc-go">Enter ↗</div>
+        </div>
+      </div>
+    </div>
+
   </div>
-
-  <!-- Vol.02 -->
-  <div class="vol-card v02" id="card02" onclick="goTo('vol02/quiet-mornings.html')">
-    <div class="vol-cover">
-      <img src="vol02/ayame_cover.png" alt="ÉTOILE Vol.02 — Quiet Mornings">
-      <div class="vol-cover-grad"></div>
-      <div class="vol-cover-info">
-        <div class="vci-num">Vol.02 · January Special 2026</div>
-        <div class="vci-title">Quiet<br>Mornings</div>
-      </div>
-    </div>
-    <div class="vol-enter">
-      <div class="ve-left">
-        <div class="ve-tag">Ayame</div>
-        <div class="ve-sub">Winter 2026<br>静かな朝が、いちばん私を整えてくれる。</div>
-      </div>
-      <div class="ve-btn">Enter ↗</div>
-    </div>
-  </div>
-
-  <!-- Vol.03 -->
-  <div class="vol-card v03" id="card03" onclick="goTo('vol03/little-moment.html')">
-    <div class="vol-cover">
-      <img src="vol03/rina_cover.png" alt="ÉTOILE Vol.03 — Little Moment">
-      <div class="vol-cover-grad"></div>
-      <div class="vol-cover-info">
-        <div class="vci-num">Vol.03 · March Special 2026</div>
-        <div class="vci-title">Little<br>Moment</div>
-      </div>
-    </div>
-    <div class="vol-enter">
-      <div class="ve-left">
-        <div class="ve-tag">Rina & Nuna</div>
-        <div class="ve-sub">Spring 2026<br>静かな朝が、心をやさしく包み込む。</div>
-      </div>
-      <div class="ve-btn">Enter ↗</div>
-    </div>
-  </div>
-
-  <!-- Vol.04 -->
-  <div class="vol-card v04" id="card04" onclick="goTo('vol04/letters-from-a-quiet-friend.html')">
-    <div class="vol-cover">
-      <img src="vol04/suzu_shi_cover.png" alt="ÉTOILE Vol.04 — Letters From A Quiet Friend">
-      <div class="vol-cover-grad"></div>
-      <div class="vol-cover-info">
-        <div class="vci-num">Vol.04 · April Special 2026</div>
-        <div class="vci-title">Letters From<br>A Quiet Friend</div>
-      </div>
-    </div>
-    <div class="vol-enter">
-      <div class="ve-left">
-        <div class="ve-tag">Suzune & Shiori</div>
-        <div class="ve-sub">Summer 2026<br>何気ない日々が、いちばん大切だった。</div>
-      </div>
-      <div class="ve-btn">Enter ↗</div>
-    </div>
-  </div>
-
-  </div><!-- /volumes-cards -->
-
 </section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="ft-logo">É<em>TOILE</em></div>
-  <div class="ft-copy">© 2025–2026 Apecoft Studio · All artwork original</div>
+<!-- ══ GIRLS ══ -->
+<section class="sect" id="girls">
+  <div class="s-head rv">
+    <div class="s-k">Our Girls · 星座</div>
+    <div class="s-tt">The <em>constellation</em></div>
+    <div class="s-jp">六つの星、六つの物語。クリックして詳しく見る。</div>
+  </div>
+  <div id="girls-row">
+    <div class="gc rv"    style="--g-rgb:226,173,192" onclick="goTo('our-girls.html')"><span class="gc-star">✦</span><div class="gc-name">Akane</div><div class="gc-jp">アカネ</div><div class="gc-cn">Rose Dusk</div><div class="gc-line"></div></div>
+    <div class="gc rv d1" style="--g-rgb:154,191,214" onclick="goTo('our-girls.html')"><span class="gc-star">✦</span><div class="gc-name">Mina</div><div class="gc-jp">ミナ</div><div class="gc-cn">Sky Haze</div><div class="gc-line"></div></div>
+    <div class="gc rv d2" style="--g-rgb:196,149,106" onclick="goTo('our-girls.html')"><span class="gc-star">✦</span><div class="gc-name">Ayame</div><div class="gc-jp">アヤメ</div><div class="gc-cn">Amber Glow</div><div class="gc-line"></div></div>
+    <div class="gc rv d3" style="--g-rgb:201,160,110" onclick="goTo('our-girls.html')"><span class="gc-star">✦</span><div class="gc-name">Rina</div><div class="gc-jp">リナ</div><div class="gc-cn">Honey Amber</div><div class="gc-line"></div></div>
+    <div class="gc rv d4" style="--g-rgb:223,168,152" onclick="goTo('our-girls.html')"><span class="gc-star">✦</span><div class="gc-name">Suzune</div><div class="gc-jp">スズネ</div><div class="gc-cn">Peach Blush</div><div class="gc-line"></div></div>
+    <div class="gc rv d4" style="--g-rgb:138,174,198" onclick="goTo('our-girls.html')"><span class="gc-star">✦</span><div class="gc-name">Shiori</div><div class="gc-jp">シオリ</div><div class="gc-cn">Slate Blue</div><div class="gc-line"></div></div>
+  </div>
+</section>
+
+<!-- ══ ARCANA ══ -->
+<section class="sect">
+  <div id="arcana-band" class="rv" onclick="goTo('arcana-draw.html')">
+    <div>
+      <div class="ab-k">Special Collection</div>
+      <div class="ab-tt">ÉTOILE <em>Arcana</em></div>
+      <div class="ab-jp">カードを引いて、運命の一枚に出会う。<br>メジャーアルカナ・コレクション。</div>
+      <span class="ab-cta">Draw a Card ✦</span>
+    </div>
+    <div class="ab-card">
+      <div class="abc-star">✦ ✦ ✦</div>
+      <div class="abc-logo">É<em>TOILE</em></div>
+      <div class="abc-lb">Arcana</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer id="foot">
+  <div class="f-logo">É<em>TOILE</em></div>
+  <div class="f-jp">星のように、それぞれの物語が輝く。</div>
+  <div class="f-cr">ÉTOILE Photobook Series · Interactive Digital Editorial<br>© 2025–2026 Apecoft Studio · All artwork original</div>
 </footer>
 
 <script>
-/* CURSOR */
-const cDot=document.getElementById('cDot'),cRing=document.getElementById('cRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cDot.style.left=mx+'px';cDot.style.top=my+'px';});
-(function a(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;cRing.style.left=rx+'px';cRing.style.top=ry+'px';requestAnimationFrame(a);})();
-document.querySelectorAll('.vol-card').forEach(el=>{
+/* ══ LETTER STAGGER ══ */
+const word=['É','T','O','I','L','E'];
+const hLogo=document.getElementById('hLogo');
+word.forEach((ch,i)=>{
+  const s=document.createElement('span');
+  s.style.animationDelay=(0.55+i*0.09)+'s';
+  s.innerHTML=i===0?ch:`<em>${ch}</em>`;
+  hLogo.appendChild(s);
+});
+
+/* ══ TICKER CONTENT ══ */
+const tkItems=['ÉTOILE','エトワール','Photobook Series','Apecoft Studio','Vol.01 — Summer Memories','Vol.02 — Quiet Mornings','Vol.03 — Little Moment','Vol.04 — Letters From A Quiet Friend','Arcana Collection','Our Girls'];
+const tk=document.getElementById('tkTrack');
+const half=tkItems.map(t=>`<span>${t} <em>✦</em></span>`).join('');
+tk.innerHTML=half+half;
+
+/* ══ STARFIELD ══ */
+const cv=document.getElementById('stars'),ctx=cv.getContext('2d');
+let W,H,stars=[];
+function resize(){
+  W=cv.width=innerWidth;H=cv.height=innerHeight;
+  stars=Array.from({length:Math.min(150,W/9)},()=>({
+    x:Math.random()*W,y:Math.random()*H,
+    r:Math.random()*1.3+.3,
+    tw:Math.random()*Math.PI*2,
+    sp:.04+Math.random()*.12,
+    dx:(Math.random()-.5)*.05,
+  }));
+}
+resize();addEventListener('resize',resize);
+let smx=0,smy=0;
+function drawStars(t){
+  ctx.clearRect(0,0,W,H);
+  const px=(smx/W-.5)*14,py=(smy/H-.5)*10;
+  stars.forEach(s=>{
+    s.tw+=s.sp*.05;
+    s.x+=s.dx; if(s.x<0)s.x=W; if(s.x>W)s.x=0;
+    const a=.25+Math.abs(Math.sin(s.tw))*.55;
+    ctx.beginPath();
+    ctx.arc(s.x+px*s.r,s.y+py*s.r,s.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(250,247,242,${a})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawStars);
+}
+if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){}else requestAnimationFrame(drawStars);
+
+/* ══ CURSOR + GLOW ══ */
+const cd=document.getElementById('cDot'),cr=document.getElementById('cRing'),glow=document.getElementById('glow');
+let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my,gx=mx,gy=my;
+if(!('ontouchstart' in window)){
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;smx=mx;smy=my;
+    cd.style.left=mx+'px';cd.style.top=my+'px';
+  });
+  (function loop(){
+    rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+    gx+=(mx-gx)*.045;gy+=(my-gy)*.045;
+    cr.style.left=rx+'px';cr.style.top=ry+'px';
+    glow.style.left=gx+'px';glow.style.top=gy+'px';
+    requestAnimationFrame(loop);
+  })();
+}
+
+/* ══ ACCENT TAKEOVER on volume hover ══ */
+const root=document.documentElement;
+document.querySelectorAll('.vc').forEach(c=>{
+  c.addEventListener('mouseenter',()=>{
+    root.style.setProperty('--acc-rgb',c.dataset.acc);
+    root.style.setProperty('--acc',`rgb(${c.dataset.acc})`);
+  });
+  c.addEventListener('mouseleave',()=>{
+    root.style.setProperty('--acc-rgb','196,149,106');
+    root.style.setProperty('--acc','#c4956a');
+  });
+  /* 3D tilt + shine track */
+  const inner=c.querySelector('.vc-inner');
+  const shine=c.querySelector('.vc-shine');
+  c.addEventListener('mousemove',e=>{
+    const r=c.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+    inner.style.transform=`rotateY(${(x-.5)*5}deg) rotateX(${(y-.5)*-5}deg)`;
+    shine.style.setProperty('--sx',`${x*100}%`);
+    shine.style.setProperty('--sy',`${y*100}%`);
+  });
+  c.addEventListener('mouseleave',()=>{
+    inner.style.transition='transform .7s cubic-bezier(.22,1,.36,1)';
+    inner.style.transform='none';
+    setTimeout(()=>inner.style.transition='border-color .5s,transform .15s ease-out,box-shadow .5s',700);
+  });
+});
+
+/* ══ HOVER CURSOR ══ */
+document.querySelectorAll('.vc,.gc,#arcana-band').forEach(el=>{
   el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
   el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
 });
 
-/* SCROLL REVEAL */
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});
-},{threshold:.08});
-document.querySelectorAll('.vol-card, .series-label').forEach(el=>obs.observe(el));
+/* ══ REVEAL ══ */
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 
-/* NAVIGATION */
-function goTo(url){
-  document.body.style.transition='opacity .5s ease';
-  document.body.style.opacity='0';
-  setTimeout(()=>window.location.href=url, 500);
-}
+/* ══ PROGRESS ══ */
+let _st1=false;
+addEventListener('scroll',()=>{if(_st1)return;_st1=true;requestAnimationFrame(()=>{
+  const el=document.documentElement;
+  document.getElementById('rp-fill').style.width=(el.scrollTop/(el.scrollHeight-el.clientHeight))*100+'%';
+_st1=false;});});
 
-/* BACK from vol pages — fade in */
-document.body.style.opacity='0';
-window.addEventListener('load',()=>{
-  document.body.style.transition='opacity .8s ease';
-  document.body.style.opacity='1';
-});
+/* ══ NAV ══ */
+function goTo(url){document.body.style.transition='opacity .5s ease';document.body.style.opacity='0';setTimeout(()=>location.href=url,500);}
+
+/* ══ LOADER ══ */
+addEventListener('load',()=>setTimeout(()=>document.getElementById('loader').classList.add('done'),550));
 </script>
 </body>
 </html>

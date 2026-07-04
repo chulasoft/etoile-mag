@@ -215,9 +215,18 @@ footer{padding:clamp(24px,4vh,40px) clamp(20px,5vw,60px);border-top:0.5px solid 
   .gallery{padding:0 14px 60px;}
   .og-row.lft,.og-row.rgt{grid-template-columns:1fr;}
   .og-side{padding:16px;}.og-idx{font-size:80px;}
-  .det-panel{grid-template-columns:1fr;grid-template-rows:auto 1fr;}
-  .portrait-area{aspect-ratio:2/3;width:100%;}
+  /* detail panel: scroll as one column, portrait capped so name+info stay reachable */
+  .det{align-items:flex-start;}
+  .det-panel{grid-template-columns:1fr;display:block;width:94vw;max-height:92svh;overflow-y:auto;-webkit-overflow-scrolling:touch;margin:4vh auto;border-radius:10px;transform:translateY(22px);}
+  .portrait-area{aspect-ratio:2/3;max-height:50svh;width:100%;}
+  .det-info{overflow:visible;padding:20px 18px 24px;}
+  .di-name{font-size:30px;}
+  /* keep close button tappable while the panel scrolls */
+  .det-close{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:16px;width:34px;height:34px;font-size:15px;background:rgba(7,5,10,.82);backdrop-filter:blur(8px);z-index:1300;}
   .tab-strip{left:auto;right:0;padding-bottom:12px;}
+  /* polaroid: bound by BOTH width and viewport height so it never overflows */
+  .polar-card{width:min(400px,84vw,54vh);}
+  .plbox-hint{bottom:calc(env(safe-area-inset-bottom,0px) + 14px);}
   footer{flex-direction:column;align-items:center;text-align:center;}
 }
 

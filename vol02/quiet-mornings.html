@@ -847,7 +847,15 @@ function toggleMute(){bgmMuted=!bgmMuted;bgm.volume=bgmMuted?0:0.3;document.getE
 function duckBgm(on){bgm.volume=on?(bgmMuted?0:0.07):(bgmMuted?0:0.3);}
 
 /* ══ NAV ══ */
-function goTo(url){document.body.style.transition='opacity .5s ease';document.body.style.opacity='0';setTimeout(()=>location.href=url,500);}
+let _leaving=false;
+function goTo(url){
+  if(_leaving)return;_leaving=true;
+  try{const _a=document.querySelector('audio');if(_a&&!_a.paused){const _s=_a.volume/16;const _fi=setInterval(()=>{_a.volume=Math.max(0,_a.volume-_s);if(_a.volume<=0.001)clearInterval(_fi);},24);}}catch(e){}
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){location.href=url;return;}
+  document.body.style.transition='opacity .42s ease,filter .42s ease,transform .42s ease';
+  document.body.style.opacity='0';document.body.style.filter='blur(3px)';document.body.style.transform='scale(.992)';
+  setTimeout(()=>{location.href=url;},420);
+}
 
 /* ══ MEMORY SLIDESHOW ══ */
 const MEM_QUOTES=[
@@ -967,6 +975,7 @@ function closeLb(){document.getElementById('lb').classList.remove('open');docume
 function lbNav(dir){lbIdx=Math.max(0,Math.min(lbImages.length-1,lbIdx+dir));renderLb();}
 function renderLb(){
   const item=lbImages[lbIdx];if(!item)return;
+  if(window._lbResetZoom)window._lbResetZoom();
   /* preload neighbors */
   [lbIdx-1,lbIdx+1].forEach(j=>{if(lbImages[j]){const im=new Image();im.src=lbImages[j].src;}});
 
@@ -1032,9 +1041,35 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowLeft')lbNav(-1);
 });
 document.getElementById('lb').addEventListener('click',e=>{if(!document.getElementById('lb-wrap').contains(e.target))closeLb();});
-let lbTx=0;
-document.getElementById('lb').addEventListener('touchstart',e=>{lbTx=e.touches[0].clientX;},{passive:true});
-document.getElementById('lb').addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-lbTx;if(Math.abs(dx)>48)lbNav(dx<0?1:-1);},{passive:true});
+/* ══ Sprint2b: lightbox pinch-zoom + pan (swipe-nav only at 1x) ══ */
+(function(){
+  const lb=document.getElementById('lb'), img=document.getElementById('lb-img');
+  if(!lb||!img)return;
+  let scale=1,tx=0,ty=0,startDist=0,startScale=1,panSX=0,panSY=0,panTX=0,panTY=0,mode=null,swipeX=0,lastTap=0;
+  const T_GESTURE='opacity .3s ease', T_SNAP='opacity .3s ease,transform .3s ease';
+  function apply(){img.style.transform=`translate(${tx}px,${ty}px) scale(${scale})`;}
+  function reset(){scale=1;tx=0;ty=0;img.style.transition=T_SNAP;apply();}
+  window._lbResetZoom=reset;
+  function dist(t){return Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);}
+  lb.addEventListener('touchstart',e=>{
+    img.style.transition=T_GESTURE;
+    if(e.touches.length===2){mode='pinch';startDist=dist(e.touches);startScale=scale;return;}
+    const now=Date.now();
+    if(now-lastTap<300){e.preventDefault();scale=scale>1?1:2.5;if(scale===1){tx=0;ty=0;}img.style.transition=T_SNAP;apply();mode=null;lastTap=0;return;}
+    lastTap=now;
+    if(scale>1){mode='pan';panSX=e.touches[0].clientX;panSY=e.touches[0].clientY;panTX=tx;panTY=ty;}
+    else{mode='swipe';swipeX=e.touches[0].clientX;}
+  },{passive:false});
+  lb.addEventListener('touchmove',e=>{
+    if(mode==='pinch'&&e.touches.length===2){e.preventDefault();scale=Math.min(4,Math.max(1,startScale*dist(e.touches)/startDist));if(scale===1){tx=0;ty=0;}apply();}
+    else if(mode==='pan'&&e.touches.length===1){e.preventDefault();tx=panTX+(e.touches[0].clientX-panSX);ty=panTY+(e.touches[0].clientY-panSY);apply();}
+  },{passive:false});
+  lb.addEventListener('touchend',e=>{
+    if(mode==='swipe'&&scale===1){const dx=e.changedTouches[0].clientX-swipeX;if(Math.abs(dx)>48)lbNav(dx<0?1:-1);}
+    if(scale<=1){scale=1;tx=0;ty=0;img.style.transition=T_SNAP;apply();}
+    mode=null;
+  },{passive:true});
+})();
 
 /* ══ HOVER CURSOR ══ */
 if(!isTouch){
@@ -1043,6 +1078,24 @@ if(!isTouch){
     el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
   });
 }
+
+/* ══ Sprint2b: magnetic buttons ══ */
+(function(){
+  if(('ontouchstart' in window)||(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches))return;
+  const sel='.en-back,.ab,.vol-btn,.mh-mode,.mh-letter,.arc-btn,.di-read';
+  document.querySelectorAll(sel).forEach(btn=>{
+    const strength=0.32;
+    const _ct=getComputedStyle(btn).transitionProperty;
+    if(!/all|transform/.test(_ct))btn.style.transition=(getComputedStyle(btn).transition||'')+',transform .25s cubic-bezier(.22,1,.36,1)';
+    btn.addEventListener('pointermove',e=>{
+      const r=btn.getBoundingClientRect();
+      const mx=e.clientX-(r.left+r.width/2), my=e.clientY-(r.top+r.height/2);
+      btn.style.transform=`translate(${mx*strength}px,${my*strength}px)`;
+    });
+    btn.addEventListener('pointerleave',()=>{btn.style.transform='';});
+  });
+})();
+
 </script>
 </body>
 </html>

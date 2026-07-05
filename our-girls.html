@@ -531,7 +531,15 @@ function closePolar(){
 })();
 
 function closeDet(){document.getElementById('detWrap').classList.remove('open');document.body.style.overflow='';}
-function goTo(url){document.body.style.transition='opacity .5s ease';document.body.style.opacity='0';setTimeout(()=>window.location.href=url,500);}
+let _leaving=false;
+function goTo(url){
+  if(_leaving)return;_leaving=true;
+  try{const _a=document.querySelector('audio');if(_a&&!_a.paused){const _s=_a.volume/16;const _fi=setInterval(()=>{_a.volume=Math.max(0,_a.volume-_s);if(_a.volume<=0.001)clearInterval(_fi);},24);}}catch(e){}
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){window.location.href=url;return;}
+  document.body.style.transition='opacity .42s ease,filter .42s ease,transform .42s ease';
+  document.body.style.opacity='0';document.body.style.filter='blur(3px)';document.body.style.transform='scale(.992)';
+  setTimeout(()=>{window.location.href=url;},420);
+}
 
 // ── Init ───────────────────────────────────────────────────────
 document.body.style.opacity='0';
@@ -698,6 +706,24 @@ _st1=false;});},{passive:true});
 /* init V2 bindings after gallery render */
 bindAccentRows();
 bindTilt();
+
+/* ══ Sprint2b: magnetic buttons ══ */
+(function(){
+  if(('ontouchstart' in window)||(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches))return;
+  const sel='.en-back,.ab,.vol-btn,.mh-mode,.mh-letter,.arc-btn,.di-read';
+  document.querySelectorAll(sel).forEach(btn=>{
+    const strength=0.32;
+    const _ct=getComputedStyle(btn).transitionProperty;
+    if(!/all|transform/.test(_ct))btn.style.transition=(getComputedStyle(btn).transition||'')+',transform .25s cubic-bezier(.22,1,.36,1)';
+    btn.addEventListener('pointermove',e=>{
+      const r=btn.getBoundingClientRect();
+      const mx=e.clientX-(r.left+r.width/2), my=e.clientY-(r.top+r.height/2);
+      btn.style.transform=`translate(${mx*strength}px,${my*strength}px)`;
+    });
+    btn.addEventListener('pointerleave',()=>{btn.style.transform='';});
+  });
+})();
+
 </script>
 </body>
 </html>

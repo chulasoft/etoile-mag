@@ -339,7 +339,7 @@ function resizeS(){
     tw:Math.random()*Math.PI*2,sp:.03+Math.random()*.1,
   }));
 }
-resizeS();addEventListener('resize',resizeS);
+resizeS();let _rzT;addEventListener('resize',()=>{clearTimeout(_rzT);_rzT=setTimeout(resizeS,150);});
 let mx=innerWidth/2,my=innerHeight/2;
 if(!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches))(function drawS(){
   sctx.clearRect(0,0,SW,SH);

@@ -900,7 +900,7 @@ function resizeP(){
     hue:Math.random()<.7?'242,196,207':'250,224,216',
   }));
 }
-resizeP();addEventListener('resize',resizeP);
+resizeP();let _rzT;addEventListener('resize',()=>{clearTimeout(_rzT);_rzT=setTimeout(resizeP,150);});
 let smx=innerWidth/2,smy=innerHeight/2;
 function drawP(){
   ctx.clearRect(0,0,W,H);

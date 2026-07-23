@@ -25,6 +25,12 @@
 
 ## P3 — optional polish (deferred with rationale — not laziness)
 
+- [ ] **DPR-aware atmosphere canvas.** Canvases render at CSS-pixel size
+      (`innerWidth × innerHeight`), so points are slightly soft on retina.
+      Scaling by `devicePixelRatio` would sharpen the starfields (index /
+      our-girls / arcana). *Deferred:* doubles per-frame pixel work; the soft look
+      suits the bokeh/snow/petal layers, and particle counts are already capped by
+      width. Purely visual — do only if crisper stars are wanted.
 - [ ] **Accent scroll-spy → IntersectionObserver.** Replace the per-frame
       `getBoundingClientRect` sweep with rootMargin-banded observers. *Deferred:*
       the handler is already rAF-throttled; the marginal win doesn't justify the
@@ -60,6 +66,12 @@
 - ✅ Repo hygiene: removed a broken orphaned `vol03/letters-…html` (a misplaced
       Vol.04 page with broken asset paths), added `.nojekyll` + `.gitignore`, and
       this docs set.
+- ✅ Animation consistency: added the reduced-motion CSS block to
+      `arcana-collection.html` (it was the only page missing it — entrance/hover
+      animations now snap off under `prefers-reduced-motion` like its siblings).
+- ✅ Debounced canvas `resize` on all 8 pages (150ms) — collapses the mobile
+      URL-bar resize thrash so the atmosphere canvas no longer reshuffles/jumps
+      repeatedly while scrolling; full resize still runs once after settle.
 
 ## Housekeeping conventions
 

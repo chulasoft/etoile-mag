@@ -120,6 +120,12 @@ body.hov #cRing{width:42px;height:42px;}
   #v-prev{left:6px;}#v-next{right:6px;}
   #viewer-card{height:auto;width:min(78vw,320px);}
 }
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important;}
+  html{scroll-behavior:auto!important;}
+  body{cursor:auto!important;}
+  #cDot,#cRing,#stars,#glow{display:none!important;}
+}
 </style>
 </head>
 <body>
@@ -302,7 +308,7 @@ document.getElementById('resetBtn').addEventListener('click',()=>{
 const scv=document.getElementById('stars'),sctx=scv.getContext('2d');
 let SW,SH,stars=[],mx=innerWidth/2,my=innerHeight/2;
 function rs(){SW=scv.width=innerWidth;SH=scv.height=innerHeight;stars=Array.from({length:Math.min(110,SW/12)},()=>({x:Math.random()*SW,y:Math.random()*SH,r:Math.random()*1.2+.3,tw:Math.random()*Math.PI*2,sp:.03+Math.random()*.1}));}
-rs();addEventListener('resize',rs);
+rs();let _rzT;addEventListener('resize',()=>{clearTimeout(_rzT);_rzT=setTimeout(rs,150);});
 if(!REDUCE)(function d(){sctx.clearRect(0,0,SW,SH);const px=(mx/SW-.5)*10,py=(my/SH-.5)*7;stars.forEach(s=>{s.tw+=s.sp*.05;const a=.2+Math.abs(Math.sin(s.tw))*.5;sctx.beginPath();sctx.arc(s.x+px*s.r,s.y+py*s.r,s.r,0,Math.PI*2);sctx.fillStyle=`rgba(250,247,242,${a})`;sctx.fill();});requestAnimationFrame(d);})();
 
 /* cursor + glow */

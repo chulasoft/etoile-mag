@@ -856,7 +856,7 @@ function resizeF(){
     warm:Math.random()>.3,
   }));
 }
-resizeF();addEventListener('resize',resizeF);
+resizeF();let _rzT;addEventListener('resize',()=>{clearTimeout(_rzT);_rzT=setTimeout(resizeF,150);});
 let smx=innerWidth/2,smy=innerHeight/2;
 function drawF(){
   ctx.clearRect(0,0,W,H);
